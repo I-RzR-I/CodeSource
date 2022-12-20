@@ -41,22 +41,7 @@ namespace CodeSource
         public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null)
         {
             SourceUrl = sourceUrl;
-            AuthorsName = new List<string>(1) {authorName};
-            Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
-        /// </summary>
-        /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="authorsName">Optional. Name of the code authors. The default value is null.</param>
-        /// <param name="copyright">Optional. Copyright of the code. The default value is null.</param>
-        /// <remarks></remarks>
-        public CodeSourceAttribute(string sourceUrl, List<string> authorsName = null, string copyright = null)
-        {
-            SourceUrl = sourceUrl;
-            AuthorsName = authorsName;
+            AuthorName = authorName;
             Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
         }
 
@@ -77,59 +62,9 @@ namespace CodeSource
             string appliedOn = null, string comment = null)
         {
             SourceUrl = sourceUrl;
-            AuthorsName = new List<string>(1) {authorName};
+            AuthorName = authorName;
             Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
-            Comments = new List<string>(1) {comment};
-            AppliedOn = string.IsNullOrEmpty((appliedOn ?? "").Trim())
-                ? (DateTime?) null
-                : DateTime.ParseExact(appliedOn, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
-        /// </summary>
-        /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="authorName">Optional. Name of the code author. The default value is null.</param>
-        /// <param name="copyright">Optional. Copyright of the code. The default value is null.</param>
-        /// <param name="appliedOn">
-        ///     Optional. Date when applied code in local project. FORMAT: 'yyyy-MM-dd'. The default value is
-        ///     null.
-        /// </param>
-        /// <param name="comments">Optional. Addition own comments. The default value is null.</param>
-        /// <remarks></remarks>
-        public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null,
-            string appliedOn = null, List<string> comments = null)
-        {
-            SourceUrl = sourceUrl;
-            AuthorsName = new List<string>(1) {authorName};
-            Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
-            Comments = comments;
-            AppliedOn = string.IsNullOrEmpty((appliedOn ?? "").Trim())
-                ? (DateTime?) null
-                : DateTime.ParseExact(appliedOn, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
-        /// </summary>
-        /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="authorsName">Optional. Name of the code authors. The default value is null.</param>
-        /// <param name="copyright">Optional. Copyright of the code. The default value is null.</param>
-        /// <param name="appliedOn">
-        ///     Optional. Date when applied code in local project. FORMAT: 'yyyy-MM-dd'. The default value is
-        ///     null.
-        /// </param>
-        /// <param name="comments">Optional. Addition own comments. The default value is null.</param>
-        /// <remarks></remarks>
-        public CodeSourceAttribute(string sourceUrl, List<string> authorsName = null, string copyright = null,
-            string appliedOn = null, List<string> comments = null)
-        {
-            SourceUrl = sourceUrl;
-            AuthorsName = authorsName;
-            Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
-            Comments = comments;
+            Comment = comment;
             AppliedOn = string.IsNullOrEmpty((appliedOn ?? "").Trim())
                 ? (DateTime?) null
                 : DateTime.ParseExact(appliedOn, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -143,7 +78,7 @@ namespace CodeSource
         /// <summary>
         ///     Name of the code author.
         /// </summary>
-        public List<string> AuthorsName { get; }
+        public string AuthorName { get; }
 
         /// <summary>
         ///     Copyright of the code.
@@ -157,8 +92,8 @@ namespace CodeSource
         public DateTime? AppliedOn { get; }
 
         /// <summary>
-        ///     Additional comments for applied code.
+        ///     Additional comment for applied code.
         /// </summary>
-        public List<string> Comments { get; }
+        public string Comment { get; }
     }
 }

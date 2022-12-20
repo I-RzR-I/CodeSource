@@ -38,6 +38,6 @@ using System.Reflection;
 [assembly: AssemblyMetadata("ContactName", "RzR")]
 [assembly: AssemblyMetadata("ContactEmail", "ddpRzR@hotmail.com")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.1811")]
+[assembly: AssemblyFileVersion("1.0.1.1811")]
+[assembly: AssemblyInformationalVersion("1.0.1.1811")]

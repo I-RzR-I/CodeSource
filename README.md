@@ -2,7 +2,7 @@
 
 The primary purpose of this repository/library is to make an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.
 
-From the box is provided an attribute with multiple input parameters such as: `SourceUrl`, `AuthorName` - one or more (list), `Copyright`, `AppliedOn`, and `Comment` - one or more (list).
+From the box is provided an attribute with multiple input parameters such as: `SourceUrl`, `AuthorName`, `Copyright`, `AppliedOn`, and `Comment`.
 
 Also, it was implemented a method that can return a list with every place where was applied attribute grouped by class with user-specified details.
 

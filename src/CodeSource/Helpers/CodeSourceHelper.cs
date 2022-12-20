@@ -100,8 +100,8 @@ namespace CodeSource.Helpers
                 foreach (var atr in classAttributes)
                 {
                     var attribute = (CodeSourceAttribute)atr;
-                    parent.AuthorsName = attribute.AuthorsName;
-                    parent.Comments = attribute.Comments;
+                    parent.AuthorName = attribute.AuthorName;
+                    parent.Comment = attribute.Comment;
                     parent.Copyright = attribute.Copyright;
                     parent.SourceUrl = attribute.SourceUrl;
                     parent.AppliedOn = attribute.AppliedOn;
@@ -137,8 +137,8 @@ namespace CodeSource.Helpers
                         var child = new CodeSourceDto
                         {
                             CodePath = $"{typeInfo.FullName}{ctor.Name}",
-                            AuthorsName = attribute.AuthorsName,
-                            Comments = attribute.Comments,
+                            AuthorName = attribute.AuthorName,
+                            Comment = attribute.Comment,
                             Copyright = attribute.Copyright,
                             SourceUrl = attribute.SourceUrl,
                             AppliedOn = attribute.AppliedOn
@@ -179,8 +179,8 @@ namespace CodeSource.Helpers
                         var child = new CodeSourceDto
                         {
                             CodePath = $"{typeInfo.FullName}.{m.Name}",
-                            AuthorsName = attribute.AuthorsName,
-                            Comments = attribute.Comments,
+                            AuthorName = attribute.AuthorName,
+                            Comment = attribute.Comment,
                             Copyright = attribute.Copyright,
                             SourceUrl = attribute.SourceUrl,
                             AppliedOn = attribute.AppliedOn

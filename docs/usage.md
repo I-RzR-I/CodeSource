@@ -4,10 +4,10 @@ Using this attribute is quite simple. You must add in code `[CodeSource(...)]` w
 
 For `CodeSource` are available some properties/input parameters.
 * `SourceUrl` -> Source of code/inspiation;
-* `AuthorName` or an array `AuthorsName` -> Author or list of them;
+* `AuthorName` -> Author;
 * `Copyright` -> Copyright data for user or company;
 * `AppliedOn` -> Date when was applied this to your code;
-* `Comment` or `Comments` -> Addition comments for this code source.
+* `Comment` -> Addition comment for this code source.
 
 Some examples are shown below:
 ```csharp

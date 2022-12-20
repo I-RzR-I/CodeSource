@@ -43,7 +43,7 @@ namespace CodeSource.Models
         /// <summary>
         ///     Name of the code author.
         /// </summary>
-        public List<string> AuthorsName { get; internal set; }
+        public string AuthorName { get; internal set; }
 
         /// <summary>
         ///     Copyright of the code.
@@ -59,6 +59,6 @@ namespace CodeSource.Models
         /// <summary>
         ///     Additional comments for applied code.
         /// </summary>
-        public List<string> Comments { get; internal set; }
+        public string Comment { get; internal set; }
     }
 }
