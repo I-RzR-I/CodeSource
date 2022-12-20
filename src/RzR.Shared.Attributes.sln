@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSource", "CodeSource\CodeSource.csproj", "{1BBCAB0C-B0CB-45BB-B3D7-DDE95279B121}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{BCB2B36F-30D2-4B00-802B-52BDB4CB9E0F}"
+	ProjectSection(SolutionItems) = preProject
+		shared\GeneralAssemblyInfo.cs = shared\GeneralAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppCore", "tests\WebAppCore\WebAppCore.csproj", "{29F1040A-1A90-45AF-8C76-016F5BAAEA49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{4FC5742E-E9D5-44CE-BD05-5EA155D0A9FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempLib", "tests\TempLib\TempLib.csproj", "{5FC343BE-4F0F-42B2-AC88-C03126442D7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BBCAB0C-B0CB-45BB-B3D7-DDE95279B121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BBCAB0C-B0CB-45BB-B3D7-DDE95279B121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BBCAB0C-B0CB-45BB-B3D7-DDE95279B121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BBCAB0C-B0CB-45BB-B3D7-DDE95279B121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F1040A-1A90-45AF-8C76-016F5BAAEA49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F1040A-1A90-45AF-8C76-016F5BAAEA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F1040A-1A90-45AF-8C76-016F5BAAEA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F1040A-1A90-45AF-8C76-016F5BAAEA49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FC5742E-E9D5-44CE-BD05-5EA155D0A9FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC5742E-E9D5-44CE-BD05-5EA155D0A9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC5742E-E9D5-44CE-BD05-5EA155D0A9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC5742E-E9D5-44CE-BD05-5EA155D0A9FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC343BE-4F0F-42B2-AC88-C03126442D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC343BE-4F0F-42B2-AC88-C03126442D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC343BE-4F0F-42B2-AC88-C03126442D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC343BE-4F0F-42B2-AC88-C03126442D7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29F1040A-1A90-45AF-8C76-016F5BAAEA49} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
+		{4FC5742E-E9D5-44CE-BD05-5EA155D0A9FC} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
+		{5FC343BE-4F0F-42B2-AC88-C03126442D7C} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4B5BD8B8-58AD-47B4-B85A-E7242D47B9FE}
+		BuildVersion_BuildVersioningStyle = None.None.Increment.TimeStamp
+		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_StartDate = 2022/8/5
+		BuildVersion_AssemblyInfoFilename = shared\GeneralAssemblyInfo.cs
+		BuildVersion_ConfigurationName = Release
+		BuildVersion_UseUniversalClock = True
+	EndGlobalSection
+EndGlobal
