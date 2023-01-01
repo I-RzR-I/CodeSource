@@ -14,6 +14,8 @@
 //  </summary>
 // ***********************************************************************
 
+#if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
+
 #region U S A G E S
 
 using System;
@@ -197,3 +199,4 @@ namespace CodeSource.Helpers
         }
     }
 }
+#endif

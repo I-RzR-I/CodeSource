@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.5</TargetFramework>
-    <TargetFrameworks>netstandard1.5</TargetFrameworks>
+    <TargetFrameworks>net40;net45;netstandard1.0;netstandard1.5;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Authors>RzR</Authors>
     <Copyright>RzR</Copyright>
+    <Owners>RzR</Owners>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>PackageIcon.png</PackageIcon>
     <NoWarn>$(NoWarn);CS8032</NoWarn>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageTags>Code;Source;Reference;Anchor;Author;Parser;Attribute;Document</PackageTags>
+    <PackageTags>Code;Source;Reference;Anchor;Author;Parser;Attribute;Document;net framework</PackageTags>
     <RepositoryUrl>https://github.com/I-RzR-I/CodeSource</RepositoryUrl>
     <PackageProjectUrl>https://github.com/I-RzR-I/CodeSource</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -18,7 +19,7 @@
     <Summary>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</Summary>
     <PackageTitle>RzR.Shared.Attributes (CodeSource)</PackageTitle>
     <Title>RzR.Shared.Attributes (CodeSource)</Title>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <PackageIconUrl />
     <RepositoryType>GIT</RepositoryType>
     <Language>en-US</Language>

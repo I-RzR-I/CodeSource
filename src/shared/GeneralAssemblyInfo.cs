@@ -17,6 +17,7 @@
 #region U S A G E S
 
 using System.Reflection;
+using System.Resources;
 
 #endregion
 
@@ -32,12 +33,17 @@ using System.Reflection;
 [assembly: AssemblyTrademark("® RzR™")]
 [assembly: AssemblyDescription("Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.")]
 
+#if NET45_OR_GREATER || NET || NETSTANDARD
 [assembly: AssemblyMetadata("TermsOfService", "")]
 
 [assembly: AssemblyMetadata("ContactUrl", "")]
 [assembly: AssemblyMetadata("ContactName", "RzR")]
 [assembly: AssemblyMetadata("ContactEmail", "ddpRzR@hotmail.com")]
+#endif
+#if NETSTANDARD1_6_OR_GREATER || NET35_OR_GREATER
+[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
+#endif
 
-[assembly: AssemblyVersion("1.0.1.1811")]
-[assembly: AssemblyFileVersion("1.0.1.1811")]
-[assembly: AssemblyInformationalVersion("1.0.1.1811")]
+[assembly: AssemblyVersion("1.0.2.1659")]
+[assembly: AssemblyFileVersion("1.0.2.1659")]
+[assembly: AssemblyInformationalVersion("1.0.2.1659")]
