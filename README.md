@@ -1,4 +1,4 @@
-> **Note** This repository is developed in .netstandard1.5
+> **Note** This repository is developed for .netstandard1.0 and .net framework 4.0+
 
 The primary purpose of this repository/library is to make an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.
 
