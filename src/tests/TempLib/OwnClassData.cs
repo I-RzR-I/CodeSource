@@ -23,7 +23,7 @@ using CodeSource;
 
 namespace TempLib
 {
-    [CodeSource(sourceUrl: null, authorName: "Company User", copyright: "Company INC")]
+    [CodeSource(sourceUrl: null, authorName: "Company User", copyright: "Company INC", version: 1)]
     public class OwnClassData
     {
         public void Run()

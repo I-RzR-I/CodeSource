@@ -23,7 +23,7 @@ using CodeSource;
 
 namespace TempLib
 {
-    [CodeSource("LocalHost", "User1", "Company INC")]
+    [CodeSource("LocalHost", "User1", "Company INC", version: 1)]
     public class TempClassData
     {
         [CodeSource("LocalHost", "User1", "Company INC", "2022-12-12", "CTOR init")]

@@ -34,14 +34,44 @@ namespace CodeSource
         ///     Decorates the code with information about it's origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
+        /// <param name="version">Change version</param>
+        /// <remarks></remarks>
+        public CodeSourceAttribute(string sourceUrl, double version = 1.0)
+        {
+            SourceUrl = sourceUrl;
+            Version = version;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
+        ///     Decorates the code with information about it's origin.
+        /// </summary>
+        /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
+        /// <param name="authorName">Optional. Name of the code author. The default value is null.</param>
+        /// <param name="version">Change version</param>
+        /// <remarks></remarks>
+        public CodeSourceAttribute(string sourceUrl, string authorName = null, double version = 1.0)
+        {
+            SourceUrl = sourceUrl;
+            AuthorName = authorName;
+            Version = version;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
+        ///     Decorates the code with information about it's origin.
+        /// </summary>
+        /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
         /// <param name="authorName">Optional. Name of the code author. The default value is null.</param>
         /// <param name="copyright">Optional. Copyright of the code. The default value is null.</param>
+        /// <param name="version">Change version</param>
         /// <remarks></remarks>
-        public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null)
+        public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null, double version = 1.0)
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
             Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
+            Version = version;
         }
 
         /// <summary>
@@ -56,17 +86,19 @@ namespace CodeSource
         ///     null.
         /// </param>
         /// <param name="comment">Optional. Addition own comment. The default value is null.</param>
+        /// <param name="version">Change version</param>
         /// <remarks></remarks>
         public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null,
-            string appliedOn = null, string comment = null)
+            string appliedOn = null, string comment = null, double version = 1.0)
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
             Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
             Comment = comment;
             AppliedOn = string.IsNullOrEmpty((appliedOn ?? "").Trim())
-                ? (DateTime?) null
+                ? (DateTime?)null
                 : DateTime.ParseExact(appliedOn, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            Version = version;
         }
 
         /// <summary>
@@ -94,5 +126,10 @@ namespace CodeSource
         ///     Additional comment for applied code.
         /// </summary>
         public string Comment { get; }
+
+        /// <summary>
+        ///     Change version
+        /// </summary>
+        public double Version { get; }
     }
 }

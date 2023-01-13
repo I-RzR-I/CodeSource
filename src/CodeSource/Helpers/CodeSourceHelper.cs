@@ -76,12 +76,13 @@ namespace CodeSource.Helpers
         {
             Assembly mainAsm;
             var listOfAssemblies = new List<Assembly>();
+
             if (string.IsNullOrEmpty(assembly))
                 mainAsm = Assembly.GetEntryAssembly();
-            mainAsm = Assembly.Load(new AssemblyName(assembly));
+            mainAsm = Assembly.Load(new AssemblyName(assembly!));
 
             listOfAssemblies.Add(mainAsm);
-            listOfAssemblies.AddRange(mainAsm.GetReferencedAssemblies().Select(refAsmName => Assembly.Load(refAsmName)));
+            listOfAssemblies.AddRange(mainAsm.GetReferencedAssemblies().Select(Assembly.Load));
 
             return listOfAssemblies;
         }
@@ -107,6 +108,7 @@ namespace CodeSource.Helpers
                     parent.Copyright = attribute.Copyright;
                     parent.SourceUrl = attribute.SourceUrl;
                     parent.AppliedOn = attribute.AppliedOn;
+                    parent.Version = attribute.Version;
 
                     dataObject.Parent = parent;
                 }
@@ -143,7 +145,8 @@ namespace CodeSource.Helpers
                             Comment = attribute.Comment,
                             Copyright = attribute.Copyright,
                             SourceUrl = attribute.SourceUrl,
-                            AppliedOn = attribute.AppliedOn
+                            AppliedOn = attribute.AppliedOn,
+                            Version = attribute.Version
                         };
 
                         dataObject.Children.Add(child);
@@ -185,7 +188,8 @@ namespace CodeSource.Helpers
                             Comment = attribute.Comment,
                             Copyright = attribute.Copyright,
                             SourceUrl = attribute.SourceUrl,
-                            AppliedOn = attribute.AppliedOn
+                            AppliedOn = attribute.AppliedOn,
+                            Version = attribute.Version
                         };
 
                         dataObject.Children.Add(child);

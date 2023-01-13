@@ -17,7 +17,6 @@
 #region U S A G E S
 
 using System;
-using System.Collections.Generic;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -60,5 +59,10 @@ namespace CodeSource.Models
         ///     Additional comments for applied code.
         /// </summary>
         public string Comment { get; internal set; }
+
+        /// <summary>
+        ///     Change version.
+        /// </summary>
+        public double Version { get; internal set; }
     }
 }
