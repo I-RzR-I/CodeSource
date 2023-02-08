@@ -1,5 +1,8 @@
 > **Note** This repository is developed for .netstandard1.0 and .net framework 4.0+
 
+[![NuGet Version](https://img.shields.io/nuget/v/CodeSource.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/CodeSource/)
+[![Nuget Downloads](https://img.shields.io/nuget/dt/CodeSource.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/CodeSource/)
+
 The primary purpose of this repository/library is to make an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.
 
 From the box is provided an attribute with multiple input parameters such as: `SourceUrl`, `AuthorName`, `Copyright`, `AppliedOn`, and `Comment`.
@@ -12,8 +15,6 @@ No additional components or packs are required for use. So, it only needs to be 
 
 
 > `Install-Package CodeSource -Version x.x.x.x`
-
-[![NuGet Version](https://img.shields.io/nuget/v/CodeSource.svg?style=flat)](https://www.nuget.org/packages/CodeSource/)
 
 ## Content
 1. [USING](docs/usage.md)
