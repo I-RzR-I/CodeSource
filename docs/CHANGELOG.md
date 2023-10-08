@@ -9,3 +9,6 @@
 
 ### **1.0.4.1723** 
 -> Was added change version on attribute.<br />
+
+### **1.0.5.1933** 
+-> Add sign key and adjust attribute model.<br />
