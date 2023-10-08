@@ -18,6 +18,7 @@
 
 using System;
 using System.Globalization;
+using CodeSource.Abstractions;
 
 #endregion
 
@@ -27,7 +28,7 @@ namespace CodeSource
     ///     Decorates the code with information about it's origin.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-    public sealed class CodeSourceAttribute : Attribute
+    public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
@@ -101,35 +102,22 @@ namespace CodeSource
             Version = version;
         }
 
-        /// <summary>
-        ///     URL to the original source of the code.
-        /// </summary>
-        public string SourceUrl { get; }
+        /// <inheritdoc />
+        public string SourceUrl { get; private set; }
 
-        /// <summary>
-        ///     Name of the code author.
-        /// </summary>
-        public string AuthorName { get; }
+        /// <inheritdoc />
+        public string AuthorName { get; private set; }
 
-        /// <summary>
-        ///     Copyright of the code.
-        /// </summary>
-        public string Copyright { get; }
+        /// <inheritdoc />
+        public string Copyright { get; private set; }
 
-        /// <summary>
-        ///     Date of applied on current project.
-        ///     FORMAT: 'yyyy-MM-dd'
-        /// </summary>
-        public DateTime? AppliedOn { get; }
+        /// <inheritdoc />
+        public DateTime? AppliedOn { get; private set; }
 
-        /// <summary>
-        ///     Additional comment for applied code.
-        /// </summary>
-        public string Comment { get; }
+        /// <inheritdoc />
+        public string Comment { get; private set; }
 
-        /// <summary>
-        ///     Change version
-        /// </summary>
-        public double Version { get; }
+        /// <inheritdoc />
+        public double Version { get; private set; }
     }
 }

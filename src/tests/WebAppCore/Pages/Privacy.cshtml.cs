@@ -17,7 +17,6 @@
 #region U S A G E S
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 #endregion
 
@@ -25,13 +24,6 @@ namespace WebAppCore.Pages
 {
     public class PrivacyModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
-
-        public PrivacyModel(ILogger<PrivacyModel> logger)
-        {
-            _logger = logger;
-        }
-
         public void OnGet()
         {
         }
