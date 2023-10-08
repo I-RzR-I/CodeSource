@@ -21,7 +21,6 @@ using System.Diagnostics;
 using CodeSource;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 #endregion
 
@@ -32,12 +31,9 @@ namespace WebAppCore.Pages
     [CodeSource("link", "Me", null, version: 1)]
     public class ErrorModel : PageModel
     {
-        private readonly ILogger<ErrorModel> _logger;
-
         [CodeSource("link", "Me", null, comment: "CTOR")]
-        public ErrorModel(ILogger<ErrorModel> logger)
+        public ErrorModel()
         {
-            _logger = logger;
         }
 
         public DateTime Date => DateTime.Now;

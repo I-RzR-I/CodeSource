@@ -18,7 +18,6 @@
 
 using CodeSource;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 #endregion
 
@@ -26,13 +25,6 @@ namespace WebAppCore.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
-
         [CodeSource("link-Index", "Me", null, comment: "OnGet", appliedOn: "2022-12-16")]
         public void OnGet()
         {
