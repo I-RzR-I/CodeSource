@@ -12,3 +12,6 @@
 
 ### **1.0.5.1933** 
 -> Add sign key and adjust attribute model.<br />
+
+### **1.0.6.0933** 
+-> Fix wrong modification.<br />
