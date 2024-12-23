@@ -20,37 +20,47 @@ using System;
 using System.Globalization;
 using CodeSource.Abstractions;
 
+// ReSharper disable RedundantCast
+
 #endregion
 
 namespace CodeSource
 {
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Decorates the code with information about it's origin.
+    ///     Attribute for code source. This class cannot be inherited.
     /// </summary>
+    /// <seealso cref="T:Attribute"/>
+    /// <seealso cref="T:CodeSource.Abstractions.ICodeSourceAttribute"/>
+    /// =================================================================================================
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
+        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
         ///     Decorates the code with information about it's origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="version">Change version</param>
-        /// <remarks></remarks>
+        /// <param name="version">(Optional) Change version.</param>
+        /// =================================================================================================
         public CodeSourceAttribute(string sourceUrl, double version = 1.0)
         {
             SourceUrl = sourceUrl;
             Version = version;
         }
 
+        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
         ///     Decorates the code with information about it's origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="authorName">Optional. Name of the code author. The default value is null.</param>
-        /// <param name="version">Change version</param>
-        /// <remarks></remarks>
+        /// <param name="authorName">
+        ///     (Optional) Optional. Name of the code author. The default value is null.
+        /// </param>
+        /// <param name="version">(Optional) Change version.</param>
+        /// =================================================================================================
         public CodeSourceAttribute(string sourceUrl, string authorName = null, double version = 1.0)
         {
             SourceUrl = sourceUrl;
@@ -58,15 +68,20 @@ namespace CodeSource
             Version = version;
         }
 
+        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
         ///     Decorates the code with information about it's origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="authorName">Optional. Name of the code author. The default value is null.</param>
-        /// <param name="copyright">Optional. Copyright of the code. The default value is null.</param>
-        /// <param name="version">Change version</param>
-        /// <remarks></remarks>
+        /// <param name="authorName">
+        ///     (Optional) Optional. Name of the code author. The default value is null.
+        /// </param>
+        /// <param name="copyright">
+        ///     (Optional) Optional. Copyright of the code. The default value is null.
+        /// </param>
+        /// <param name="version">(Optional) Change version.</param>
+        /// =================================================================================================
         public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null, double version = 1.0)
         {
             SourceUrl = sourceUrl;
@@ -75,20 +90,28 @@ namespace CodeSource
             Version = version;
         }
 
+        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
         ///     Decorates the code with information about it's origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
-        /// <param name="authorName">Optional. Name of the code author. The default value is null.</param>
-        /// <param name="copyright">Optional. Copyright of the code. The default value is null.</param>
-        /// <param name="appliedOn">
-        ///     Optional. Date when applied code in local project. FORMAT: 'yyyy-MM-dd'. The default value is
-        ///     null.
+        /// <param name="authorName">
+        ///     (Optional) Optional. Name of the code author. The default value is null.
         /// </param>
-        /// <param name="comment">Optional. Addition own comment. The default value is null.</param>
-        /// <param name="version">Change version</param>
-        /// <remarks></remarks>
+        /// <param name="copyright">
+        ///     (Optional) Optional. Copyright of the code. The default value is null.
+        /// </param>
+        /// <param name="appliedOn">
+        ///     (Optional)
+        ///     Optional. Date when applied code in local project. FORMAT: 'yyyy-MM-dd'. The default
+        ///     value is null.
+        /// </param>
+        /// <param name="comment">
+        ///     (Optional) Optional. Addition own comment. The default value is null.
+        /// </param>
+        /// <param name="version">(Optional) Change version.</param>
+        /// =================================================================================================
         public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null,
             string appliedOn = null, string comment = null, double version = 1.0)
         {
@@ -102,22 +125,29 @@ namespace CodeSource
             Version = version;
         }
 
-        /// <inheritdoc />
-        public string SourceUrl { get; private set; }
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSourceAttribute"/> class.
+        /// </summary>
+        /// =================================================================================================
+        public CodeSourceAttribute() { }
 
-        /// <inheritdoc />
-        public string AuthorName { get; private set; }
+        /// <inheritdoc/>
+        public string SourceUrl { get; set; }
 
-        /// <inheritdoc />
-        public string Copyright { get; private set; }
+        /// <inheritdoc/>
+        public string AuthorName { get; set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
+        public string Copyright { get; set; }
+
+        /// <inheritdoc/>
         public DateTime? AppliedOn { get; private set; }
 
-        /// <inheritdoc />
-        public string Comment { get; private set; }
+        /// <inheritdoc/>
+        public string Comment { get; set; }
 
-        /// <inheritdoc />
-        public double Version { get; private set; }
+        /// <inheritdoc/>
+        public double Version { get; set; }
     }
 }
