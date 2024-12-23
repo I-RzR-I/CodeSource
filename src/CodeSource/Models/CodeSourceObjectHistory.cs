@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 //  Assembly         : RzR.Shared.Attributes.CodeSource
 //  Author           : RzR
-//  Created On       : 2023-10-08 22:04
+//  Created On       : 2024-12-23 15:31
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2024-12-23 19:53
+//  Last Modified On : 2024-12-23 19:46
 // ***********************************************************************
-//  <copyright file="ICodeSourceAttribute.cs" company="RzR SOFT & TECH">
+//  <copyright file="CodeSourceObjectHistory.cs" company="RzR SOFT & TECH">
 //   Copyright © RzR. All rights reserved.
 //  </copyright>
 // 
@@ -18,17 +18,29 @@
 
 using System;
 
+// ReSharper disable ClassNeverInstantiated.Global
+
 #endregion
 
-namespace CodeSource.Abstractions
+namespace CodeSource.Models
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Code source attribute.
+    ///     A code source object history.
     /// </summary>
     /// =================================================================================================
-    public interface ICodeSourceAttribute
+    public class CodeSourceObjectHistory
     {
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Code execution path.
+        /// </summary>
+        /// <value>
+        ///     The full pathname of the code file.
+        /// </value>
+        /// =================================================================================================
+        public string CodePath { get; internal set; }
+
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     URL to the original source of the code.
@@ -37,7 +49,7 @@ namespace CodeSource.Abstractions
         ///     The source URL.
         /// </value>
         /// =================================================================================================
-        public string SourceUrl { get; }
+        public string SourceUrl { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -47,7 +59,7 @@ namespace CodeSource.Abstractions
         ///     The name of the author.
         /// </value>
         /// =================================================================================================
-        public string AuthorName { get; }
+        public string AuthorName { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -57,7 +69,7 @@ namespace CodeSource.Abstractions
         ///     The copyright.
         /// </value>
         /// =================================================================================================
-        public string Copyright { get; }
+        public string Copyright { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -67,17 +79,17 @@ namespace CodeSource.Abstractions
         ///     The applied on.
         /// </value>
         /// =================================================================================================
-        public DateTime? AppliedOn { get; }
+        public DateTime? AppliedOn { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Additional comment for applied code.
+        ///     Additional comments for applied code.
         /// </summary>
         /// <value>
         ///     The comment.
         /// </value>
         /// =================================================================================================
-        public string Comment { get; }
+        public string Comment { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -87,6 +99,6 @@ namespace CodeSource.Abstractions
         ///     The version.
         /// </value>
         /// =================================================================================================
-        public double Version { get; }
+        public double Version { get; internal set; }
     }
 }
