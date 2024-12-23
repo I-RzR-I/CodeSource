@@ -37,8 +37,8 @@ namespace Tests
             var codeSource = CodeSourceHelper.GetCodeSourceAssembly("TempLib").ToList();
 
             Assert.AreEqual(2, codeSource.Count());
-            Assert.AreEqual(1, codeSource.Count(x => x.Parent.CodePath.Equals("TempLib.OwnClassData")));
-            Assert.AreEqual(1, codeSource.Count(x => x.Parent.CodePath.Equals("TempLib.TempClassData")));
+            Assert.AreEqual(1, codeSource.Count(x => x.Parent.FullName.Equals("TempLib.OwnClassData")));
+            Assert.AreEqual(1, codeSource.Count(x => x.Parent.FullName.Equals("TempLib.TempClassData")));
         }
     }
 }
