@@ -17,8 +17,8 @@
 #region U S A G E S
 
 using System;
-using System.Globalization;
 using CodeSource.Abstractions;
+using CodeSource.Extensions.Internal;
 
 // ReSharper disable RedundantCast
 
@@ -36,15 +36,67 @@ namespace CodeSource
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
+        private DateTime? _internalAppliedOn;
+
+        internal DateTime? InternalAppliedOn
+        {
+            get => _internalAppliedOn;
+            private set
+            {
+                try
+                {
+                    var date = AppliedOn.SetAppliedDate();
+                    _internalAppliedOn = date ?? value;
+                }
+                catch
+                {
+                    _internalAppliedOn = value;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public string SourceUrl { get; set; }
+
+        /// <inheritdoc/>
+        public string AuthorName { get; set; }
+
+        /// <inheritdoc/>
+        public string Copyright { get; set; }
+
+        /// <inheritdoc/>
+        public string AppliedOn { get; set; }
+
+        /// <inheritdoc/>
+        public string Comment { get; set; }
+
+        /// <inheritdoc/>
+        public double Version { get; set; }
+
+        /// <inheritdoc/>
+        public string Tags { get; set; }
+
+        /// <inheritdoc/>
+        public string RelatedTaskId { get; set; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSourceAttribute"/> class.
+        /// </summary>
+        /// =================================================================================================
+        public CodeSourceAttribute() { }
+
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
+        ///     Decorates the code with information about its origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
         /// <param name="version">(Optional) Change version.</param>
         /// =================================================================================================
-        public CodeSourceAttribute(string sourceUrl, double version = 1.0)
+        public CodeSourceAttribute(
+            string sourceUrl,
+            double version = 1.0)
         {
             SourceUrl = sourceUrl;
             Version = version;
@@ -53,7 +105,7 @@ namespace CodeSource
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
+        ///     Decorates the code with information about its origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
         /// <param name="authorName">
@@ -61,7 +113,10 @@ namespace CodeSource
         /// </param>
         /// <param name="version">(Optional) Change version.</param>
         /// =================================================================================================
-        public CodeSourceAttribute(string sourceUrl, string authorName = null, double version = 1.0)
+        public CodeSourceAttribute(
+            string sourceUrl,
+            string authorName = null,
+            double version = 1.0)
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -71,7 +126,7 @@ namespace CodeSource
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
+        ///     Decorates the code with information about its origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
         /// <param name="authorName">
@@ -82,18 +137,22 @@ namespace CodeSource
         /// </param>
         /// <param name="version">(Optional) Change version.</param>
         /// =================================================================================================
-        public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null, double version = 1.0)
+        public CodeSourceAttribute(
+            string sourceUrl,
+            string authorName = null,
+            string copyright = null,
+            double version = 1.0)
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
-            Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
+            Copyright = copyright.SetCopyRight();
             Version = version;
         }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSource.CodeSourceAttribute" /> class.
-        ///     Decorates the code with information about it's origin.
+        ///     Decorates the code with information about its origin.
         /// </summary>
         /// <param name="sourceUrl">Required. URL to the original source of the code.</param>
         /// <param name="authorName">
@@ -111,43 +170,27 @@ namespace CodeSource
         ///     (Optional) Optional. Addition own comment. The default value is null.
         /// </param>
         /// <param name="version">(Optional) Change version.</param>
+        /// <param name="workItemId">(Optional) Identifier for the work item (Related work item/task id).</param>
+        /// <param name="tags">(Optional) The tags.</param>
         /// =================================================================================================
-        public CodeSourceAttribute(string sourceUrl, string authorName = null, string copyright = null,
-            string appliedOn = null, string comment = null, double version = 1.0)
+        public CodeSourceAttribute(
+            string sourceUrl,
+            string authorName = null,
+            string copyright = null,
+            string appliedOn = null,
+            string comment = null,
+            double version = 1.0,
+            string workItemId = null,
+            string tags = null)
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
-            Copyright = $"{(!string.IsNullOrEmpty(copyright?.Trim()) ? $"© {copyright}" : copyright)}";
+            Copyright = copyright.SetCopyRight();
             Comment = comment;
-            AppliedOn = string.IsNullOrEmpty((appliedOn ?? "").Trim())
-                ? (DateTime?)null
-                : DateTime.ParseExact(appliedOn, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            InternalAppliedOn = appliedOn.SetAppliedDate();
             Version = version;
+            RelatedTaskId = workItemId;
+            Tags = tags;
         }
-
-        /// -------------------------------------------------------------------------------------------------
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CodeSourceAttribute"/> class.
-        /// </summary>
-        /// =================================================================================================
-        public CodeSourceAttribute() { }
-
-        /// <inheritdoc/>
-        public string SourceUrl { get; set; }
-
-        /// <inheritdoc/>
-        public string AuthorName { get; set; }
-
-        /// <inheritdoc/>
-        public string Copyright { get; set; }
-
-        /// <inheritdoc/>
-        public DateTime? AppliedOn { get; private set; }
-
-        /// <inheritdoc/>
-        public string Comment { get; set; }
-
-        /// <inheritdoc/>
-        public double Version { get; set; }
     }
 }
