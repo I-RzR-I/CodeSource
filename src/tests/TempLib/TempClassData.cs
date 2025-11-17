@@ -23,15 +23,16 @@ using CodeSource;
 
 namespace TempLib
 {
-    [CodeSource("LocalHost", "User1", "Company INC", version: 1)]
+    [CodeSource("http://local.host", "User1", "Company INC", version: 1)]
     public class TempClassData
     {
-        [CodeSource("LocalHost", "User1", "Company INC", "2022-12-12", "CTOR init")]
+        [CodeSource("http://local.host", "User1", "Company INC", "2022-12-12", "CTOR init")]
         public TempClassData()
         {
         }
 
-        [CodeSource("LocalHost/source1", "User2", "Company INC", "2022-12-12", "IDK")]
+        [CodeSource("http://local.host/source1", "User2", "Company INC", "2022-12-12", "IDK")]
+        [CodeSource(SourceUrl = "http://local.host/source2", AuthorName = "User3", Copyright = "Company INC", AppliedOn = "2022-12-12", Comment = "IDK", Version = 1.1)]
         public void Run()
         {
         }

@@ -110,5 +110,20 @@ namespace CodeSource.Extensions.Internal
                 return null;
             }
         }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that validates the source URL described by sourceUrl.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Thrown when one or more arguments have unsupported or illegal values.
+        /// </exception>
+        /// <param name="sourceUrl">The sourceUrl to act on.</param>
+        /// =================================================================================================
+        internal static void ValidateSourceUrl(this string sourceUrl)
+        {
+            if (sourceUrl.IsPresent() && !Uri.IsWellFormedUriString(sourceUrl, UriKind.Absolute))
+                throw new ArgumentException("SourceUrl must be an absolute URI", nameof(sourceUrl));
+        }
     }
 }
