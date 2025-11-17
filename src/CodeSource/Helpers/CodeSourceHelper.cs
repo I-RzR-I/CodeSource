@@ -58,7 +58,7 @@ namespace CodeSource.Helpers
             var assemblies = GetListOfEntryAssemblyWithReferences(assembly);
 
             return GetCodeSourceAssembly(assemblies);
-        }  
+        }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -165,7 +165,7 @@ namespace CodeSource.Helpers
                     typeInfo.GetCustomAttributes(typeof(CodeSourceAttribute), true).ToList();
 #endif
 
-                if (!classAttributes.Any()) return; // Check if the current item doesn't have the attribute, then ignore
+                if (classAttributes.IsNullOrEmpty()) return; // Check if the current item doesn't have the attribute, then ignore
 
                 var changeHistory = Activator.CreateInstance<List<CodeSourceObjectHistory>>();
                 foreach (var atr in classAttributes)
@@ -220,7 +220,9 @@ namespace CodeSource.Helpers
                     SetChildHistoryData(ref children, ctorAttributes, typeInfo.FullName, ctor.Name);
                 }
 
-                dataObject.Children = children;
+                dataObject.Children = dataObject.Children.IsNullOrEmpty()
+                    ? children
+                    : dataObject.Children.Concat(children);
             }
             catch
             {
@@ -269,7 +271,9 @@ namespace CodeSource.Helpers
                     SetChildHistoryData(ref children, classMethodAttributes, typeInfo.FullName, m.Name);
                 }
 
-                dataObject.Children = children;
+                dataObject.Children = dataObject.Children.IsNullOrEmpty() 
+                    ? children 
+                    : dataObject.Children.Concat(children);
             }
             catch
             {
@@ -293,7 +297,7 @@ namespace CodeSource.Helpers
 
             var child = Activator.CreateInstance<CodeSourceObject>();
             child.Name = currentItemName;
-            child.FullName = $"{fullName}.{currentItemName}";
+            child.FullName = StringExtensions.SetFullName(fullName, currentItemName);
 
             var changeHistory = Activator.CreateInstance<List<CodeSourceObjectHistory>>();
             changeHistory.AddRange(historyAttributes.Select(
@@ -326,7 +330,7 @@ namespace CodeSource.Helpers
             history.SourceUrl = historyAttribute.SourceUrl;
             history.AppliedOn = historyAttribute.InternalAppliedOn;
             history.Version = historyAttribute.Version == 0 ? 1.0 : historyAttribute.Version;
-            history.CodePath = currentItemName.IsPresent() ? $"{fullName}.{currentItemName}" : $"{fullName}{currentItemName}";
+            history.CodePath = StringExtensions.SetCodePath(fullName, currentItemName);
             history.Tags = historyAttribute.Tags;
             history.RelatedTaskId = historyAttribute.RelatedTaskId;
 

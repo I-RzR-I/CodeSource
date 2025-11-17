@@ -125,5 +125,33 @@ namespace CodeSource.Extensions.Internal
             if (sourceUrl.IsPresent() && !Uri.IsWellFormedUriString(sourceUrl, UriKind.Absolute))
                 throw new ArgumentException("SourceUrl must be an absolute URI", nameof(sourceUrl));
         }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Sets code path.
+        /// </summary>
+        /// <param name="fullName">The full name.</param>
+        /// <param name="currentItemName">The current item name.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string SetCodePath(string fullName, string currentItemName)
+        => currentItemName.IsPresent()
+            ? $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}"
+            : $"{fullName}{currentItemName}";
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Sets full name.
+        /// </summary>
+        /// <param name="fullName">The full name.</param>
+        /// <param name="currentItemName">The current item name.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string SetFullName(string fullName, string currentItemName)
+        => $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}";
     }
 }
