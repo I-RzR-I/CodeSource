@@ -1,3 +1,12 @@
+### **v3.0.0.6590** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 17-11-2025
+* [69e6313] (RzR) -> Adjust code generation flow.
+* [15ce35f] (RzR) -> Auto commit uncommited files
+* [65da579] (RzR) -> Adjust readme, using, version generate code.
+* [fc658b1] (RzR) -> Adjust the processing annotation and the result.
+* [a1de5c2] (RzR) -> Add code scanner service.
+* [11e48be] (RzR) -> Add new fields: `Tags`, `RelatedTaskId`.
+* [0f19be6] (RzR) -> Add multiple internal string extension methods.
+
 ### **v2.0.0.0** 
 -> Change visibility for set action in CodeSourceAttribute.<br />
 -> Recreate the code source history generation.<br />
