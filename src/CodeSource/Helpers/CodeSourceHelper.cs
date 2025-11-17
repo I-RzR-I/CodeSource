@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CodeSource.Extensions.Internal;
 using CodeSource.Models;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -325,7 +326,7 @@ namespace CodeSource.Helpers
             history.SourceUrl = historyAttribute.SourceUrl;
             history.AppliedOn = historyAttribute.InternalAppliedOn;
             history.Version = historyAttribute.Version;
-            history.CodePath = $"{fullName}{currentItemName}";
+            history.CodePath = currentItemName.IsPresent() ? $"{fullName}.{currentItemName}" : $"{fullName}{currentItemName}";
             history.Tags = historyAttribute.Tags;
             history.RelatedTaskId = historyAttribute.RelatedTaskId;
 
