@@ -41,19 +41,10 @@ namespace CodeSource
 
         internal DateTime? InternalAppliedOn
         {
-            get => _internalAppliedOn;
-            private set
-            {
-                try
-                {
-                    var date = AppliedOn.SetAppliedDate();
-                    _internalAppliedOn = date ?? value;
-                }
-                catch
-                {
-                    _internalAppliedOn = value;
-                }
-            }
+            get => AppliedOn.IsPresent() 
+                ? AppliedOn.SetAppliedDate() 
+                : _internalAppliedOn;
+            private set => _internalAppliedOn = value;
         }
 
         /// <inheritdoc/>
