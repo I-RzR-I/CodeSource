@@ -9,7 +9,7 @@ set /p userDefinedDestinationBranch=
 echo.
 
 :: Set init params value
-set applicationName=Auth2FAXProvider
+set applicationName=CodeSource
 set runVersionIncrement=y
 set runGenChangeLog=y
 :: If runBuild > y(yes), build in release mode
@@ -26,10 +26,10 @@ set changeLogPath=$('..\docs\CHANGELOG.MD')
 set sourceBranch=%userDefinedSourceBranch%
 set destinationBranch=%userDefinedDestinationBranch%
 set customVersion=$null
-set solutionPath=$('..\src\RzR.Shared.Services.sln')
+set solutionPath=$('..\src\RzR.Shared.Attributes.sln')
 set packResultPath=$('..\nuget\')
-set packProjectsPath=$('..\src\Auth2FAXProvider\Auth2FAXProvider.csproj')
-set testProjectsPath=$('..\src\tests\AuthProviders.Tests\AuthProviders.Tests.csproj')
+set packProjectsPath=$('..\src\CodeSource\CodeSource.csproj')
+set testProjectsPath=$('..\src\tests\Tests\Tests.csproj')
 
 
 echo :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
