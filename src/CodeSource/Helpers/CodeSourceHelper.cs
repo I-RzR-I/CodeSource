@@ -35,7 +35,7 @@ namespace CodeSource.Helpers
     ///     Code source helper methods.
     /// </summary>
     /// =================================================================================================
-    public static class CodeSourceHelper
+    internal static class CodeSourceHelper
     {
         private static Type _typeInfo;
 
@@ -52,8 +52,8 @@ namespace CodeSource.Helpers
         ///     this collection.
         /// </returns>
         /// =================================================================================================
-        [Obsolete("This method is deprecated. Use available from CodeSource.Services.CodeSourceScanner.FindAnnotations")]
-        public static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(string assembly = null)
+        //[Obsolete("This method is deprecated. Use available from CodeSource.Services.CodeSourceScanner.FindAnnotations")]
+        internal static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(string assembly = null)
         {
             var assemblies = GetListOfEntryAssemblyWithReferences(assembly);
 

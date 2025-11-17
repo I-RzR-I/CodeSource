@@ -37,7 +37,7 @@ namespace Tests
         [Test]
         public void Test1()
         {
-            var codeSource = CodeSourceHelper.GetCodeSourceAssembly("TempLib").ToList();
+            var codeSource = CodeSourceScanner.Instance.FindAnnotations("TempLib").ToList();
 
             Assert.AreEqual(2, codeSource.Count());
             Assert.AreEqual(1, codeSource.Count(x => x.Parent.FullName.Equals("TempLib.OwnClassData")));

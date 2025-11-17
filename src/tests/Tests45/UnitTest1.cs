@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using CodeSource.Services;
 
 namespace Tests45
 {
@@ -11,7 +12,7 @@ namespace Tests45
         [TestMethod]
         public void TestMethod1()
         {
-            var codeSource = CodeSourceHelper.GetCodeSourceAssembly("TempLib45").ToList();
+            var codeSource = CodeSourceScanner.Instance.FindAnnotations("TempLib45").ToList();
 
             Assert.AreEqual(2, codeSource.Count());
             Assert.AreEqual(1, codeSource.Count(x => x.Parent.FullName.Equals("TempLib45.OwnClassData")));
