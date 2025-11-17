@@ -325,7 +325,7 @@ namespace CodeSource.Helpers
             history.Copyright = historyAttribute.Copyright;
             history.SourceUrl = historyAttribute.SourceUrl;
             history.AppliedOn = historyAttribute.InternalAppliedOn;
-            history.Version = historyAttribute.Version;
+            history.Version = historyAttribute.Version == 0 ? 1.0 : historyAttribute.Version;
             history.CodePath = currentItemName.IsPresent() ? $"{fullName}.{currentItemName}" : $"{fullName}{currentItemName}";
             history.Tags = historyAttribute.Tags;
             history.RelatedTaskId = historyAttribute.RelatedTaskId;
