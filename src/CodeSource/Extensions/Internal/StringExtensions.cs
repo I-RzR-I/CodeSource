@@ -1,0 +1,114 @@
+﻿// ***********************************************************************
+//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Author           : RzR
+//  Created On       : 2025-11-14 20:11
+// 
+//  Last Modified By : RzR
+//  Last Modified On : 2025-11-14 23:37
+// ***********************************************************************
+//  <copyright file="StringExtensions.cs" company="RzR SOFT & TECH">
+//   Copyright © RzR. All rights reserved.
+//  </copyright>
+// 
+//  <summary>
+//  </summary>
+// ***********************************************************************
+
+#region U S A G E S
+
+using System;
+using System.Globalization;
+
+#endregion
+
+namespace CodeSource.Extensions.Internal
+{
+    /// -------------------------------------------------------------------------------------------------
+    /// <summary>
+    ///     A string extensions.
+    /// </summary>
+    /// =================================================================================================
+    internal static class StringExtensions
+    {
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that query if 'source' is missing.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <returns>
+        ///     True if missing, false if not.
+        /// </returns>
+        /// =================================================================================================
+        internal static bool IsMissing(this string source)
+        {
+            return string.IsNullOrWhiteSpace(source);
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that query if 'source' is present.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <returns>
+        ///     True if present, false if not.
+        /// </returns>
+        /// =================================================================================================
+        internal static bool IsPresent(this string source)
+        {
+            return !source.IsMissing();
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that if is null then empty.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string IfIsNullThenEmpty(this string source)
+        {
+            return (source ?? string.Empty).Trim();
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that sets copy right.
+        /// </summary>
+        /// <param name="sourceValue">The sourceValue to act on.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string SetCopyRight(this string sourceValue)
+        {
+            return $"{(sourceValue.IfIsNullThenEmpty().IsPresent() ? $"© {sourceValue}" : null)}";
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that sets applied date.
+        /// </summary>
+        /// <param name="sourceDateValue">The sourceDateValue to act on.</param>
+        /// <returns>
+        ///     A DateTime?
+        /// </returns>
+        /// =================================================================================================
+        internal static DateTime? SetAppliedDate(this string sourceDateValue)
+        {
+            try
+            {
+                var date = sourceDateValue.IfIsNullThenEmpty().IsMissing()
+                    ? (DateTime?)null
+                    : DateTime.ParseExact(sourceDateValue, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                return date;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+}

@@ -14,12 +14,6 @@
 //  </summary>
 // ***********************************************************************
 
-#region U S A G E S
-
-using System;
-
-#endregion
-
 namespace CodeSource.Abstractions
 {
     /// -------------------------------------------------------------------------------------------------
@@ -67,7 +61,7 @@ namespace CodeSource.Abstractions
         ///     The applied on.
         /// </value>
         /// =================================================================================================
-        public DateTime? AppliedOn { get; }
+        public string AppliedOn { get; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -88,5 +82,34 @@ namespace CodeSource.Abstractions
         /// </value>
         /// =================================================================================================
         public double Version { get; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets the tags.
+        /// </summary>
+        /// <value>
+        ///     The tags.
+        /// </value>
+        /// <remarks>
+        ///     All tags split by ';'
+        ///     e.g., security, design-doc, todo.
+        /// </remarks>
+        /// =================================================================================================
+        public string Tags { get; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets the identifier of the related task.
+        /// </summary>
+        /// <value>
+        ///     The identifier of the related task.
+        /// </value>
+        /// <remarks>
+        ///     Working item id: e.g., bug tracker, feature or task;
+        ///     As in many tracking systems, the ids are notated with '#',
+        ///      from the start. A good idea to set it as the '#123' format.
+        /// </remarks>
+        /// =================================================================================================
+        public string RelatedTaskId { get; }
     }
 }

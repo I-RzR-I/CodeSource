@@ -18,6 +18,7 @@
 
 using System;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
@@ -100,5 +101,25 @@ namespace CodeSource.Models
         /// </value>
         /// =================================================================================================
         public double Version { get; internal set; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets or sets the tags.
+        /// </summary>
+        /// <value>
+        ///     The tags.
+        /// </value>
+        /// =================================================================================================
+        public string Tags { get; internal set; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets or sets the identifier of the related task.
+        /// </summary>
+        /// <value>
+        ///     The identifier of the related task.
+        /// </value>
+        /// =================================================================================================
+        public string RelatedTaskId { get; internal set; }
     }
 }

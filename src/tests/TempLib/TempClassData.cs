@@ -38,12 +38,12 @@ namespace TempLib
 
         public Task RunTask()
         {
-            return Task.CompletedTask;
+            return Task.FromResult(new Task(() => { }));
         }
 
         public async Task RunAsync()
         {
-            await Task.CompletedTask;
+            await Task.Run(() => Task.FromResult(RunAsync()));
         }
     }
 }

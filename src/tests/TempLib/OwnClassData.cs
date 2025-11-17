@@ -32,16 +32,17 @@ namespace TempLib
         {
         }
 
+        [CodeSource(AppliedOn = "2025-11-22", AuthorName = "RzR", Version = 1.0, RelatedTaskId = "#784", Copyright = "RzR")]
         public Task RunTask()
         {
-            return Task.CompletedTask;
+            return Task.FromResult(new Task(() => { }));
         }
 
         [CodeSource("LocalHost/use-async", "User2", "Company INC", "2022-12-12", "IDK how to use async", version: 1.0D)]
         [CodeSource("LocalHost/use-async", "User2", "Company INC", "2024-12-12", "IDK", version: 1.1D)]
         public async Task RunAsync()
         {
-            await Task.CompletedTask;
+            await Task.Run(() => Task.FromResult(RunAsync()));
         }
     }
 }
