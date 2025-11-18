@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 //  Assembly         : RzR.Shared.Attributes.CodeSource
 //  Author           : RzR
-//  Created On       : 2025-11-18 01:11
+//  Created On       : 2025-11-17 21:11
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-18 01:22
+//  Last Modified On : 2025-11-18 07:32
 // ***********************************************************************
-//  <copyright file="EnumerableExtensions.cs" company="RzR SOFT & TECH">
+//  <copyright file="ICodeSourceExporter.cs" company="RzR SOFT & TECH">
 //   Copyright © RzR. All rights reserved.
 //  </copyright>
 // 
@@ -17,47 +17,37 @@
 #region U S A G E S
 
 using System.Collections.Generic;
-using System.Linq;
-
-// ReSharper disable ConstantConditionalAccessQualifier
+using System.IO;
+using CodeSource.Models;
 
 #endregion
 
-namespace CodeSource.Extensions.Internal
+namespace CodeSource.Abstractions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     An enumerable extensions.
+    ///     Interface for code source exporter.
     /// </summary>
     /// =================================================================================================
-    internal static class EnumerableExtensions
+    public interface ICodeSourceExporter
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     An IEnumerable&lt;T&gt; extension method that queries if a null or is empty.
+        ///     Gets the format to use.
         /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="source">The source to act on.</param>
-        /// <returns>
-        ///     True if the null or is t>, false if not.
-        /// </returns>
+        /// <value>
+        ///     The format.
+        /// </value>
         /// =================================================================================================
-        internal static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
-        {
-            return source == null || source?.Count() == 0;
-        }
+        string Format { get; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     An IEnumerable&lt;T&gt; extension method that query if 'source' has any data.
+        ///     Exports.
         /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="source">The source to act on.</param>
-        /// <returns>
-        ///     True if any data, false if not.
-        /// </returns>
+        /// <param name="items">The items.</param>
+        /// <param name="outputStream">The output stream.</param>
         /// =================================================================================================
-        internal static bool HasAnyData<T>(this IEnumerable<T> source) 
-            => !source.IsNullOrEmpty();
+        void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream);
     }
 }
