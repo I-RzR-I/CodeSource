@@ -153,5 +153,40 @@ namespace CodeSource.Extensions.Internal
         /// =================================================================================================
         internal static string SetFullName(string fullName, string currentItemName)
         => $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}";
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that indent multiply.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <param name="multiplex">(Optional) The multiplex.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string IndentMultiply(this string source, int multiplex = 0)
+        {
+            if (multiplex == -1) return string.Empty;
+            if (multiplex == 0) return source;
+
+            var indentResult = source;
+            for (var i = 0; i < multiplex; i++) 
+                indentResult += source;
+
+            return indentResult;
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that if not missing.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string IfNotMissing(this string source, string newValue)
+            => source.IsNull() ? null : newValue;
     }
 }

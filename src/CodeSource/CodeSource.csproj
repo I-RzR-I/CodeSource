@@ -8,7 +8,7 @@
     <Owners>RzR</Owners>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>PackageIcon.png</PackageIcon>
-    <NoWarn>$(NoWarn);CS8032</NoWarn>
+    <NoWarn>$(NoWarn);CS8032;NETSDK1215</NoWarn>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageTags>Code;Source;Reference;Anchor;Author;Parser;Attribute;Document;net framework</PackageTags>
@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Export\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 
   <ProjectExtensions>
