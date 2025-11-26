@@ -1,0 +1,157 @@
+﻿[
+,
+	{
+		"parent" : {
+			"name" : "OwnClassData",
+			"fullName" : "TempLib.OwnClassData",
+			"codeChanges" : [
+				{
+					"codePath" : "TempLib.OwnClassData",
+					"sourceUrl" : "",
+					"authorName" : "Company User",
+					"copyright" : "\u00a9 Company INC",
+					"appliedOn" : null,
+					"comment" : "",
+					"version" : "1.0",
+					"tags" : "",
+					"relatedTaskId" : ""
+				},
+				{
+					"codePath" : "TempLib.OwnClassData",
+					"sourceUrl" : "http://local.host",
+					"authorName" : "USR1",
+					"copyright" : "",
+					"appliedOn" : null,
+					"comment" : "",
+					"version" : "1.0",
+					"tags" : "",
+					"relatedTaskId" : ""
+				}
+			]
+		},
+		"children" : [
+			{
+				"name" : "RunTask",
+				"fullName" : "TempLib.OwnClassData.RunTask",
+				"codeChanges" : [
+					{
+						"codePath" : "TempLib.OwnClassData.RunTask",
+						"sourceUrl" : "",
+						"authorName" : "RzR",
+						"copyright" : "RzR",
+						"appliedOn" : "2025-11-22",
+						"comment" : "",
+						"version" : "1.0",
+						"tags" : "",
+						"relatedTaskId" : "#784"
+					}
+				]
+			},
+			{
+				"name" : "RunAsync",
+				"fullName" : "TempLib.OwnClassData.RunAsync",
+				"codeChanges" : [
+					{
+						"codePath" : "TempLib.OwnClassData.RunAsync",
+						"sourceUrl" : "http://local.host/use-async",
+						"authorName" : "User2",
+						"copyright" : "\u00a9 Company INC",
+						"appliedOn" : "2022-12-12",
+						"comment" : "IDK how to use async",
+						"version" : "1.0",
+						"tags" : "",
+						"relatedTaskId" : ""
+					},
+					{
+						"codePath" : "TempLib.OwnClassData.RunAsync",
+						"sourceUrl" : "http://local.host/use-async",
+						"authorName" : "User2",
+						"copyright" : "\u00a9 Company INC",
+						"appliedOn" : "2024-12-12",
+						"comment" : "IDK",
+						"version" : "1.1",
+						"tags" : "",
+						"relatedTaskId" : ""
+					}
+				]
+			}
+		]
+	},
+	{
+		"parent" : {
+			"name" : "TempClassData",
+			"fullName" : "TempLib.TempClassData",
+			"codeChanges" : [
+				{
+					"codePath" : "TempLib.TempClassData",
+					"sourceUrl" : "http://local.host",
+					"authorName" : "User01",
+					"copyright" : "\u00a9 Company INC",
+					"appliedOn" : null,
+					"comment" : "",
+					"version" : "1.0",
+					"tags" : "",
+					"relatedTaskId" : ""
+				}
+			]
+		},
+		"children" : [
+			{
+				"name" : ".ctor",
+				"fullName" : "TempLib.TempClassData.ctor",
+				"codeChanges" : [
+					{
+						"codePath" : "TempLib.TempClassData.ctor",
+						"sourceUrl" : "http://local.host",
+						"authorName" : "User1",
+						"copyright" : "\u00a9 Company INC",
+						"appliedOn" : "2022-12-01",
+						"comment" : "CTOR init",
+						"version" : "1.0",
+						"tags" : "",
+						"relatedTaskId" : ""
+					}
+				]
+			},
+			{
+				"name" : "Run",
+				"fullName" : "TempLib.TempClassData.Run",
+				"codeChanges" : [
+					{
+						"codePath" : "TempLib.TempClassData.Run",
+						"sourceUrl" : "http://local.host/source1",
+						"authorName" : "User2",
+						"copyright" : "\u00a9 Company INC",
+						"appliedOn" : "2022-12-10",
+						"comment" : "IDK",
+						"version" : "1.0",
+						"tags" : "",
+						"relatedTaskId" : ""
+					},
+					{
+						"codePath" : "TempLib.TempClassData.Run",
+						"sourceUrl" : "http://local.host/source2",
+						"authorName" : "User3",
+						"copyright" : "Company INC",
+						"appliedOn" : "2022-12-12",
+						"comment" : "IDK",
+						"version" : "1.1",
+						"tags" : "",
+						"relatedTaskId" : ""
+					},
+					{
+						"codePath" : "TempLib.TempClassData.Run",
+						"sourceUrl" : "http://local.host/source2",
+						"authorName" : "User4",
+						"copyright" : "Company INC",
+						"appliedOn" : "2022-12-14",
+						"comment" : "IDK4",
+						"version" : "1.2",
+						"tags" : "bug;security",
+						"relatedTaskId" : "#74"
+					}
+				]
+			}
+		]
+	}
+]

@@ -1,0 +1,23 @@
+﻿CodePath,URL,Author,Copyright,AppliedOn,Comment,Version,Tags,WorkItemId,IsParent,IsHistory
+,,,,,,,,,,
+"TempLib.OwnClassData","","","","","","","","","1","0"
+"TempLib.OwnClassData","","Company User","© Company INC","","","1.0","","","1","1"
+"TempLib.OwnClassData","http://local.host","USR1","","","","1.0","","","1","1"
+,,,,,,,,,,
+"TempLib.OwnClassData.RunTask","","","","","","","","","0","0"
+"TempLib.OwnClassData.RunTask","","RzR","RzR","2025-11-22","","1.0","","#784","0","1"
+,,,,,,,,,,
+"TempLib.OwnClassData.RunAsync","","","","","","","","","0","0"
+"TempLib.OwnClassData.RunAsync","http://local.host/use-async","User2","© Company INC","2022-12-12","IDK how to use async","1.0","","","0","1"
+"TempLib.OwnClassData.RunAsync","http://local.host/use-async","User2","© Company INC","2024-12-12","IDK","1.1","","","0","1"
+,,,,,,,,,,
+"TempLib.TempClassData","","","","","","","","","1","0"
+"TempLib.TempClassData","http://local.host","User01","© Company INC","","","1.0","","","1","1"
+,,,,,,,,,,
+"TempLib.TempClassData.ctor","","","","","","","","","0","0"
+"TempLib.TempClassData.ctor","http://local.host","User1","© Company INC","2022-12-01","CTOR init","1.0","","","0","1"
+,,,,,,,,,,
+"TempLib.TempClassData.Run","","","","","","","","","0","0"
+"TempLib.TempClassData.Run","http://local.host/source1","User2","© Company INC","2022-12-10","IDK","1.0","","","0","1"
+"TempLib.TempClassData.Run","http://local.host/source2","User3","Company INC","2022-12-12","IDK","1.1","","","0","1"
+"TempLib.TempClassData.Run","http://local.host/source2","User4","Company INC","2022-12-14","IDK4","1.2","bug;security","#74","0","1"
