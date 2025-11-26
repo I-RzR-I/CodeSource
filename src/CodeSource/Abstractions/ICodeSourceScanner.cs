@@ -41,7 +41,7 @@ namespace CodeSource.Abstractions
         ///     collection.
         /// </returns>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObjectsResult> FindAnnotations(Assembly assembly);
+        IEnumerable<CodeSourceObjectsResult> FindAnnotations(Assembly assembly);
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -53,7 +53,7 @@ namespace CodeSource.Abstractions
         ///     collection.
         /// </returns>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObjectsResult> FindAnnotations(string assemblyName);
+        IEnumerable<CodeSourceObjectsResult> FindAnnotations(string assemblyName);
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -65,6 +65,6 @@ namespace CodeSource.Abstractions
         ///     collection.
         /// </returns>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObjectsResult> FindAnnotations(IEnumerable<Assembly> assemblies);
+        IEnumerable<CodeSourceObjectsResult> FindAnnotations(IEnumerable<Assembly> assemblies);
     }
 }
