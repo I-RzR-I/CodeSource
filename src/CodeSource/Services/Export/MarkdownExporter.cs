@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CodeSource.Abstractions;
+using CodeSource.Exceptions;
 using CodeSource.Extensions.Internal;
 using CodeSource.Models;
 
@@ -32,10 +33,10 @@ using CodeSource.Models;
 namespace CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter"/>
-    public class MarkdownExporter : ICodeSourceExporter
+    public sealed class MarkdownExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; private set; } = "MD";
+        public string Format { get; } = "MD";
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
@@ -72,7 +73,7 @@ namespace CodeSource.Services.Export
                         sw.WriteLine(string.Empty);
                         sw.WriteLine(tblHeader);
                         sw.WriteLine(tblHeaderTab);
-                        if (parent.History.Any())
+                        if (parent.History.HasAnyData())
                         {
                             foreach (var h in parent.History)
                             {
@@ -96,7 +97,7 @@ namespace CodeSource.Services.Export
                         var children = (it.Children ?? new List<CodeSourceObject>());
                         if (children.HasAnyData())
                         {
-                            for (var j = 1; j <= it.Children.Count(); j++)
+                            for (var j = 1; j <= children.Count(); j++)
                             {
                                 var c = it.Children.ElementAt(j - 1);
                                 sw.WriteLine(string.Empty);
@@ -142,7 +143,7 @@ namespace CodeSource.Services.Export
             }
             catch
             {
-                /*ignored*/
+                throw new CodeSourceExporterException(Format);
             }
         }
     }
