@@ -37,26 +37,27 @@ namespace CodeSource
     public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
         private DateTime? _internalAppliedOn;
+        private string _sourceUrl;
 
         internal DateTime? InternalAppliedOn
         {
-            get => _internalAppliedOn;
-            private set
-            {
-                try
-                {
-                    var date = AppliedOn.SetAppliedDate();
-                    _internalAppliedOn = date ?? value;
-                }
-                catch
-                {
-                    _internalAppliedOn = value;
-                }
-            }
+            get => AppliedOn.IsPresent() 
+                ? AppliedOn.SetAppliedDate() 
+                : _internalAppliedOn;
+            private set => _internalAppliedOn = value;
         }
 
         /// <inheritdoc/>
-        public string SourceUrl { get; set; }
+        public string SourceUrl
+        {
+            get => _sourceUrl;
+            set
+            {
+                value.ValidateSourceUrl();
+
+                _sourceUrl = value;
+            }
+        }
 
         /// <inheritdoc/>
         public string AuthorName { get; set; }
@@ -98,6 +99,8 @@ namespace CodeSource
             string sourceUrl,
             double version = 1.0)
         {
+            sourceUrl.ValidateSourceUrl();
+
             SourceUrl = sourceUrl;
             Version = version;
         }
@@ -118,6 +121,8 @@ namespace CodeSource
             string authorName = null,
             double version = 1.0)
         {
+            sourceUrl.ValidateSourceUrl();
+
             SourceUrl = sourceUrl;
             AuthorName = authorName;
             Version = version;
@@ -143,6 +148,8 @@ namespace CodeSource
             string copyright = null,
             double version = 1.0)
         {
+            sourceUrl.ValidateSourceUrl();
+
             SourceUrl = sourceUrl;
             AuthorName = authorName;
             Copyright = copyright.SetCopyRight();
@@ -183,6 +190,8 @@ namespace CodeSource
             string workItemId = null,
             string tags = null)
         {
+            sourceUrl.ValidateSourceUrl();
+
             SourceUrl = sourceUrl;
             AuthorName = authorName;
             Copyright = copyright.SetCopyRight();

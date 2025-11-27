@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace TempLib45
 {
-    [CodeSource("LocalHost", "User1", "Company INC", version: 1)]
+    [CodeSource("http://local.host", "User1", "Company INC", version: 1)]
     public class TempClassData
     {
-        [CodeSource("LocalHost", "User1", "Company INC", "2022-12-12", "CTOR init")]
+        [CodeSource("http://local.host", "User1", "Company INC", "2022-12-12", "CTOR init")]
         public TempClassData()
         {
         }
 
-        [CodeSource("LocalHost/source1", "User2", "Company INC", "2022-12-12", "IDK")]
+        [CodeSource("http://local.host/source1", "User2", "Company INC", "2022-12-12", "IDK")]
         public void Run()
         {
         }

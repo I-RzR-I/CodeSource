@@ -1,3 +1,24 @@
+### **v4.0.0.2838** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 27-11-2025
+* [14ddc6a] (RzR) -> Auto commit uncommited files
+* [e8a9f13] (RzR) -> [#11],[#12],[#13] - Adjust documentation and add result examples.
+* [f63b733] (RzR) -> Add some exporter tests.
+* [da2803f] (RzR) -> [#13] - AAdd exporter registry entry point.
+* [f1d35de] (RzR) -> [#13] - Add XML export functionality.
+* [8e9cc9c] (RzR) -> [#13] - Add JSON export functionality.
+* [05e20aa] (RzR) -> [#13] - Add YAML export functionality.
+* [ccecdd0] (RzR) -> [#13] - Add MD export functionality.
+* [7d6d74b] (RzR) -> [#13] - Add HTML export functionality.
+* [f4e79a8] (RzR) -> [#13] - Add CSV export functionality.
+* [4b07ad2] (RzR) -> [#13] - Add new internal extension methods.
+* [e382f2a] (RzR) -> [#13] - Add common exception.
+* [34d3858] (RzR) -> [#13] - Add code source history export to a Markdown (MD) file.
+* [86e7025] (RzR) -> [#12] - Exclude the obsolete method in the history generation helper and adjust the code accordingly.
+* [dee79ae] (RzR) -> [#12] - Fix the application of the children's code history generation.
+* [f8b34cf] (RzR) -> [#11] - Fix `InternalAppliedOn` value set/get.
+* [f4347b0] (RzR) -> [#12] - Adjust the default value for `Version` to `1.0`.
+* [0d9a1ab] (RzR) -> [#12] - Fix `CodePath` generation in history.
+* [f7096f8] (RzR) -> [#11] - Add `SourceUrl` validator.
+
 ### **v3.0.0.6590** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 17-11-2025
 * [69e6313] (RzR) -> Adjust code generation flow.
 * [15ce35f] (RzR) -> Auto commit uncommited files

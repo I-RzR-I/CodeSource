@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 //  Assembly         : RzR.Shared.Attributes.CodeSource
 //  Author           : RzR
-//  Created On       : 2025-11-13 18:11
+//  Created On       : 2025-11-19 18:11
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-14 19:00
+//  Last Modified On : 2025-11-19 18:11
 // ***********************************************************************
-//  <copyright file="ICodeSourceScanner.cs" company="RzR SOFT & TECH">
+//  <copyright file="ObjectExtensions.cs" company="RzR SOFT & TECH">
 //   Copyright © RzR. All rights reserved.
 //  </copyright>
 // 
@@ -14,57 +14,48 @@
 //  </summary>
 // ***********************************************************************
 
-#region U S A G E S
-
-using System.Collections.Generic;
-using System.Reflection;
-using CodeSource.Models;
-
-#endregion
-
-namespace CodeSource.Abstractions
+namespace CodeSource.Extensions.Internal
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Interface for code source scanner.
+    ///     An object extensions.
     /// </summary>
     /// =================================================================================================
-    public interface ICodeSourceScanner
+    internal static class ObjectExtensions
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in this collection.
+        ///     An object extension method that query if 'source' is null.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
+        /// <param name="source">The source to act on.</param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
+        ///     True if null, false if not.
         /// </returns>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(Assembly assembly);
+        internal static bool IsNull(this object source) => source == null;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in this collection.
+        ///     An object extension method that query if 'source' is not null.
         /// </summary>
-        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="source">The source to act on.</param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
+        ///     True if not null, false if not.
         /// </returns>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(string assemblyName);
+        internal static bool IsNotNull(this object source) => source != null;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in their collections.
+        ///     An object extension method that if not null.
         /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="source">The source to act on.</param>
+        /// <param name="newValue">The new value.</param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
+        ///     An object.
         /// </returns>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(IEnumerable<Assembly> assemblies);
+        internal static object IfNotNull(this object source, object newValue)
+            => source.IsNull() ? null : newValue;
     }
 }

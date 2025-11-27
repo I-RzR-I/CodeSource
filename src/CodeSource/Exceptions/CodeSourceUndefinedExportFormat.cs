@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 //  Assembly         : RzR.Shared.Attributes.CodeSource
 //  Author           : RzR
-//  Created On       : 2025-11-13 18:11
+//  Created On       : 2025-11-23 23:11
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-14 19:00
+//  Last Modified On : 2025-11-23 23:15
 // ***********************************************************************
-//  <copyright file="ICodeSourceScanner.cs" company="RzR SOFT & TECH">
+//  <copyright file="CodeSourceUndefinedExportFormat.cs" company="RzR SOFT & TECH">
 //   Copyright © RzR. All rights reserved.
 //  </copyright>
 // 
@@ -16,55 +16,51 @@
 
 #region U S A G E S
 
-using System.Collections.Generic;
-using System.Reflection;
-using CodeSource.Models;
+using System;
 
 #endregion
 
-namespace CodeSource.Abstractions
+namespace CodeSource.Exceptions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Interface for code source scanner.
+    ///     A code source undefined export format.
     /// </summary>
+    /// <seealso cref="T:Exception" />
     /// =================================================================================================
-    public interface ICodeSourceScanner
+    public class CodeSourceUndefinedExportFormat : Exception
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in this collection.
+        ///     Gets the format to use.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
-        /// </returns>
+        /// <value>
+        ///     The format.
+        /// </value>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(Assembly assembly);
+        public string Format { get; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in this collection.
+        ///     Initializes a new instance of the <see cref="CodeSourceUndefinedExportFormat" /> class.
         /// </summary>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
-        /// </returns>
+        /// <param name="format">Describes the format to use.</param>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(string assemblyName);
+        public CodeSourceUndefinedExportFormat(string format)
+            : base(FormatMessage(format))
+        {
+            Format = format;
+        }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in their collections.
+        ///     Format message.
         /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="format">Describes the format to use.</param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
+        ///     The formatted message.
         /// </returns>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(IEnumerable<Assembly> assemblies);
+        private static string FormatMessage(string format) => $"Missing exporter for '{format}'";
     }
 }

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CodeSource.Extensions.Internal;
 using CodeSource.Models;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -34,7 +35,7 @@ namespace CodeSource.Helpers
     ///     Code source helper methods.
     /// </summary>
     /// =================================================================================================
-    public static class CodeSourceHelper
+    internal static class CodeSourceHelper
     {
         private static Type _typeInfo;
 
@@ -51,13 +52,13 @@ namespace CodeSource.Helpers
         ///     this collection.
         /// </returns>
         /// =================================================================================================
-        [Obsolete("This method is deprecated. Use available from CodeSource.Services.CodeSourceScanner.FindAnnotations")]
-        public static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(string assembly = null)
+        //[Obsolete("This method is deprecated. Use available from CodeSource.Services.CodeSourceScanner.FindAnnotations")]
+        internal static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(string assembly = null)
         {
             var assemblies = GetListOfEntryAssemblyWithReferences(assembly);
 
             return GetCodeSourceAssembly(assemblies);
-        }  
+        }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -164,7 +165,7 @@ namespace CodeSource.Helpers
                     typeInfo.GetCustomAttributes(typeof(CodeSourceAttribute), true).ToList();
 #endif
 
-                if (!classAttributes.Any()) return; // Check if the current item doesn't have the attribute, then ignore
+                if (classAttributes.IsNullOrEmpty()) return; // Check if the current item doesn't have the attribute, then ignore
 
                 var changeHistory = Activator.CreateInstance<List<CodeSourceObjectHistory>>();
                 foreach (var atr in classAttributes)
@@ -219,7 +220,9 @@ namespace CodeSource.Helpers
                     SetChildHistoryData(ref children, ctorAttributes, typeInfo.FullName, ctor.Name);
                 }
 
-                dataObject.Children = children;
+                dataObject.Children = dataObject.Children.IsNullOrEmpty()
+                    ? children
+                    : dataObject.Children.Concat(children);
             }
             catch
             {
@@ -268,7 +271,9 @@ namespace CodeSource.Helpers
                     SetChildHistoryData(ref children, classMethodAttributes, typeInfo.FullName, m.Name);
                 }
 
-                dataObject.Children = children;
+                dataObject.Children = dataObject.Children.IsNullOrEmpty() 
+                    ? children 
+                    : dataObject.Children.Concat(children);
             }
             catch
             {
@@ -292,7 +297,7 @@ namespace CodeSource.Helpers
 
             var child = Activator.CreateInstance<CodeSourceObject>();
             child.Name = currentItemName;
-            child.FullName = $"{fullName}.{currentItemName}";
+            child.FullName = StringExtensions.SetFullName(fullName, currentItemName);
 
             var changeHistory = Activator.CreateInstance<List<CodeSourceObjectHistory>>();
             changeHistory.AddRange(historyAttributes.Select(
@@ -324,8 +329,8 @@ namespace CodeSource.Helpers
             history.Copyright = historyAttribute.Copyright;
             history.SourceUrl = historyAttribute.SourceUrl;
             history.AppliedOn = historyAttribute.InternalAppliedOn;
-            history.Version = historyAttribute.Version;
-            history.CodePath = $"{fullName}{currentItemName}";
+            history.Version = historyAttribute.Version == 0 ? 1.0 : historyAttribute.Version;
+            history.CodePath = StringExtensions.SetCodePath(fullName, currentItemName);
             history.Tags = historyAttribute.Tags;
             history.RelatedTaskId = historyAttribute.RelatedTaskId;
 

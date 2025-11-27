@@ -110,5 +110,83 @@ namespace CodeSource.Extensions.Internal
                 return null;
             }
         }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that validates the source URL described by sourceUrl.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Thrown when one or more arguments have unsupported or illegal values.
+        /// </exception>
+        /// <param name="sourceUrl">The sourceUrl to act on.</param>
+        /// =================================================================================================
+        internal static void ValidateSourceUrl(this string sourceUrl)
+        {
+            if (sourceUrl.IsPresent() && !Uri.IsWellFormedUriString(sourceUrl, UriKind.Absolute))
+                throw new ArgumentException("SourceUrl must be an absolute URI", nameof(sourceUrl));
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Sets code path.
+        /// </summary>
+        /// <param name="fullName">The full name.</param>
+        /// <param name="currentItemName">The current item name.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string SetCodePath(string fullName, string currentItemName)
+        => currentItemName.IsPresent()
+            ? $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}"
+            : $"{fullName}{currentItemName}";
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Sets full name.
+        /// </summary>
+        /// <param name="fullName">The full name.</param>
+        /// <param name="currentItemName">The current item name.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string SetFullName(string fullName, string currentItemName)
+        => $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}";
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that indent multiply.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <param name="multiplex">(Optional) The multiplex.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string IndentMultiply(this string source, int multiplex = 0)
+        {
+            if (multiplex == -1) return string.Empty;
+            if (multiplex == 0) return source;
+
+            var indentResult = source;
+            for (var i = 0; i < multiplex; i++) 
+                indentResult += source;
+
+            return indentResult;
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A string extension method that if not missing.
+        /// </summary>
+        /// <param name="source">The source to act on.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <returns>
+        ///     A string.
+        /// </returns>
+        /// =================================================================================================
+        internal static string IfNotMissing(this string source, string newValue)
+            => source.IsNull() ? null : newValue;
     }
 }

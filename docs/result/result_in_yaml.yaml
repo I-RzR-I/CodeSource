@@ -1,0 +1,111 @@
+﻿codeSources:
+  - fullName: TempLib.OwnClassData
+    name: OwnClassData
+    history: 
+      - codePath: "TempLib.OwnClassData"
+        sourceUrl: ""
+        authorName: "Company User"
+        copyright: "© Company INC"
+        appliedOn: ""
+        comment: ""
+        version: "1.0"
+        tags: ""
+        relatedTaskId: ""
+      - codePath: "TempLib.OwnClassData"
+        sourceUrl: "http://local.host"
+        authorName: "USR1"
+        copyright: ""
+        appliedOn: ""
+        comment: ""
+        version: "1.0"
+        tags: ""
+        relatedTaskId: ""
+
+  - fullName: TempLib.OwnClassData.RunTask
+    name: RunTask
+    history: 
+      - codePath: "TempLib.OwnClassData.RunTask"
+        sourceUrl: ""
+        authorName: "RzR"
+        copyright: "RzR"
+        appliedOn: "2025-11-22"
+        comment: ""
+        version: "1.0"
+        tags: ""
+        relatedTaskId: "#784"
+  - fullName: TempLib.OwnClassData.RunAsync
+    name: RunAsync
+    history: 
+      - codePath: "TempLib.OwnClassData.RunAsync"
+        sourceUrl: "http://local.host/use-async"
+        authorName: "User2"
+        copyright: "© Company INC"
+        appliedOn: "2022-12-12"
+        comment: "IDK how to use async"
+        version: "1.0"
+        tags: ""
+        relatedTaskId: ""
+      - codePath: "TempLib.OwnClassData.RunAsync"
+        sourceUrl: "http://local.host/use-async"
+        authorName: "User2"
+        copyright: "© Company INC"
+        appliedOn: "2024-12-12"
+        comment: "IDK"
+        version: "1.1"
+        tags: ""
+        relatedTaskId: ""
+  - fullName: TempLib.TempClassData
+    name: TempClassData
+    history: 
+      - codePath: "TempLib.TempClassData"
+        sourceUrl: "http://local.host"
+        authorName: "User01"
+        copyright: "© Company INC"
+        appliedOn: ""
+        comment: ""
+        version: "1.0"
+        tags: ""
+        relatedTaskId: ""
+
+  - fullName: TempLib.TempClassData.ctor
+    name: .ctor
+    history: 
+      - codePath: "TempLib.TempClassData.ctor"
+        sourceUrl: "http://local.host"
+        authorName: "User1"
+        copyright: "© Company INC"
+        appliedOn: "2022-12-01"
+        comment: "CTOR init"
+        version: "1.0"
+        tags: ""
+        relatedTaskId: ""
+  - fullName: TempLib.TempClassData.Run
+    name: Run
+    history: 
+      - codePath: "TempLib.TempClassData.Run"
+        sourceUrl: "http://local.host/source1"
+        authorName: "User2"
+        copyright: "© Company INC"
+        appliedOn: "2022-12-10"
+        comment: "IDK"
+        version: "1.0"
+        tags: ""
+        relatedTaskId: ""
+      - codePath: "TempLib.TempClassData.Run"
+        sourceUrl: "http://local.host/source2"
+        authorName: "User3"
+        copyright: "Company INC"
+        appliedOn: "2022-12-12"
+        comment: "IDK"
+        version: "1.1"
+        tags: ""
+        relatedTaskId: ""
+      - codePath: "TempLib.TempClassData.Run"
+        sourceUrl: "http://local.host/source2"
+        authorName: "User4"
+        copyright: "Company INC"
+        appliedOn: "2022-12-14"
+        comment: "IDK4"
+        version: "1.2"
+        tags: "bug;security"
+        relatedTaskId: "#74"

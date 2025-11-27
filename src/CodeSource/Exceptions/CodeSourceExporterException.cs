@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 //  Assembly         : RzR.Shared.Attributes.CodeSource
 //  Author           : RzR
-//  Created On       : 2025-11-13 18:11
+//  Created On       : 2025-11-24 08:11
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-14 19:00
+//  Last Modified On : 2025-11-24 08:17
 // ***********************************************************************
-//  <copyright file="ICodeSourceScanner.cs" company="RzR SOFT & TECH">
+//  <copyright file="CodeSourceExporterException.cs" company="RzR SOFT & TECH">
 //   Copyright © RzR. All rights reserved.
 //  </copyright>
 // 
@@ -16,55 +16,54 @@
 
 #region U S A G E S
 
-using System.Collections.Generic;
-using System.Reflection;
-using CodeSource.Models;
+using System;
 
 #endregion
 
-namespace CodeSource.Abstractions
+namespace CodeSource.Exceptions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Interface for code source scanner.
+    ///     Exception for signalling code source exporter errors.
     /// </summary>
+    /// <seealso cref="T:Exception"/>
     /// =================================================================================================
-    public interface ICodeSourceScanner
+    public class CodeSourceExporterException : Exception
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in this collection.
+        ///     Gets the exporter format.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
-        /// </returns>
+        /// <value>
+        ///     The exporter format.
+        /// </value>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(Assembly assembly);
+        public string ExporterFormat { get; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in this collection.
+        ///     Initializes a new instance of the <see cref="CodeSourceExporterException"/> class.
         /// </summary>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
-        /// </returns>
+        /// <param name="exporterFormat">The exporter format.</param>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(string assemblyName);
+        public CodeSourceExporterException(string exporterFormat) 
+            : base(FormatMessage(exporterFormat))
+        {
+            ExporterFormat = exporterFormat;
+        }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Finds the annotations in their collections.
+        ///     Format message.
         /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="exporterFormat">The exporter format.</param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the annotations in this
-        ///     collection.
+        ///     The formatted message.
         /// </returns>
         /// =================================================================================================
-        IEnumerable<CodeSourceObjectsResult> FindAnnotations(IEnumerable<Assembly> assemblies);
+        private static string FormatMessage(string exporterFormat)
+        {
+            return $"Unexpected error occurred while trying to export code history in the format '{exporterFormat}'";
+        }
     }
 }

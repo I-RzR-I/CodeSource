@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codeSources>
+    <codeSource>
+        <parent>
+            <name>OwnClassData</name>
+            <fullName>TempLib.OwnClassData</fullName>
+            <codeChanges>
+                <codeChange>
+                    <codePath>TempLib.OwnClassData</codePath>
+                    <sourceUrl></sourceUrl>
+                    <authorName>Company User</authorName>
+                    <copyright>© Company INC</copyright>
+                    <appliedOn></appliedOn>
+                    <comment></comment>
+                    <version>1.0</version>
+                    <tags></tags>
+                    <relatedTaskId></relatedTaskId>
+                </codeChange>
+                <codeChange>
+                    <codePath>TempLib.OwnClassData</codePath>
+                    <sourceUrl>http://local.host</sourceUrl>
+                    <authorName>USR1</authorName>
+                    <copyright></copyright>
+                    <appliedOn></appliedOn>
+                    <comment></comment>
+                    <version>1.0</version>
+                    <tags></tags>
+                    <relatedTaskId></relatedTaskId>
+                </codeChange>
+            </codeChanges>
+        </parent>
+        <children>
+            <child>
+                <name>RunTask</name>
+                <fullName>TempLib.OwnClassData.RunTask</fullName>
+                <codeChanges>
+                    <codeChange>
+                        <codePath>TempLib.OwnClassData.RunTask</codePath>
+                        <sourceUrl></sourceUrl>
+                        <authorName>RzR</authorName>
+                        <copyright>RzR</copyright>
+                        <appliedOn>2025-11-22</appliedOn>
+                        <comment></comment>
+                        <version>1.0</version>
+                        <tags></tags>
+                        <relatedTaskId>#784</relatedTaskId>
+                    </codeChange>
+                </codeChanges>
+            </child>
+            <child>
+                <name>RunAsync</name>
+                <fullName>TempLib.OwnClassData.RunAsync</fullName>
+                <codeChanges>
+                    <codeChange>
+                        <codePath>TempLib.OwnClassData.RunAsync</codePath>
+                        <sourceUrl>http://local.host/use-async</sourceUrl>
+                        <authorName>User2</authorName>
+                        <copyright>© Company INC</copyright>
+                        <appliedOn>2022-12-12</appliedOn>
+                        <comment>IDK how to use async</comment>
+                        <version>1.0</version>
+                        <tags></tags>
+                        <relatedTaskId></relatedTaskId>
+                    </codeChange>
+                    <codeChange>
+                        <codePath>TempLib.OwnClassData.RunAsync</codePath>
+                        <sourceUrl>http://local.host/use-async</sourceUrl>
+                        <authorName>User2</authorName>
+                        <copyright>© Company INC</copyright>
+                        <appliedOn>2024-12-12</appliedOn>
+                        <comment>IDK</comment>
+                        <version>1.1</version>
+                        <tags></tags>
+                        <relatedTaskId></relatedTaskId>
+                    </codeChange>
+                </codeChanges>
+            </child>
+        </children>
+    </codeSource>
+    <codeSource>
+        <parent>
+            <name>TempClassData</name>
+            <fullName>TempLib.TempClassData</fullName>
+            <codeChanges>
+                <codeChange>
+                    <codePath>TempLib.TempClassData</codePath>
+                    <sourceUrl>http://local.host</sourceUrl>
+                    <authorName>User01</authorName>
+                    <copyright>© Company INC</copyright>
+                    <appliedOn></appliedOn>
+                    <comment></comment>
+                    <version>1.0</version>
+                    <tags></tags>
+                    <relatedTaskId></relatedTaskId>
+                </codeChange>
+            </codeChanges>
+        </parent>
+        <children>
+            <child>
+                <name>.ctor</name>
+                <fullName>TempLib.TempClassData.ctor</fullName>
+                <codeChanges>
+                    <codeChange>
+                        <codePath>TempLib.TempClassData.ctor</codePath>
+                        <sourceUrl>http://local.host</sourceUrl>
+                        <authorName>User1</authorName>
+                        <copyright>© Company INC</copyright>
+                        <appliedOn>2022-12-01</appliedOn>
+                        <comment>CTOR init</comment>
+                        <version>1.0</version>
+                        <tags></tags>
+                        <relatedTaskId></relatedTaskId>
+                    </codeChange>
+                </codeChanges>
+            </child>
+            <child>
+                <name>Run</name>
+                <fullName>TempLib.TempClassData.Run</fullName>
+                <codeChanges>
+                    <codeChange>
+                        <codePath>TempLib.TempClassData.Run</codePath>
+                        <sourceUrl>http://local.host/source1</sourceUrl>
+                        <authorName>User2</authorName>
+                        <copyright>© Company INC</copyright>
+                        <appliedOn>2022-12-10</appliedOn>
+                        <comment>IDK</comment>
+                        <version>1.0</version>
+                        <tags></tags>
+                        <relatedTaskId></relatedTaskId>
+                    </codeChange>
+                    <codeChange>
+                        <codePath>TempLib.TempClassData.Run</codePath>
+                        <sourceUrl>http://local.host/source2</sourceUrl>
+                        <authorName>User3</authorName>
+                        <copyright>Company INC</copyright>
+                        <appliedOn>2022-12-12</appliedOn>
+                        <comment>IDK</comment>
+                        <version>1.1</version>
+                        <tags></tags>
+                        <relatedTaskId></relatedTaskId>
+                    </codeChange>
+                    <codeChange>
+                        <codePath>TempLib.TempClassData.Run</codePath>
+                        <sourceUrl>http://local.host/source2</sourceUrl>
+                        <authorName>User4</authorName>
+                        <copyright>Company INC</copyright>
+                        <appliedOn>2022-12-14</appliedOn>
+                        <comment>IDK4</comment>
+                        <version>1.2</version>
+                        <tags>bug;security</tags>
+                        <relatedTaskId>#74</relatedTaskId>
+                    </codeChange>
+                </codeChanges>
+            </child>
+        </children>
+    </codeSource>
+</codeSources>

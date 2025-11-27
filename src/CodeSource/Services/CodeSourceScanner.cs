@@ -39,17 +39,13 @@ namespace CodeSource.Services
         /// <inheritdoc />
         public IEnumerable<CodeSourceObjectsResult> FindAnnotations(Assembly assembly)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             return CodeSourceHelper.GetCodeSourceAssembly(assembly.FullName);
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <inheritdoc />
         public IEnumerable<CodeSourceObjectsResult> FindAnnotations(string assemblyName)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             return CodeSourceHelper.GetCodeSourceAssembly(assemblyName);
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <inheritdoc />
