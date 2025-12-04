@@ -1,3 +1,7 @@
+### **v4.0.1.4584** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 04-12-2025
+* [12ab273] (RzR) -> Auto commit uncommited files
+* [f9b7553] (RzR) -> Add extra validation for `SourceUrl`, which sometimes causes an exception.
+
 ### **v4.0.0.2838** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 27-11-2025
 * [14ddc6a] (RzR) -> Auto commit uncommited files
 * [e8a9f13] (RzR) -> [#11],[#12],[#13] - Adjust documentation and add result examples.
