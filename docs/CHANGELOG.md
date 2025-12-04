@@ -1,3 +1,6 @@
+### **v4.0.2.4672** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 04-12-2025
+* [08f5f32] (RzR) -> Exclude `SourceUrl` validation for backward compatibility.
+
 ### **v4.0.1.4584** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 04-12-2025
 * [12ab273] (RzR) -> Auto commit uncommited files
 * [f9b7553] (RzR) -> Add extra validation for `SourceUrl`, which sometimes causes an exception.
