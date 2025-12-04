@@ -41,8 +41,8 @@ namespace CodeSource
 
         internal DateTime? InternalAppliedOn
         {
-            get => AppliedOn.IsPresent() 
-                ? AppliedOn.SetAppliedDate() 
+            get => AppliedOn.IsPresent()
+                ? AppliedOn.SetAppliedDate()
                 : _internalAppliedOn;
             private set => _internalAppliedOn = value;
         }
@@ -53,7 +53,8 @@ namespace CodeSource
             get => _sourceUrl;
             set
             {
-                value.ValidateSourceUrl();
+                if (value.IsPresent())
+                    value.ValidateSourceUrl();
 
                 _sourceUrl = value;
             }
@@ -99,7 +100,8 @@ namespace CodeSource
             string sourceUrl,
             double version = 1.0)
         {
-            sourceUrl.ValidateSourceUrl();
+            if (sourceUrl.IsPresent())
+                sourceUrl.ValidateSourceUrl();
 
             SourceUrl = sourceUrl;
             Version = version;
@@ -121,7 +123,8 @@ namespace CodeSource
             string authorName = null,
             double version = 1.0)
         {
-            sourceUrl.ValidateSourceUrl();
+            if (sourceUrl.IsPresent())
+                sourceUrl.ValidateSourceUrl();
 
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -148,7 +151,8 @@ namespace CodeSource
             string copyright = null,
             double version = 1.0)
         {
-            sourceUrl.ValidateSourceUrl();
+            if (sourceUrl.IsPresent())
+                sourceUrl.ValidateSourceUrl();
 
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -190,7 +194,8 @@ namespace CodeSource
             string workItemId = null,
             string tags = null)
         {
-            sourceUrl.ValidateSourceUrl();
+            if (sourceUrl.IsPresent())
+                sourceUrl.ValidateSourceUrl();
 
             SourceUrl = sourceUrl;
             AuthorName = authorName;
