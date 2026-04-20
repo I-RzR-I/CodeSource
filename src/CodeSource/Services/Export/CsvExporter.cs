@@ -79,7 +79,7 @@ namespace CodeSource.Services.Export
                                     Escape(h.Copyright.IfIsNullThenEmpty()),
                                     Escape(h.AppliedOn?.ToString("yyyy-MM-dd")),
                                     Escape(h.Comment.IfIsNullThenEmpty()),
-                                    Escape($"{h.Version:##.0##}"),
+                                    Escape(h.Version.IfIsNullThenEmpty()),
                                     Escape(h.Tags.IfIsNullThenEmpty()),
                                     Escape(h.RelatedTaskId.IfIsNullThenEmpty()),
                                     Escape("1"),

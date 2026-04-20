@@ -62,7 +62,7 @@ namespace CodeSource
         public string Comment { get; set; }
 
         /// <inheritdoc/>
-        public double Version { get; set; }
+        public string Version { get; set; }
 
         /// <inheritdoc/>
         public string Tags { get; set; }
@@ -87,7 +87,7 @@ namespace CodeSource
         /// =================================================================================================
         public CodeSourceAttribute(
             string sourceUrl,
-            double version = 1.0)
+            string version = "1.0")
         {
             SourceUrl = sourceUrl;
             Version = version;
@@ -107,7 +107,7 @@ namespace CodeSource
         public CodeSourceAttribute(
             string sourceUrl,
             string authorName = null,
-            double version = 1.0)
+            string version = "1.0")
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -132,7 +132,7 @@ namespace CodeSource
             string sourceUrl,
             string authorName = null,
             string copyright = null,
-            double version = 1.0)
+            string version = "1.0")
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -170,7 +170,7 @@ namespace CodeSource
             string copyright = null,
             string appliedOn = null,
             string comment = null,
-            double version = 1.0,
+            string version = "1.0",
             string workItemId = null,
             string tags = null)
         {

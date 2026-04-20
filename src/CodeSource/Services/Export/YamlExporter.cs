@@ -64,7 +64,7 @@ namespace CodeSource.Services.Export
                                 sw.WriteLine("        copyright: " + $"\"{h.Copyright.IfIsNullThenEmpty()}\"");
                                 sw.WriteLine("        appliedOn: " + $"\"{h.AppliedOn?.ToString("yyyy-MM-dd")}\"");
                                 sw.WriteLine("        comment: " + $"\"{h.Comment.IfIsNullThenEmpty()}\"");
-                                sw.WriteLine("        version: " + $"\"{h.Version:##.0##}\"");
+                                sw.WriteLine("        version: " + $"\"{h.Version.IfIsNullThenEmpty()}\"");
                                 sw.WriteLine("        tags: " + $"\"{h.Tags.IfIsNullThenEmpty()}\"");
                                 sw.WriteLine("        relatedTaskId: " + $"\"{h.RelatedTaskId.IfIsNullThenEmpty()}\"");
                             }
@@ -89,7 +89,7 @@ namespace CodeSource.Services.Export
                                         sw.WriteLine("        copyright: " + $"\"{h.Copyright.IfIsNullThenEmpty()}\"");
                                         sw.WriteLine("        appliedOn: " + $"\"{h.AppliedOn?.ToString("yyyy-MM-dd")}\"");
                                         sw.WriteLine("        comment: " + $"\"{h.Comment.IfIsNullThenEmpty()}\"");
-                                        sw.WriteLine("        version: " + $"\"{h.Version:##.0##}\"");
+                                        sw.WriteLine("        version: " + $"\"{h.Version.IfIsNullThenEmpty()}\"");
                                         sw.WriteLine("        tags: " + $"\"{h.Tags.IfIsNullThenEmpty()}\"");
                                         sw.WriteLine("        relatedTaskId: " + $"\"{h.RelatedTaskId.IfIsNullThenEmpty()}\"");
                                     }

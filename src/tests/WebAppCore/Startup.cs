@@ -26,7 +26,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace WebAppCore
 {
-    [CodeSource("StartUpClass", "MS", "MS", version: 1)]
+    [CodeSource("StartUpClass", "MS", "MS", version: "1")]
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.

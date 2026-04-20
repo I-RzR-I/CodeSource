@@ -84,7 +84,7 @@ namespace CodeSource.Services.Export
                                              $"| {h.Copyright.IfIsNullThenEmpty()} " +
                                              $"| {h.AppliedOn?.ToString("yyyy-MM-dd")} " +
                                              $"| {h.Comment.IfIsNullThenEmpty()} " +
-                                             $"| {h.Version:##.0##} " +
+                                             $"| {h.Version.IfIsNullThenEmpty()} " +
                                              $"| {h.Tags.IfIsNullThenEmpty()} " +
                                              $"| {h.RelatedTaskId.IfIsNullThenEmpty()} |");
                             }
@@ -124,7 +124,7 @@ namespace CodeSource.Services.Export
                                                      $"| {h.Copyright.IfIsNullThenEmpty()} " +
                                                      $"| {h.AppliedOn?.ToString("yyyy-MM-dd")} " +
                                                      $"| {h.Comment.IfIsNullThenEmpty()} " +
-                                                     $"| {h.Version:##.0##} " +
+                                                     $"| {h.Version.IfIsNullThenEmpty()} " +
                                                      $"| {h.Tags.IfIsNullThenEmpty()} " +
                                                      $"| {h.RelatedTaskId.IfIsNullThenEmpty()} |");
                                     }

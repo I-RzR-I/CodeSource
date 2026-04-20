@@ -100,7 +100,7 @@ namespace CodeSource.Models
         ///     The version.
         /// </value>
         /// =================================================================================================
-        public double Version { get; internal set; }
+        public string Version { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>

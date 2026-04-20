@@ -157,7 +157,7 @@ namespace CodeSource.Services.Export
             sw.WriteXmlElement(indent, "copyright", $"{history.Copyright.IfIsNullThenEmpty()}");
             sw.WriteXmlElement(indent, "appliedOn", $"{history.AppliedOn?.ToString("yyyy-MM-dd")}");
             sw.WriteXmlElement(indent, "comment", $"{history.Comment.IfIsNullThenEmpty()}");
-            sw.WriteXmlElement(indent, "version", $"{history.Version:##.0##}");
+            sw.WriteXmlElement(indent, "version", $"{history.Version.IfIsNullThenEmpty()}");
             sw.WriteXmlElement(indent, "tags", $"{history.Tags.IfIsNullThenEmpty()}");
             sw.WriteXmlElement(indent, "relatedTaskId", $"{history.RelatedTaskId.IfIsNullThenEmpty()}");
         }

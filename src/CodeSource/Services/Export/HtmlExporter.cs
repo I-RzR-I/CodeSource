@@ -90,7 +90,7 @@ namespace CodeSource.Services.Export
                                         <td>{WebUtility.HtmlEncode(h.Copyright.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd"))}</td>
                                         <td>{WebUtility.HtmlEncode(h.Comment.IfIsNullThenEmpty())}</td>
-                                        <td>{WebUtility.HtmlEncode($"{h.Version:##.0##}")}</td>
+                                        <td>{WebUtility.HtmlEncode(h.Version.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.Tags.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.RelatedTaskId.IfIsNullThenEmpty())}</td>
                                     </tr>");
@@ -117,7 +117,7 @@ namespace CodeSource.Services.Export
                                                 <td>{WebUtility.HtmlEncode(h.Copyright.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd"))}</td>
                                                 <td>{WebUtility.HtmlEncode(h.Comment.IfIsNullThenEmpty())}</td>
-                                                <td>{WebUtility.HtmlEncode($"{h.Version:##.0##}")}</td>
+                                                <td>{WebUtility.HtmlEncode(h.Version.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.Tags.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.RelatedTaskId.IfIsNullThenEmpty())}</td>
                                             </tr>");

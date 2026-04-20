@@ -248,7 +248,7 @@ namespace CodeSource.Services.Export
                 .WriteProp("comment", history.Comment.IfIsNullThenEmpty());
 
             sw.WriteJsonIndent(indent)
-                .WriteProp("version", $"{history.Version:##.0##}");
+                .WriteProp("version", history.Version.IfIsNullThenEmpty());
 
             sw.WriteJsonIndent(indent)
                 .WriteProp("tags", history.Tags.IfIsNullThenEmpty());
