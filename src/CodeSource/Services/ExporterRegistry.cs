@@ -76,7 +76,7 @@ namespace CodeSource.Services
             if (!Exporters.TryGetValue(format, out var exporter))
                 throw new CodeSourceUndefinedExportFormat(format);
 
-            using var stream = new FileStream(savePath, FileMode.CreateNew);
+            using var stream = new FileStream(savePath, FileMode.Create);
             exporter.Export(items, stream);
         }
 #endif
