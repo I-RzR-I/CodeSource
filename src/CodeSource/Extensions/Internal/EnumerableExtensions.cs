@@ -44,7 +44,7 @@ namespace CodeSource.Extensions.Internal
         /// =================================================================================================
         internal static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
         {
-            return source == null || source?.Count() == 0;
+            return source == null || !source.Any();
         }
 
         /// -------------------------------------------------------------------------------------------------
