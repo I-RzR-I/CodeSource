@@ -18,6 +18,8 @@
 
 using System.Collections.Generic;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 #endregion
 
 namespace CodeSource.Models
@@ -57,7 +59,11 @@ namespace CodeSource.Models
         ///     The history.
         /// </value>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObjectHistory> History { get; set; }
+#if NET45_OR_GREATER || NETSTANDARD || NET
+        public IReadOnlyList<CodeSourceObjectHistory> History { get; set; }
+#else
+        public IList<CodeSourceObjectHistory> History { get; set; }
+#endif
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>

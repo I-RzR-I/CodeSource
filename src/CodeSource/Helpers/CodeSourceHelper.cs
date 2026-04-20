@@ -214,7 +214,7 @@ namespace CodeSource.Helpers
 
                 dataObject.Children = dataObject.Children.IsNullOrEmpty()
                     ? children
-                    : dataObject.Children.Concat(children);
+                    : dataObject.Children.Concat(children).ToList();
             }
             catch
             {
@@ -265,7 +265,7 @@ namespace CodeSource.Helpers
 
                 dataObject.Children = dataObject.Children.IsNullOrEmpty() 
                     ? children 
-                    : dataObject.Children.Concat(children);
+                    : dataObject.Children.Concat(children).ToList();
             }
             catch
             {

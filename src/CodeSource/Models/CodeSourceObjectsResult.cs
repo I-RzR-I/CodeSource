@@ -49,6 +49,10 @@ namespace CodeSource.Models
         ///     The children.
         /// </value>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObject> Children { get; set; }
+#if NET45_OR_GREATER || NETSTANDARD || NET
+        public IReadOnlyList<CodeSourceObject> Children { get; set; }
+#else
+        public IList<CodeSourceObject> Children { get; set; }
+#endif
     }
 }
