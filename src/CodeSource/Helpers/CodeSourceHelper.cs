@@ -37,7 +37,6 @@ namespace CodeSource.Helpers
     /// =================================================================================================
     internal static class CodeSourceHelper
     {
-        private static Type _typeInfo;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -75,37 +74,30 @@ namespace CodeSource.Helpers
         /// =================================================================================================
         internal static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(IEnumerable<Assembly> assemblies)
         {
-            try
+            var codeSource = new List<CodeSourceObjectsResult>();
+            foreach (var localAssembly in assemblies)
             {
-                var codeSource = new List<CodeSourceObjectsResult>();
-                foreach (var localAssembly in assemblies)
-                {
 #if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
-                    foreach (var t in localAssembly.GetExportedTypes())
+                foreach (var t in localAssembly.GetExportedTypes())
 #elif NETSTANDARD1_0
-                    foreach (var t in localAssembly.ExportedTypes)
+                foreach (var t in localAssembly.ExportedTypes)
 #else
-                    foreach (var t in localAssembly.GetExportedTypes())
+                foreach (var t in localAssembly.GetExportedTypes())
 #endif
-                    {
-                        var obj = Activator.CreateInstance<CodeSourceObjectsResult>();
+                {
+                    var obj = new CodeSourceObjectsResult();
 
-                        _typeInfo = t;
-                        GetClassCodeSource(ref _typeInfo, ref obj);
-                        GetCtorCodeSource(ref _typeInfo, ref obj);
-                        GetMethodCodeSource(ref _typeInfo, ref obj, t);
+                    var typeInfo = t;
+                    GetClassCodeSource(ref typeInfo, ref obj);
+                    GetCtorCodeSource(ref typeInfo, ref obj);
+                    GetMethodCodeSource(ref typeInfo, ref obj, t);
 
-                        if (obj.Parent != null || obj.Children != null && obj.Children.Any())
-                            codeSource.Add(obj);
-                    }
+                    if (obj.Parent != null || obj.Children != null && obj.Children.Any())
+                        codeSource.Add(obj);
                 }
+            }
 
-                return codeSource;
-            }
-            catch
-            {
-                return null;
-            }
+            return codeSource;
         }
 
         /// -------------------------------------------------------------------------------------------------
@@ -150,7 +142,7 @@ namespace CodeSource.Helpers
                 {
                     FullName = typeInfo.FullName,
                     Name = typeInfo.Name,
-                    History = Activator.CreateInstance<List<CodeSourceObjectHistory>>()
+                    History = new List<CodeSourceObjectHistory>()
                 };
 
                 //var classAttributes = typeInfo.GetCustomAttributes(typeof(CodeSourceAttribute)).ToList();
@@ -167,7 +159,7 @@ namespace CodeSource.Helpers
 
                 if (classAttributes.IsNullOrEmpty()) return; // Check if the current item doesn't have the attribute, then ignore
 
-                var changeHistory = Activator.CreateInstance<List<CodeSourceObjectHistory>>();
+                var changeHistory = new List<CodeSourceObjectHistory>();
                 foreach (var atr in classAttributes)
                 {
                     changeHistory.Add(SetHistoryItemData((CodeSourceAttribute)atr, typeInfo.FullName, string.Empty));
@@ -193,8 +185,8 @@ namespace CodeSource.Helpers
         {
             try
             {
-                var children = Activator.CreateInstance<List<CodeSourceObject>>();
-                ConstructorInfo[] constructorInfos = new ConstructorInfo[] { };
+                var children = new List<CodeSourceObject>();
+                ConstructorInfo[] constructorInfos = new ConstructorInfo[] {};
 #if NET45_OR_GREATER || NET || NETSTANDARD2_0_OR_GREATER
                 constructorInfos = typeInfo.GetTypeInfo().DeclaredConstructors.ToArray();
 #elif NETSTANDARD1_5 || NETSTANDARD1_0
@@ -243,7 +235,7 @@ namespace CodeSource.Helpers
         {
             try
             {
-                var children = Activator.CreateInstance<List<CodeSourceObject>>();
+                var children = new List<CodeSourceObject>();
                 var classMethods =
 #if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
                 exportedTypes.GetRuntimeMethods();
@@ -295,11 +287,11 @@ namespace CodeSource.Helpers
         {
             if (!historyAttributes.Any()) return; // Check if the current item doesn't have the attribute, then ignore
 
-            var child = Activator.CreateInstance<CodeSourceObject>();
+            var child = new CodeSourceObject();
             child.Name = currentItemName;
             child.FullName = StringExtensions.SetFullName(fullName, currentItemName);
 
-            var changeHistory = Activator.CreateInstance<List<CodeSourceObjectHistory>>();
+            var changeHistory = new List<CodeSourceObjectHistory>();
             changeHistory.AddRange(historyAttributes.Select(
                 atr => SetHistoryItemData((CodeSourceAttribute)atr, fullName, currentItemName)));
 
@@ -322,7 +314,7 @@ namespace CodeSource.Helpers
         private static CodeSourceObjectHistory SetHistoryItemData(CodeSourceAttribute historyAttribute,
             string fullName, string currentItemName)
         {
-            var history = Activator.CreateInstance<CodeSourceObjectHistory>();
+            var history = new CodeSourceObjectHistory();
 
             history.AuthorName = historyAttribute.AuthorName;
             history.Comment = historyAttribute.Comment;
