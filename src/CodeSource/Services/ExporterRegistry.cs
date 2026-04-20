@@ -178,14 +178,14 @@ namespace RzR.Core.CodeSource.Services
         /// </summary>
         /// <param name="assemblyName">
         ///     (Optional) Name of the assembly.
-        ///     Default value is 'RzR.Core.CodeSource'/
+        ///     Default value is 'CodeSource(RzR.Core.CodeSource)'/
         /// </param>
         /// <returns>
         ///     An enumerator that allows foreach to be used to process the local types in this
         ///     collection.
         /// </returns>
         /// =================================================================================================
-        private static IEnumerable<Type> GetLocalTypes(string assemblyName = "RzR.Core.CodeSource")
+        private static IEnumerable<Type> GetLocalTypes(string assemblyName = "CodeSource")
         {
             var assembly = Assembly.Load(new AssemblyName(assemblyName));
 

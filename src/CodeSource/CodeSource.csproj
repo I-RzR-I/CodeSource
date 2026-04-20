@@ -24,7 +24,6 @@
 		<RepositoryType>GIT</RepositoryType>
 		<Language>en-US</Language>
 
-		<AssemblyName>RzR.Core.CodeSource</AssemblyName>
 		<RootNamespace>RzR.Core.CodeSource</RootNamespace>
 
 	</PropertyGroup>
