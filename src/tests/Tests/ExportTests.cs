@@ -42,8 +42,8 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
 
-            var stream = new FileStream($"GenerateMarkDown_Test_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.md", FileMode.CreateNew);
-            new MarkdownExporter().Export(codeSource, stream);
+            using (var stream = new FileStream($"GenerateMarkDown_Test_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.md", FileMode.Create))
+                new MarkdownExporter().Export(codeSource, stream);
         }
 
         [Test]
@@ -52,8 +52,8 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
 
-            var stream = new FileStream($"GenerateCsv_Test_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.csv", FileMode.CreateNew);
-            new CsvExporter().Export(codeSource, stream);
+            using (var stream = new FileStream($"GenerateCsv_Test_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.csv", FileMode.Create))
+                new CsvExporter().Export(codeSource, stream);
         }
 
         [Test]
@@ -62,8 +62,8 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
 
-            var stream = new FileStream($"GenerateHtml_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.html", FileMode.CreateNew);
-            new HtmlExporter().Export(codeSource, stream);
+            using (var stream = new FileStream($"GenerateHtml_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.html", FileMode.Create))
+                new HtmlExporter().Export(codeSource, stream);
         }
 
         [Test]
@@ -72,8 +72,8 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
 
-            var stream = new FileStream($"GenerateYaml_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.yaml", FileMode.CreateNew);
-            new YamlExporter().Export(codeSource, stream);
+            using (var stream = new FileStream($"GenerateYaml_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.yaml", FileMode.Create))
+                new YamlExporter().Export(codeSource, stream);
         }
 
         [Test]
@@ -82,8 +82,8 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
 
-            var stream = new FileStream($"GenerateXml_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml", FileMode.CreateNew);
-            new XmlExporter().Export(codeSource, stream);
+            using (var stream = new FileStream($"GenerateXml_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml", FileMode.Create))
+                new XmlExporter().Export(codeSource, stream);
         }
 
         [Test]
@@ -92,8 +92,8 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
 
-            var stream = new FileStream($"GenerateJson_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.json", FileMode.CreateNew);
-            new JsonExporter().Export(codeSource, stream);
+            using (var stream = new FileStream($"GenerateJson_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.json", FileMode.Create))
+                new JsonExporter().Export(codeSource, stream);
         }
 
         [Test]

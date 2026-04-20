@@ -37,7 +37,6 @@ namespace CodeSource
     public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
         private DateTime? _internalAppliedOn;
-        private string _sourceUrl;
 
         internal DateTime? InternalAppliedOn
         {
