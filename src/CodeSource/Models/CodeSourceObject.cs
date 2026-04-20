@@ -58,5 +58,14 @@ namespace CodeSource.Models
         /// </value>
         /// =================================================================================================
         public IEnumerable<CodeSourceObjectHistory> History { get; set; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns a string that represents the current code source object.
+        /// </summary>
+        /// <returns>A string that represents the current code source object.</returns>
+        /// =================================================================================================
+        public override string ToString()
+            => string.Format("{0} ({1})", Name, FullName);
     }
 }

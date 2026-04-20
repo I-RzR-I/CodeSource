@@ -121,5 +121,14 @@ namespace CodeSource.Models
         /// </value>
         /// =================================================================================================
         public string RelatedTaskId { get; internal set; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns a string that represents the current history entry.
+        /// </summary>
+        /// <returns>A string that represents the current history entry.</returns>
+        /// =================================================================================================
+        public override string ToString()
+            => string.Format("v{0} by {1} on {2}", Version, AuthorName, AppliedOn?.ToString("yyyy-MM-dd"));
     }
 }
