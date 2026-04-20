@@ -36,7 +36,7 @@ namespace CodeSource.Services.Export
     public sealed class YamlExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "YAML";
+        public string Format { get; } = ExportFormats.Yaml;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)

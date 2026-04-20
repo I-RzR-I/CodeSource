@@ -44,7 +44,7 @@ namespace CodeSource.Services.Export
         private const string Indent = "    ";
 
         /// <inheritdoc />
-        public string Format { get; } = "XML";
+        public string Format { get; } = ExportFormats.Xml;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)

@@ -36,7 +36,7 @@ namespace CodeSource.Services.Export
     public sealed class CsvExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "CSV";
+        public string Format { get; } = ExportFormats.Csv;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)

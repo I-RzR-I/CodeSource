@@ -37,7 +37,7 @@ namespace CodeSource.Services.Export
     public sealed class HtmlExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "HTML";
+        public string Format { get; } = ExportFormats.Html;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)

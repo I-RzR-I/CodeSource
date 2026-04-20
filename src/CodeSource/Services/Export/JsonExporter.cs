@@ -47,7 +47,7 @@ namespace CodeSource.Services.Export
         private const string Indent = "\t";
 
         /// <inheritdoc />
-        public string Format { get; } = "JSON";
+        public string Format { get; } = ExportFormats.Json;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)

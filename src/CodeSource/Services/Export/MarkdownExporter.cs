@@ -37,7 +37,7 @@ namespace CodeSource.Services.Export
     public sealed class MarkdownExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "MD";
+        public string Format { get; } = ExportFormats.Markdown;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)

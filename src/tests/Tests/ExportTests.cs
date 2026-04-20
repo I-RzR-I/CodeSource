@@ -16,6 +16,7 @@
 
 #region U S A G E S
 
+using CodeSource;
 using CodeSource.Services;
 using CodeSource.Services.Export;
 using NUnit.Framework;
@@ -102,7 +103,7 @@ namespace Tests
             var assembly = Assembly.Load("TempLib");
             var codeSource = CodeSourceScanner.Instance.FindAnnotations(assembly).ToList();
             
-            ExporterRegistry.Export("json", codeSource, $"ExporterRegistryJson_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.json");
+            ExporterRegistry.Export(ExportFormats.Json, codeSource, $"ExporterRegistryJson_Test{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.json");
         }
     }
 }
