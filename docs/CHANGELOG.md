@@ -1,3 +1,16 @@
+### **v5.0.0.7373** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 20-04-2026
+* [FIX] - (RzR) -> Inner exception forwarding; All 6 exporters now pass the caught exception to CodeSourceExporterException instead of discarding it. New (string, Exception) constructor added.
+* [FIX] - (RzR) -> Sanitize HtmlExporter; All user-supplied values wrapped with WebUtility.HtmlEncode().
+* [FIX] - (RzR) -> Thread-safety in JsonExporter._isFirst made instance field; ExporterRegistry operations wrapped in lock(SyncLock).
+* [FIX] - (RzR) -> Fix the IsNullOrEmpty extension.
+* [FIX] - (RzR) -> FileMode — OpenOrCreate -> Create to prevent stale export data.
+* [FIX] - (RzR) -> Version precision — Version changed from double to string across attribute, interface, model, helpers, exporters, and tests.
+
+* [DEV] - (RzR) -> Custom exporter registration — Register(), Unregister(), GetRegisteredFormats() on ExporterRegistry.
+* [DEV] - (RzR) -> ExportFormats constants — New static class (Csv, Html, Json, Markdown, Xml, Yaml) replacing magic strings in exporters and tests.
+* [DEV] - (RzR) -> ToString() on models — CodeSourceObjectHistory → "v{Version} by {Author} on {Date}"; CodeSourceObject → "{Name} ({FullName})".
+* [DEV] - (RzR) -> IReadOnlyList<T> on collections — History and Children properties changed from IEnumerable<T> to IReadOnlyList<T> (IList<T> fallback on net40).
+
 ### **v4.0.2.4672** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 04-12-2025
 * [08f5f32] (RzR) -> Exclude `SourceUrl` validation for backward compatibility.
 
