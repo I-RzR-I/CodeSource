@@ -16,6 +16,7 @@
 
 #region U S A G E S
 
+using System;
 using CodeSource.Abstractions;
 using CodeSource.Models;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace CodeSource.Services.Export
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class JsonExporter : ICodeSourceExporter
     {
-        private static bool _isFirst = true;
+        private bool _isFirst;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -53,6 +54,7 @@ namespace CodeSource.Services.Export
         {
             try
             {
+                _isFirst = true;
                 using (var sw = new StreamWriter(outputStream, Encoding.UTF8))
                 {
                     sw.WriteJsonOpenArray(Indent.IndentMultiply(-1));// start of array (codeSources) [ 
@@ -63,9 +65,9 @@ namespace CodeSource.Services.Export
                     sw.WriteJsonCloseArray(Indent.IndentMultiply(-1), true, false);// end of array (codeSources) ]
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
 
@@ -76,7 +78,7 @@ namespace CodeSource.Services.Export
         /// <param name="sw">The software.</param>
         /// <param name="item">The item.</param>
         /// =================================================================================================
-        private static void WriteItem(StreamWriter sw, CodeSourceObjectsResult item)
+        private void WriteItem(StreamWriter sw, CodeSourceObjectsResult item)
         {
             if (item.IsNull())
                 return;
