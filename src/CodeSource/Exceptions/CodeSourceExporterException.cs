@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-24 08:11
 // 
@@ -20,7 +20,7 @@ using System;
 
 #endregion
 
-namespace CodeSource.Exceptions
+namespace RzR.Core.CodeSource.Exceptions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

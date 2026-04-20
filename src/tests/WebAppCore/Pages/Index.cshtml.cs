@@ -16,8 +16,8 @@
 
 #region U S A G E S
 
-using CodeSource;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RzR.Core.CodeSource;
 
 #endregion
 

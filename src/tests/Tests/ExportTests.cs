@@ -16,15 +16,15 @@
 
 #region U S A G E S
 
-using CodeSource;
-using CodeSource.Services;
-using CodeSource.Services.Export;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using RzR.Core.CodeSource;
+using RzR.Core.CodeSource.Services;
+using RzR.Core.CodeSource.Services.Export;
 
 #endregion
 

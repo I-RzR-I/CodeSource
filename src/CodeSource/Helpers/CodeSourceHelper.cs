@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2022-12-13 02:23
 // 
@@ -20,15 +20,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CodeSource.Extensions.Internal;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable PossibleMultipleEnumeration
 // ReSharper disable RedundantAssignment
 
 #endregion
 
-namespace CodeSource.Helpers
+namespace RzR.Core.CodeSource.Helpers
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

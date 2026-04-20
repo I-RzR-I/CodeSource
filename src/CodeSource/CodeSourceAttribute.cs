@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2022-12-12 19:54
 // 
@@ -17,14 +17,14 @@
 #region U S A G E S
 
 using System;
-using CodeSource.Abstractions;
-using CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Extensions.Internal;
 
 // ReSharper disable RedundantCast
 
 #endregion
 
-namespace CodeSource
+namespace RzR.Core.CodeSource
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

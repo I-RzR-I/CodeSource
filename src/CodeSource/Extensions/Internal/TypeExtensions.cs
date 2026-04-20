@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-20 21:11
 // 
@@ -17,14 +17,13 @@
 #region U S A G E S
 
 using System;
-
 #if NETSTANDARD1_0 || NETSTANDARD1_5
 using System.Reflection;
 #endif
 
 #endregion
 
-namespace CodeSource.Extensions.Internal
+namespace RzR.Core.CodeSource.Extensions.Internal
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

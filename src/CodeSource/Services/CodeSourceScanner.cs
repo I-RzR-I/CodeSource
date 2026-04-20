@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-13 18:11
 // 
@@ -18,13 +18,13 @@
 
 using System.Collections.Generic;
 using System.Reflection;
-using CodeSource.Abstractions;
-using CodeSource.Helpers;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Helpers;
+using RzR.Core.CodeSource.Models;
 
 #endregion
 
-namespace CodeSource.Services
+namespace RzR.Core.CodeSource.Services
 {
     /// <inheritdoc cref="ICodeSourceScanner" />
     public class CodeSourceScanner : ICodeSourceScanner

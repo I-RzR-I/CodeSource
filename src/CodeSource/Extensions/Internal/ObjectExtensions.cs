@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-19 18:11
 // 
@@ -14,7 +14,7 @@
 //  </summary>
 // ***********************************************************************
 
-namespace CodeSource.Extensions.Internal
+namespace RzR.Core.CodeSource.Extensions.Internal
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

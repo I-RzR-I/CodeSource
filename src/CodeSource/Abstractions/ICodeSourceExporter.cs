@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-17 21:11
 // 
@@ -18,11 +18,11 @@
 
 using System.Collections.Generic;
 using System.IO;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Models;
 
 #endregion
 
-namespace CodeSource.Abstractions
+namespace RzR.Core.CodeSource.Abstractions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

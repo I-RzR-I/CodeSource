@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-20 19:11
 // 
@@ -16,19 +16,19 @@
 
 #region U S A G E S
 
-using CodeSource.Abstractions;
-using CodeSource.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 #endregion
 
-namespace CodeSource.Services
+namespace RzR.Core.CodeSource.Services
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -178,14 +178,14 @@ namespace CodeSource.Services
         /// </summary>
         /// <param name="assemblyName">
         ///     (Optional) Name of the assembly.
-        ///     Default value is 'CodeSource'/
+        ///     Default value is 'RzR.Core.CodeSource'/
         /// </param>
         /// <returns>
         ///     An enumerator that allows foreach to be used to process the local types in this
         ///     collection.
         /// </returns>
         /// =================================================================================================
-        private static IEnumerable<Type> GetLocalTypes(string assemblyName = "CodeSource")
+        private static IEnumerable<Type> GetLocalTypes(string assemblyName = "RzR.Core.CodeSource")
         {
             var assembly = Assembly.Load(new AssemblyName(assemblyName));
 
