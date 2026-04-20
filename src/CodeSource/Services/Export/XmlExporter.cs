@@ -16,6 +16,7 @@
 
 #region U S A G E S
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -61,9 +62,9 @@ namespace CodeSource.Services.Export
                     sw.WriteXmlCloseElement("codeSources", Indent.IndentMultiply(-1));
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
 

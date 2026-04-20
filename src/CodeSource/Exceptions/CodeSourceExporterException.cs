@@ -54,6 +54,19 @@ namespace CodeSource.Exceptions
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSourceExporterException"/> class.
+        /// </summary>
+        /// <param name="exporterFormat">The exporter format.</param>
+        /// <param name="innerException">The inner exception.</param>
+        /// =================================================================================================
+        public CodeSourceExporterException(string exporterFormat, Exception innerException) 
+            : base(FormatMessage(exporterFormat), innerException)
+        {
+            ExporterFormat = exporterFormat;
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
         ///     Format message.
         /// </summary>
         /// <param name="exporterFormat">The exporter format.</param>
