@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-18 12:11
 // 
@@ -16,26 +16,28 @@
 
 #region U S A G E S
 
-using CodeSource.Abstractions;
-using CodeSource.Extensions.Internal;
-using CodeSource.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
-using CodeSource.Exceptions;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable PossibleMultipleEnumeration
 
 #endregion
 
-namespace CodeSource.Services.Export
+namespace RzR.Core.CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class HtmlExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "HTML";
+        public string Format { get; } = ExportFormats.Html;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
@@ -73,7 +75,7 @@ namespace CodeSource.Services.Export
                     {
                         var parent = it.Parent;
                         sw.WriteLine(emptyTab);
-                        sw.WriteLine(headTab, parent.Name, parent.FullName);
+                        sw.WriteLine(headTab, WebUtility.HtmlEncode(parent.Name), WebUtility.HtmlEncode(parent.FullName));
                         sw.WriteLine(historyTab);
 
                         if (parent.History.HasAnyData())
@@ -82,15 +84,15 @@ namespace CodeSource.Services.Export
                             {
                                 sw.WriteLine(@$"
                                     <tr>
-                                        <td>{h.CodePath.IfIsNullThenEmpty()}</td>
-                                        <td>{h.SourceUrl.IfIsNullThenEmpty()}</td>
-                                        <td>{h.AuthorName.IfIsNullThenEmpty()}</td>
-                                        <td>{h.Copyright.IfIsNullThenEmpty()}</td>
-                                        <td>{h.AppliedOn?.ToString("yyyy-MM-dd")}</td>
-                                        <td>{h.Comment.IfIsNullThenEmpty()}</td>
-                                        <td>{$"{h.Version:##.0##}"}</td>
-                                        <td>{h.Tags.IfIsNullThenEmpty()}</td>
-                                        <td>{h.RelatedTaskId.IfIsNullThenEmpty()}</td>
+                                        <td>{WebUtility.HtmlEncode(h.CodePath.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.SourceUrl.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.AuthorName.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.Copyright.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd"))}</td>
+                                        <td>{WebUtility.HtmlEncode(h.Comment.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.Version.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.Tags.IfIsNullThenEmpty())}</td>
+                                        <td>{WebUtility.HtmlEncode(h.RelatedTaskId.IfIsNullThenEmpty())}</td>
                                     </tr>");
                             }
                         }
@@ -100,7 +102,7 @@ namespace CodeSource.Services.Export
                             foreach (var c in children)
                             {
                                 sw.WriteLine(emptyTab);
-                                sw.WriteLine(headTab, c.Name, c.FullName);
+                                sw.WriteLine(headTab, WebUtility.HtmlEncode(c.Name), WebUtility.HtmlEncode(c.FullName));
                                 sw.WriteLine(historyTab);
 
                                 if (c.History.HasAnyData())
@@ -109,15 +111,15 @@ namespace CodeSource.Services.Export
                                     {
                                         sw.WriteLine(@$"
                                             <tr>
-                                                <td>{h.CodePath.IfIsNullThenEmpty()}</td>
-                                                <td>{h.SourceUrl.IfIsNullThenEmpty()}</td>
-                                                <td>{h.AuthorName.IfIsNullThenEmpty()}</td>
-                                                <td>{h.Copyright.IfIsNullThenEmpty()}</td>
-                                                <td>{h.AppliedOn?.ToString("yyyy-MM-dd")}</td>
-                                                <td>{h.Comment.IfIsNullThenEmpty()}</td>
-                                                <td>{$"{h.Version:##.0##}"}</td>
-                                                <td>{h.Tags.IfIsNullThenEmpty()}</td>
-                                                <td>{h.RelatedTaskId.IfIsNullThenEmpty()}</td>
+                                                <td>{WebUtility.HtmlEncode(h.CodePath.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.SourceUrl.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.AuthorName.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.Copyright.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd"))}</td>
+                                                <td>{WebUtility.HtmlEncode(h.Comment.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.Version.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.Tags.IfIsNullThenEmpty())}</td>
+                                                <td>{WebUtility.HtmlEncode(h.RelatedTaskId.IfIsNullThenEmpty())}</td>
                                             </tr>");
                                     }
                                 }
@@ -135,9 +137,9 @@ namespace CodeSource.Services.Export
                     sw.WriteLine("</html>");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
     }

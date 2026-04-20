@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-18 09:11
 // 
@@ -16,26 +16,27 @@
 
 #region U S A G E S
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using CodeSource.Abstractions;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable PossibleMultipleEnumeration
 
 #endregion
 
-namespace CodeSource.Services.Export
+namespace RzR.Core.CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class CsvExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "CSV";
+        public string Format { get; } = ExportFormats.Csv;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
@@ -78,7 +79,7 @@ namespace CodeSource.Services.Export
                                     Escape(h.Copyright.IfIsNullThenEmpty()),
                                     Escape(h.AppliedOn?.ToString("yyyy-MM-dd")),
                                     Escape(h.Comment.IfIsNullThenEmpty()),
-                                    Escape($"{h.Version:##.0##}"),
+                                    Escape(h.Version.IfIsNullThenEmpty()),
                                     Escape(h.Tags.IfIsNullThenEmpty()),
                                     Escape(h.RelatedTaskId.IfIsNullThenEmpty()),
                                     Escape("1"),
@@ -136,9 +137,9 @@ namespace CodeSource.Services.Export
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
     }

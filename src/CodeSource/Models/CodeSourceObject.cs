@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2024-12-23 15:30
 // 
@@ -18,9 +18,11 @@
 
 using System.Collections.Generic;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 #endregion
 
-namespace CodeSource.Models
+namespace RzR.Core.CodeSource.Models
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -57,6 +59,19 @@ namespace CodeSource.Models
         ///     The history.
         /// </value>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObjectHistory> History { get; set; }
+#if NET45_OR_GREATER || NETSTANDARD || NET
+        public IReadOnlyList<CodeSourceObjectHistory> History { get; set; }
+#else
+        public IList<CodeSourceObjectHistory> History { get; set; }
+#endif
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns a string that represents the current code source object.
+        /// </summary>
+        /// <returns>A string that represents the current code source object.</returns>
+        /// =================================================================================================
+        public override string ToString()
+            => string.Format("{0} ({1})", Name, FullName);
     }
 }

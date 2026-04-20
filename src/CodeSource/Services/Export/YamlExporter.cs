@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-18 13:11
 // 
@@ -16,26 +16,27 @@
 
 #region U S A G E S
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using CodeSource.Abstractions;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable PossibleMultipleEnumeration
 
 #endregion
 
-namespace CodeSource.Services.Export
+namespace RzR.Core.CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class YamlExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "YAML";
+        public string Format { get; } = ExportFormats.Yaml;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
@@ -63,7 +64,7 @@ namespace CodeSource.Services.Export
                                 sw.WriteLine("        copyright: " + $"\"{h.Copyright.IfIsNullThenEmpty()}\"");
                                 sw.WriteLine("        appliedOn: " + $"\"{h.AppliedOn?.ToString("yyyy-MM-dd")}\"");
                                 sw.WriteLine("        comment: " + $"\"{h.Comment.IfIsNullThenEmpty()}\"");
-                                sw.WriteLine("        version: " + $"\"{h.Version:##.0##}\"");
+                                sw.WriteLine("        version: " + $"\"{h.Version.IfIsNullThenEmpty()}\"");
                                 sw.WriteLine("        tags: " + $"\"{h.Tags.IfIsNullThenEmpty()}\"");
                                 sw.WriteLine("        relatedTaskId: " + $"\"{h.RelatedTaskId.IfIsNullThenEmpty()}\"");
                             }
@@ -88,7 +89,7 @@ namespace CodeSource.Services.Export
                                         sw.WriteLine("        copyright: " + $"\"{h.Copyright.IfIsNullThenEmpty()}\"");
                                         sw.WriteLine("        appliedOn: " + $"\"{h.AppliedOn?.ToString("yyyy-MM-dd")}\"");
                                         sw.WriteLine("        comment: " + $"\"{h.Comment.IfIsNullThenEmpty()}\"");
-                                        sw.WriteLine("        version: " + $"\"{h.Version:##.0##}\"");
+                                        sw.WriteLine("        version: " + $"\"{h.Version.IfIsNullThenEmpty()}\"");
                                         sw.WriteLine("        tags: " + $"\"{h.Tags.IfIsNullThenEmpty()}\"");
                                         sw.WriteLine("        relatedTaskId: " + $"\"{h.RelatedTaskId.IfIsNullThenEmpty()}\"");
                                     }
@@ -98,9 +99,9 @@ namespace CodeSource.Services.Export
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
     }

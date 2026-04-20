@@ -16,17 +16,17 @@
 
 #region U S A G E S
 
-using CodeSource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RzR.Core.CodeSource;
 
 #endregion
 
 namespace WebAppCore
 {
-    [CodeSource("StartUpClass", "MS", "MS", version: 1)]
+    [CodeSource("StartUpClass", "MS", "MS", version: "1")]
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.

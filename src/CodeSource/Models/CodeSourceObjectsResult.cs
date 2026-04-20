@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2024-12-23 16:20
 // 
@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace CodeSource.Models
+namespace RzR.Core.CodeSource.Models
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -49,6 +49,10 @@ namespace CodeSource.Models
         ///     The children.
         /// </value>
         /// =================================================================================================
-        public IEnumerable<CodeSourceObject> Children { get; set; }
+#if NET45_OR_GREATER || NETSTANDARD || NET
+        public IReadOnlyList<CodeSourceObject> Children { get; set; }
+#else
+        public IList<CodeSourceObject> Children { get; set; }
+#endif
     }
 }

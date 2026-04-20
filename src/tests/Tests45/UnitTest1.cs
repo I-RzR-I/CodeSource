@@ -1,8 +1,7 @@
-﻿using CodeSource.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using CodeSource.Services;
+using RzR.Core.CodeSource.Services;
 
 namespace Tests45
 {

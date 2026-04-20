@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-18 01:11
 // 
@@ -23,7 +23,7 @@ using System.Linq;
 
 #endregion
 
-namespace CodeSource.Extensions.Internal
+namespace RzR.Core.CodeSource.Extensions.Internal
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -44,7 +44,7 @@ namespace CodeSource.Extensions.Internal
         /// =================================================================================================
         internal static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
         {
-            return source == null || source?.Count() == 0;
+            return source == null || !source.Any();
         }
 
         /// -------------------------------------------------------------------------------------------------

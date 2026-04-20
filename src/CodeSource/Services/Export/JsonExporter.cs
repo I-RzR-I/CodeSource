@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-19 00:11
 // 
@@ -16,27 +16,28 @@
 
 #region U S A G E S
 
-using CodeSource.Abstractions;
-using CodeSource.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
-using CodeSource.Extensions.Internal.Builder;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Extensions.Internal.Builder;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable PossibleMultipleEnumeration
 
 #endregion
 
-namespace CodeSource.Services.Export
+namespace RzR.Core.CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class JsonExporter : ICodeSourceExporter
     {
-        private static bool _isFirst = true;
+        private bool _isFirst;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -46,13 +47,14 @@ namespace CodeSource.Services.Export
         private const string Indent = "\t";
 
         /// <inheritdoc />
-        public string Format { get; } = "JSON";
+        public string Format { get; } = ExportFormats.Json;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
         {
             try
             {
+                _isFirst = true;
                 using (var sw = new StreamWriter(outputStream, Encoding.UTF8))
                 {
                     sw.WriteJsonOpenArray(Indent.IndentMultiply(-1));// start of array (codeSources) [ 
@@ -63,9 +65,9 @@ namespace CodeSource.Services.Export
                     sw.WriteJsonCloseArray(Indent.IndentMultiply(-1), true, false);// end of array (codeSources) ]
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
 
@@ -76,7 +78,7 @@ namespace CodeSource.Services.Export
         /// <param name="sw">The software.</param>
         /// <param name="item">The item.</param>
         /// =================================================================================================
-        private static void WriteItem(StreamWriter sw, CodeSourceObjectsResult item)
+        private void WriteItem(StreamWriter sw, CodeSourceObjectsResult item)
         {
             if (item.IsNull())
                 return;
@@ -246,7 +248,7 @@ namespace CodeSource.Services.Export
                 .WriteProp("comment", history.Comment.IfIsNullThenEmpty());
 
             sw.WriteJsonIndent(indent)
-                .WriteProp("version", $"{history.Version:##.0##}");
+                .WriteProp("version", history.Version.IfIsNullThenEmpty());
 
             sw.WriteJsonIndent(indent)
                 .WriteProp("tags", history.Tags.IfIsNullThenEmpty());

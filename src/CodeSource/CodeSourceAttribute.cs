@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2022-12-12 19:54
 // 
@@ -17,14 +17,14 @@
 #region U S A G E S
 
 using System;
-using CodeSource.Abstractions;
-using CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Extensions.Internal;
 
 // ReSharper disable RedundantCast
 
 #endregion
 
-namespace CodeSource
+namespace RzR.Core.CodeSource
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -37,7 +37,6 @@ namespace CodeSource
     public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
         private DateTime? _internalAppliedOn;
-        private string _sourceUrl;
 
         internal DateTime? InternalAppliedOn
         {
@@ -63,7 +62,7 @@ namespace CodeSource
         public string Comment { get; set; }
 
         /// <inheritdoc/>
-        public double Version { get; set; }
+        public string Version { get; set; }
 
         /// <inheritdoc/>
         public string Tags { get; set; }
@@ -88,7 +87,7 @@ namespace CodeSource
         /// =================================================================================================
         public CodeSourceAttribute(
             string sourceUrl,
-            double version = 1.0)
+            string version = "1.0")
         {
             SourceUrl = sourceUrl;
             Version = version;
@@ -108,7 +107,7 @@ namespace CodeSource
         public CodeSourceAttribute(
             string sourceUrl,
             string authorName = null,
-            double version = 1.0)
+            string version = "1.0")
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -133,7 +132,7 @@ namespace CodeSource
             string sourceUrl,
             string authorName = null,
             string copyright = null,
-            double version = 1.0)
+            string version = "1.0")
         {
             SourceUrl = sourceUrl;
             AuthorName = authorName;
@@ -171,7 +170,7 @@ namespace CodeSource
             string copyright = null,
             string appliedOn = null,
             string comment = null,
-            double version = 1.0,
+            string version = "1.0",
             string workItemId = null,
             string tags = null)
         {

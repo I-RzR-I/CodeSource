@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-24 08:11
 // 
@@ -20,7 +20,7 @@ using System;
 
 #endregion
 
-namespace CodeSource.Exceptions
+namespace RzR.Core.CodeSource.Exceptions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -48,6 +48,19 @@ namespace CodeSource.Exceptions
         /// =================================================================================================
         public CodeSourceExporterException(string exporterFormat) 
             : base(FormatMessage(exporterFormat))
+        {
+            ExporterFormat = exporterFormat;
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSourceExporterException"/> class.
+        /// </summary>
+        /// <param name="exporterFormat">The exporter format.</param>
+        /// <param name="innerException">The inner exception.</param>
+        /// =================================================================================================
+        public CodeSourceExporterException(string exporterFormat, Exception innerException) 
+            : base(FormatMessage(exporterFormat), innerException)
         {
             ExporterFormat = exporterFormat;
         }

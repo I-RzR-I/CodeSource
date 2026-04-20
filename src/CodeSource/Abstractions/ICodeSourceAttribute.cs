@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2023-10-08 22:04
 // 
@@ -14,7 +14,7 @@
 //  </summary>
 // ***********************************************************************
 
-namespace CodeSource.Abstractions
+namespace RzR.Core.CodeSource.Abstractions
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -81,7 +81,7 @@ namespace CodeSource.Abstractions
         ///     The version.
         /// </value>
         /// =================================================================================================
-        public double Version { get; }
+        public string Version { get; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>

@@ -18,9 +18,9 @@
 
 using System;
 using System.Diagnostics;
-using CodeSource;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RzR.Core.CodeSource;
 
 #endregion
 
@@ -28,7 +28,7 @@ namespace WebAppCore.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
-    [CodeSource("link", "Me", null, version: 1)]
+    [CodeSource("link", "Me", null, version: "1")]
     public class ErrorModel : PageModel
     {
         [CodeSource("link", "Me", null, comment: "CTOR")]

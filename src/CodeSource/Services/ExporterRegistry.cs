@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-20 19:11
 // 
@@ -16,19 +16,19 @@
 
 #region U S A G E S
 
-using CodeSource.Abstractions;
-using CodeSource.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 #endregion
 
-namespace CodeSource.Services
+namespace RzR.Core.CodeSource.Services
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -46,6 +46,13 @@ namespace CodeSource.Services
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
+        ///     (Immutable) the synchronization lock.
+        /// </summary>
+        /// =================================================================================================
+        private static readonly object SyncLock = new object();
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
         ///     Initializes static members of the <see cref="ExporterRegistry"/> class.
         /// </summary>
         /// =================================================================================================
@@ -57,6 +64,63 @@ namespace CodeSource.Services
             Exporters = exporterTypes
                 .Select(t => (ICodeSourceExporter)Activator.CreateInstance(t)!)
                 .ToDictionary(e => e.Format, StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Registers a custom exporter. If an exporter for the same format already exists, it will
+        ///     be replaced.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown when <paramref name="exporter"/> is null.
+        /// </exception>
+        /// <param name="exporter">The exporter to register.</param>
+        /// =================================================================================================
+        public static void Register(ICodeSourceExporter exporter)
+        {
+            if (exporter.IsNull())
+                throw new ArgumentNullException(nameof(exporter));
+
+            lock (SyncLock)
+            {
+                Exporters[exporter.Format] = exporter;
+            }
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Removes a registered exporter by format name.
+        /// </summary>
+        /// <param name="format">The format name to unregister (case-insensitive).</param>
+        /// <returns>
+        ///     True if the exporter was found and removed, false otherwise.
+        /// </returns>
+        /// =================================================================================================
+        public static bool Unregister(string format)
+        {
+            if (format.IsMissing())
+                throw new ArgumentNullException(nameof(format));
+
+            lock (SyncLock)
+            {
+                return Exporters.Remove(format);
+            }
+        }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets the registered format names.
+        /// </summary>
+        /// <returns>
+        ///     A registered format names enumerable.
+        /// </returns>
+        /// =================================================================================================
+        public static IEnumerable<string> GetRegisteredFormats()
+        {
+            lock (SyncLock)
+            {
+                return Exporters.Keys.ToArray();
+            }
         }
 
 # if !NETSTANDARD1_0
@@ -73,10 +137,14 @@ namespace CodeSource.Services
         /// =================================================================================================
         public static void Export(string format, IEnumerable<CodeSourceObjectsResult> items, string savePath)
         {
-            if (!Exporters.TryGetValue(format, out var exporter))
-                throw new CodeSourceUndefinedExportFormat(format);
+            ICodeSourceExporter exporter;
+            lock (SyncLock)
+            {
+                if (!Exporters.TryGetValue(format, out exporter))
+                    throw new CodeSourceUndefinedExportFormat(format);
+            }
 
-            using var stream = new FileStream(savePath, FileMode.CreateNew);
+            using var stream = new FileStream(savePath, FileMode.Create);
             exporter.Export(items, stream);
         }
 #endif
@@ -94,8 +162,12 @@ namespace CodeSource.Services
         /// =================================================================================================
         public static void Export(string format, IEnumerable<CodeSourceObjectsResult> items, Stream stream)
         {
-            if (!Exporters.TryGetValue(format, out var exporter))
-                throw new CodeSourceUndefinedExportFormat(format);
+            ICodeSourceExporter exporter;
+            lock (SyncLock)
+            {
+                if (!Exporters.TryGetValue(format, out exporter))
+                    throw new CodeSourceUndefinedExportFormat(format);
+            }
 
             exporter.Export(items, stream);
         }
@@ -106,7 +178,7 @@ namespace CodeSource.Services
         /// </summary>
         /// <param name="assemblyName">
         ///     (Optional) Name of the assembly.
-        ///     Default value is 'CodeSource'/
+        ///     Default value is 'CodeSource(RzR.Core.CodeSource)'/
         /// </param>
         /// <returns>
         ///     An enumerator that allows foreach to be used to process the local types in this

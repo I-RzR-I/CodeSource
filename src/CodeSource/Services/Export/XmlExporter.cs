@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-19 00:11
 // 
@@ -16,21 +16,22 @@
 
 #region U S A G E S
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using CodeSource.Abstractions;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
-using CodeSource.Extensions.Internal.Builder;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Extensions.Internal.Builder;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable PossibleMultipleEnumeration
 
 #endregion
 
-namespace CodeSource.Services.Export
+namespace RzR.Core.CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class XmlExporter : ICodeSourceExporter
@@ -43,7 +44,7 @@ namespace CodeSource.Services.Export
         private const string Indent = "    ";
 
         /// <inheritdoc />
-        public string Format { get; } = "XML";
+        public string Format { get; } = ExportFormats.Xml;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
@@ -61,9 +62,9 @@ namespace CodeSource.Services.Export
                     sw.WriteXmlCloseElement("codeSources", Indent.IndentMultiply(-1));
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
 
@@ -156,7 +157,7 @@ namespace CodeSource.Services.Export
             sw.WriteXmlElement(indent, "copyright", $"{history.Copyright.IfIsNullThenEmpty()}");
             sw.WriteXmlElement(indent, "appliedOn", $"{history.AppliedOn?.ToString("yyyy-MM-dd")}");
             sw.WriteXmlElement(indent, "comment", $"{history.Comment.IfIsNullThenEmpty()}");
-            sw.WriteXmlElement(indent, "version", $"{history.Version:##.0##}");
+            sw.WriteXmlElement(indent, "version", $"{history.Version.IfIsNullThenEmpty()}");
             sw.WriteXmlElement(indent, "tags", $"{history.Tags.IfIsNullThenEmpty()}");
             sw.WriteXmlElement(indent, "relatedTaskId", $"{history.RelatedTaskId.IfIsNullThenEmpty()}");
         }

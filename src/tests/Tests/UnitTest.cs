@@ -18,10 +18,8 @@
 
 using System.Linq;
 using System.Reflection;
-using CodeSource.Extensions;
-using CodeSource.Helpers;
-using CodeSource.Services;
 using NUnit.Framework;
+using RzR.Core.CodeSource.Services;
 
 #endregion
 

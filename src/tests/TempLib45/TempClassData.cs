@@ -1,15 +1,15 @@
 ﻿#region U S A G E S
 
-using CodeSource;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using RzR.Core.CodeSource;
 
 #endregion
 
 namespace TempLib45
 {
-    [CodeSource("http://local.host", "User1", "Company INC", version: 1)]
+    [CodeSource("http://local.host", "User1", "Company INC", version: "1")]
     public class TempClassData
     {
         [CodeSource("http://local.host", "User1", "Company INC", "2022-12-12", "CTOR init")]

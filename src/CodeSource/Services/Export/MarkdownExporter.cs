@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2025-11-17 21:11
 // 
@@ -16,27 +16,28 @@
 
 #region U S A G E S
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CodeSource.Abstractions;
-using CodeSource.Exceptions;
-using CodeSource.Extensions.Internal;
-using CodeSource.Models;
+using RzR.Core.CodeSource.Abstractions;
+using RzR.Core.CodeSource.Exceptions;
+using RzR.Core.CodeSource.Extensions.Internal;
+using RzR.Core.CodeSource.Models;
 
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable PossibleMultipleEnumeration
 
 #endregion
 
-namespace CodeSource.Services.Export
+namespace RzR.Core.CodeSource.Services.Export
 {
     /// <inheritdoc cref="ICodeSourceExporter"/>
     public sealed class MarkdownExporter : ICodeSourceExporter
     {
         /// <inheritdoc />
-        public string Format { get; } = "MD";
+        public string Format { get; } = ExportFormats.Markdown;
 
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
@@ -83,7 +84,7 @@ namespace CodeSource.Services.Export
                                              $"| {h.Copyright.IfIsNullThenEmpty()} " +
                                              $"| {h.AppliedOn?.ToString("yyyy-MM-dd")} " +
                                              $"| {h.Comment.IfIsNullThenEmpty()} " +
-                                             $"| {h.Version:##.0##} " +
+                                             $"| {h.Version.IfIsNullThenEmpty()} " +
                                              $"| {h.Tags.IfIsNullThenEmpty()} " +
                                              $"| {h.RelatedTaskId.IfIsNullThenEmpty()} |");
                             }
@@ -123,7 +124,7 @@ namespace CodeSource.Services.Export
                                                      $"| {h.Copyright.IfIsNullThenEmpty()} " +
                                                      $"| {h.AppliedOn?.ToString("yyyy-MM-dd")} " +
                                                      $"| {h.Comment.IfIsNullThenEmpty()} " +
-                                                     $"| {h.Version:##.0##} " +
+                                                     $"| {h.Version.IfIsNullThenEmpty()} " +
                                                      $"| {h.Tags.IfIsNullThenEmpty()} " +
                                                      $"| {h.RelatedTaskId.IfIsNullThenEmpty()} |");
                                     }
@@ -141,9 +142,9 @@ namespace CodeSource.Services.Export
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new CodeSourceExporterException(Format);
+                throw new CodeSourceExporterException(Format, ex);
             }
         }
     }

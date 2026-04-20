@@ -1,64 +1,67 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <!--<TargetFramework>netstandard1.5</TargetFramework>-->
-    <TargetFrameworks>net40;net45;netstandard1.0;netstandard1.5;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Authors>RzR</Authors>
-    <Copyright>RzR</Copyright>
-    <Owners>RzR</Owners>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageIcon>PackageIcon.png</PackageIcon>
-    <NoWarn>$(NoWarn);CS8032;NETSDK1215</NoWarn>
-    <EnableNETAnalyzers>false</EnableNETAnalyzers>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageTags>Code;Source;Reference;Anchor;Author;Parser;Attribute;Document;net framework</PackageTags>
-    <RepositoryUrl>https://github.com/I-RzR-I/CodeSource</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/I-RzR-I/CodeSource</PackageProjectUrl>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageDescription>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</PackageDescription>
-    <Summary>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</Summary>
-    <PackageTitle>RzR.Shared.Attributes (CodeSource)</PackageTitle>
-    <Title>RzR.Shared.Attributes (CodeSource)</Title>
-    <LangVersion>9.0</LangVersion>
-    <PackageIconUrl />
-    <RepositoryType>GIT</RepositoryType>
-    <Language>en-US</Language>
-  </PropertyGroup>
+	<PropertyGroup>
+		<!--<TargetFramework>netstandard1.5</TargetFramework>-->
+		<TargetFrameworks>net40;net45;netstandard1.0;netstandard1.5;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Authors>RzR</Authors>
+		<Copyright>RzR</Copyright>
+		<Owners>RzR</Owners>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageIcon>PackageIcon.png</PackageIcon>
+		<NoWarn>$(NoWarn);CS8032;NETSDK1215</NoWarn>
+		<EnableNETAnalyzers>false</EnableNETAnalyzers>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageTags>Code;Source;Reference;Anchor;Author;Parser;Attribute;Document;net framework</PackageTags>
+		<RepositoryUrl>https://github.com/I-RzR-I/CodeSource</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/I-RzR-I/CodeSource</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageDescription>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</PackageDescription>
+		<Summary>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</Summary>
+		<PackageTitle>RzR.Shared.Attributes (CodeSource)</PackageTitle>
+		<Title>RzR.Shared.Attributes (CodeSource)</Title>
+		<LangVersion>9.0</LangVersion>
+		<PackageIconUrl />
+		<RepositoryType>GIT</RepositoryType>
+		<Language>en-US</Language>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+		<RootNamespace>RzR.Core.CodeSource</RootNamespace>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\shared\GeneralAssemblyInfo.cs" Link="Properties\GeneralAssemblyInfo.cs" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\..\assets\PackageIcon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\shared\GeneralAssemblyInfo.cs" Link="Properties\GeneralAssemblyInfo.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\assets\PackageIcon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
 
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2022/12/20" />
-    </VisualStudio>
-  </ProjectExtensions>
-  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Exceptions\" />
+	</ItemGroup>
+
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties BuildVersion_StartDate="2022/12/20" />
+		</VisualStudio>
+	</ProjectExtensions>
+	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="PowerShell -NoProfile -ExecutionPolicy unrestricted -file $(SolutionDir)../build/pack.ps1 $(ConfigurationName)" />
   </Target>-->
 </Project>

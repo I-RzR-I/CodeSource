@@ -29,7 +29,7 @@ using System.Resources;
 
 [assembly: AssemblyCompany("RzR ®")]
 [assembly: AssemblyProduct("Code source attribute")]
-[assembly: AssemblyCopyright("Copyright © 2022-2025 RzR All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2022-2026 RzR All rights reserved.")]
 [assembly: AssemblyTrademark("® RzR™")]
 [assembly: AssemblyDescription("Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.")]
 
@@ -45,6 +45,6 @@ using System.Resources;
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif
 
-[assembly: AssemblyVersion("4.0.2.4672")]
-[assembly: AssemblyFileVersion("4.0.2.4672")]
-[assembly: AssemblyInformationalVersion("4.0.2.4672")]
+[assembly: AssemblyVersion("5.0.0.7373")]
+[assembly: AssemblyFileVersion("5.0.0.7373")]
+[assembly: AssemblyInformationalVersion("5.0.0.7373")]

@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.CodeSource
+//  Assembly         : RzR.Core.CodeSource
 //  Author           : RzR
 //  Created On       : 2024-12-23 15:31
 // 
@@ -23,7 +23,7 @@ using System;
 
 #endregion
 
-namespace CodeSource.Models
+namespace RzR.Core.CodeSource.Models
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -100,7 +100,7 @@ namespace CodeSource.Models
         ///     The version.
         /// </value>
         /// =================================================================================================
-        public double Version { get; internal set; }
+        public string Version { get; internal set; }
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -121,5 +121,14 @@ namespace CodeSource.Models
         /// </value>
         /// =================================================================================================
         public string RelatedTaskId { get; internal set; }
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Returns a string that represents the current history entry.
+        /// </summary>
+        /// <returns>A string that represents the current history entry.</returns>
+        /// =================================================================================================
+        public override string ToString()
+            => string.Format("v{0} by {1} on {2}", Version, AuthorName, AppliedOn?.ToString("yyyy-MM-dd"));
     }
 }
