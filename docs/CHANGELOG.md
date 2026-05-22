@@ -1,3 +1,8 @@
+### **v6.0.0.94** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 23-05-2026
+* [DEV] - (RzR) -> Update package title and assembly metadata to use `RzR.Core.CodeSource`.
+* [DEV] - (RzR) -> Change `ExporterRegistry` default assembly lookup to `RzR.Core.CodeSource`.
+* [DEV] - (RzR) -> Refresh README and usage docs with the new NuGet package ID and migration notes.
+
 ### **v5.0.0.7373** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 20-04-2026
 * [FIX] - (RzR) -> Inner exception forwarding; All 6 exporters now pass the caught exception to CodeSourceExporterException instead of discarding it. New (string, Exception) constructor added.
 * [FIX] - (RzR) -> Sanitize HtmlExporter; All user-supplied values wrapped with WebUtility.HtmlEncode().
