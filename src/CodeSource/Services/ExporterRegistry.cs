@@ -185,7 +185,7 @@ namespace RzR.Core.CodeSource.Services
         ///     collection.
         /// </returns>
         /// =================================================================================================
-        private static IEnumerable<Type> GetLocalTypes(string assemblyName = "CodeSource")
+        private static IEnumerable<Type> GetLocalTypes(string assemblyName = "RzR.Core.CodeSource")
         {
             var assembly = Assembly.Load(new AssemblyName(assemblyName));
 

@@ -1,5 +1,19 @@
 ﻿# USING
 
+## Installation
+
+Install the current NuGet package ID `RzR.Core.CodeSource`:
+
+```powershell
+Install-Package RzR.Core.CodeSource -Version x.x.x.x
+```
+
+```bash
+dotnet add package RzR.Core.CodeSource --version x.x.x.x
+```
+
+If you are upgrading from the legacy `CodeSource` package, replace the package reference before applying the namespace changes from the migration guide below.
+
 Using this attribute is quite simple. You must add in code `[CodeSource(...)]` with specifying details and that is all.
 
 For `CodeSource` are available some properties/input parameters.
@@ -114,6 +128,14 @@ IEnumerable<string> formats = ExporterRegistry.GetRegisteredFormats();
 ---
 
 ## Migration Guide (v3.x / v4.x -> v5.0)
+
+### Package ID rename
+The NuGet package ID changed from `CodeSource` to `RzR.Core.CodeSource`.
+
+| Old | New |
+|---|---|
+| `Install-Package CodeSource` | `Install-Package RzR.Core.CodeSource` |
+| `<PackageReference Include="CodeSource" Version="x.x.x" />` | `<PackageReference Include="RzR.Core.CodeSource" Version="x.x.x.x" />` |
 
 ### Namespace rename
 All namespaces changed from `CodeSource.*` to `RzR.Core.CodeSource.*`.
