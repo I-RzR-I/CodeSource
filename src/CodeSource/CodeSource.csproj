@@ -17,14 +17,15 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageDescription>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</PackageDescription>
 		<Summary>Provide an easy, accurate, and organized solution for storing data in your source code about some ideas, comments, or code references, which was an inspiration for realizing your current functionality.</Summary>
-		<PackageTitle>RzR.Shared.Attributes (CodeSource)</PackageTitle>
-		<Title>RzR.Shared.Attributes (CodeSource)</Title>
+		<PackageTitle>RzR.Core.CodeSource (CodeSource)</PackageTitle>
+		<Title>RzR.Core.CodeSource (CodeSource)</Title>
 		<LangVersion>9.0</LangVersion>
 		<PackageIconUrl />
 		<RepositoryType>GIT</RepositoryType>
 		<Language>en-US</Language>
 
 		<RootNamespace>RzR.Core.CodeSource</RootNamespace>
+		<AssemblyName>RzR.Core.CodeSource</AssemblyName>
 
 	</PropertyGroup>
 
