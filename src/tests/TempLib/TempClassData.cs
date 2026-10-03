@@ -1,25 +1,5 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.TempLib
-//  Author           : RzR
-//  Created On       : 2022-12-14 15:54
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2022-12-16 22:47
-// ***********************************************************************
-//  <copyright file="TempClassData.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
-
-#region U S A G E S
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using RzR.Core.CodeSource;
-
-#endregion
 
 namespace TempLib
 {
