@@ -1,7 +1,7 @@
 ﻿CodePath,URL,Author,Copyright,AppliedOn,Comment,Version,Tags,WorkItemId,IsParent,IsHistory
 ,,,,,,,,,,
 "TempLib.OwnClassData","","","","","","","","","1","0"
-"TempLib.OwnClassData","","Company User","© Company INC","","","1.0","","","1","1"
+"TempLib.OwnClassData","","Company User","© Company INC","","","1","","","1","1"
 "TempLib.OwnClassData","http://local.host","USR1","","","","1.0","","","1","1"
 ,,,,,,,,,,
 "TempLib.OwnClassData.RunTask","","","","","","","","","0","0"
@@ -12,7 +12,7 @@
 "TempLib.OwnClassData.RunAsync","http://local.host/use-async","User2","© Company INC","2024-12-12","IDK","1.1","","","0","1"
 ,,,,,,,,,,
 "TempLib.TempClassData","","","","","","","","","1","0"
-"TempLib.TempClassData","http://local.host","User01","© Company INC","","","1.0","","","1","1"
+"TempLib.TempClassData","http://local.host","User01","© Company INC","","","1","","","1","1"
 ,,,,,,,,,,
 "TempLib.TempClassData.ctor","","","","","","","","","0","0"
 "TempLib.TempClassData.ctor","http://local.host","User1","© Company INC","2022-12-01","CTOR init","1.0","","","0","1"

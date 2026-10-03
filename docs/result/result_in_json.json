@@ -1,5 +1,4 @@
 ﻿[
-,
 	{
 		"parent" : {
 			"name" : "OwnClassData",
@@ -12,7 +11,7 @@
 					"copyright" : "\u00a9 Company INC",
 					"appliedOn" : null,
 					"comment" : "",
-					"version" : "1.0",
+					"version" : "1",
 					"tags" : "",
 					"relatedTaskId" : ""
 				},
@@ -89,7 +88,7 @@
 					"copyright" : "\u00a9 Company INC",
 					"appliedOn" : null,
 					"comment" : "",
-					"version" : "1.0",
+					"version" : "1",
 					"tags" : "",
 					"relatedTaskId" : ""
 				}
