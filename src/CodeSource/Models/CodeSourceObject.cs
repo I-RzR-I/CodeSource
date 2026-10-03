@@ -1,20 +1,21 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2024-12-23 15:30
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2024-12-23 19:46
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="CodeSourceObject.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System.Collections.Generic;
 
@@ -24,54 +25,48 @@ using System.Collections.Generic;
 
 namespace RzR.Core.CodeSource.Models
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     A code source object.
     /// </summary>
-    /// =================================================================================================
     public class CodeSourceObject
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Gets or sets the name.
         /// </summary>
         /// <value>
         ///     The name.
         /// </value>
-        /// =================================================================================================
         public string Name { get; set; }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Gets or sets the name of the full.
         /// </summary>
         /// <value>
         ///     The name of the full.
         /// </value>
-        /// =================================================================================================
         public string FullName { get; set; }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Gets or sets the history.
         /// </summary>
         /// <value>
         ///     The history.
         /// </value>
-        /// =================================================================================================
 #if NET45_OR_GREATER || NETSTANDARD || NET
         public IReadOnlyList<CodeSourceObjectHistory> History { get; set; }
 #else
         public IList<CodeSourceObjectHistory> History { get; set; }
 #endif
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Returns a string that represents the current code source object.
         /// </summary>
-        /// <returns>A string that represents the current code source object.</returns>
-        /// =================================================================================================
+        /// <returns>
+        ///     A string that represents the current code source object.
+        /// </returns>
         public override string ToString()
-            => string.Format("{0} ({1})", Name, FullName);
+        {
+            return string.Format("{0} ({1})", Name, FullName);
+        }
     }
 }
