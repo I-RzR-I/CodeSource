@@ -1,27 +1,7 @@
-// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.Tests
-//  Author           : RzR
-//  Created On       : 2022-12-14 09:35
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2022-12-16 22:47
-// ***********************************************************************
-//  <copyright file="UnitTest.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
-
-#region U S A G E S
-
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using RzR.Core.CodeSource.Services;
-
-#endregion
 
 namespace Tests
 {

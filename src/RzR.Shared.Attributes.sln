@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempLib45", "tests\TempLib4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests45", "tests\Tests45\Tests45.csproj", "{24F4F8D0-8F49-4B4C-A331-ABC69B6E7322}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempLib.Fixtures", "tests\TempLib.Fixtures\TempLib.Fixtures.csproj", "{1DB3D992-3041-49DA-8C1B-B98BC2C0CFAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{24F4F8D0-8F49-4B4C-A331-ABC69B6E7322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24F4F8D0-8F49-4B4C-A331-ABC69B6E7322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24F4F8D0-8F49-4B4C-A331-ABC69B6E7322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DB3D992-3041-49DA-8C1B-B98BC2C0CFAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DB3D992-3041-49DA-8C1B-B98BC2C0CFAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DB3D992-3041-49DA-8C1B-B98BC2C0CFAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DB3D992-3041-49DA-8C1B-B98BC2C0CFAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
 		{8DB40F89-0D71-3E62-2FCF-0A2DC1966B17} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{24F4F8D0-8F49-4B4C-A331-ABC69B6E7322} = {E737BE4D-6DFF-4A67-A3D9-2AC58BFBBC07}
+		{1DB3D992-3041-49DA-8C1B-B98BC2C0CFAF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B5BD8B8-58AD-47B4-B85A-E7242D47B9FE}
