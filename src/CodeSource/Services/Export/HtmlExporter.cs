@@ -1,23 +1,25 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-18 12:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-18 12:05
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="HtmlExporter.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -42,17 +44,25 @@ namespace RzR.Core.CodeSource.Services.Export
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
         {
+            if (items == null)
+                throw new ArgumentNullException(nameof(items));
+            if (outputStream == null)
+                throw new ArgumentNullException(nameof(outputStream));
+
             try
             {
-                const string emptyTab = "<tr style=\"background-color: #96D4D4 !important;\"><td colspan=\"9\"></td></tr>";
-                const string headTab = "<tr><td></td><td colspan=\"8\"><i>Name:</i> <b>{0}</b>; <i>FullName:</i> <b>{1}</b></td></tr>";
+                const string emptyTab =
+                    "<tr style=\"background-color: #96D4D4 !important;\"><td colspan=\"9\"></td></tr>";
+                const string headTab =
+                    "<tr><td></td><td colspan=\"8\"><i>Name:</i> <b>{0}</b>; <i>FullName:</i> <b>{1}</b></td></tr>";
                 const string historyTab = "<tr><td colspan=\"9\"><i>Code History:</i></td></tr>";
-                using (var sw = new StreamWriter(outputStream, Encoding.UTF8))
+                using (var sw = new StreamWriter(new NonClosingStream(outputStream), Encoding.UTF8))
                 {
                     sw.WriteLine("<html>");
 
                     sw.WriteLine("<header>");
-                    sw.WriteLine("<style>table, th, td {\r\n  border: 1px solid black;\r\n  border-collapse: collapse;\r\n}</style>");
+                    sw.WriteLine(
+                        "<style>table, th, td {\r\n  border: 1px solid black;\r\n  border-collapse: collapse;\r\n}</style>");
                     sw.WriteLine("</header>");
 
                     sw.WriteLine("<body>");
@@ -75,30 +85,27 @@ namespace RzR.Core.CodeSource.Services.Export
                     {
                         var parent = it.Parent;
                         sw.WriteLine(emptyTab);
-                        sw.WriteLine(headTab, WebUtility.HtmlEncode(parent.Name), WebUtility.HtmlEncode(parent.FullName));
+                        sw.WriteLine(headTab, WebUtility.HtmlEncode(parent.Name),
+                            WebUtility.HtmlEncode(parent.FullName));
                         sw.WriteLine(historyTab);
 
                         if (parent.History.HasAnyData())
-                        {
                             foreach (var h in parent.History)
-                            {
                                 sw.WriteLine(@$"
                                     <tr>
                                         <td>{WebUtility.HtmlEncode(h.CodePath.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.SourceUrl.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.AuthorName.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.Copyright.IfIsNullThenEmpty())}</td>
-                                        <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd"))}</td>
+                                        <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))}</td>
                                         <td>{WebUtility.HtmlEncode(h.Comment.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.Version.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.Tags.IfIsNullThenEmpty())}</td>
                                         <td>{WebUtility.HtmlEncode(h.RelatedTaskId.IfIsNullThenEmpty())}</td>
                                     </tr>");
-                            }
-                        }
-                        var children = (it.Children ?? new List<CodeSourceObject>());
+
+                        var children = it.Children ?? new List<CodeSourceObject>();
                         if (children.HasAnyData())
-                        {
                             foreach (var c in children)
                             {
                                 sw.WriteLine(emptyTab);
@@ -106,30 +113,24 @@ namespace RzR.Core.CodeSource.Services.Export
                                 sw.WriteLine(historyTab);
 
                                 if (c.History.HasAnyData())
-                                {
                                     foreach (var h in c.History)
-                                    {
                                         sw.WriteLine(@$"
                                             <tr>
                                                 <td>{WebUtility.HtmlEncode(h.CodePath.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.SourceUrl.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.AuthorName.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.Copyright.IfIsNullThenEmpty())}</td>
-                                                <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd"))}</td>
+                                                <td>{WebUtility.HtmlEncode(h.AppliedOn?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))}</td>
                                                 <td>{WebUtility.HtmlEncode(h.Comment.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.Version.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.Tags.IfIsNullThenEmpty())}</td>
                                                 <td>{WebUtility.HtmlEncode(h.RelatedTaskId.IfIsNullThenEmpty())}</td>
                                             </tr>");
-                                    }
-                                }
                             }
-                        }
                         else
-                        {
                             sw.WriteLine(emptyTab);
-                        }
                     }
+
                     sw.WriteLine("</table>");
 
                     sw.WriteLine("</body>");

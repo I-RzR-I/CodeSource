@@ -1,23 +1,25 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-18 09:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-18 09:45
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="CsvExporter.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using RzR.Core.CodeSource.Abstractions;
@@ -44,9 +46,15 @@ namespace RzR.Core.CodeSource.Services.Export
             const string tblHeader =
                 "CodePath,URL,Author,Copyright,AppliedOn,Comment,Version,Tags,WorkItemId,IsParent,IsHistory";
             const string emptyTab = ",,,,,,,,,,";
+
+            if (items.IsNull())
+                throw new ArgumentNullException(nameof(items));
+            if (outputStream.IsNull())
+                throw new ArgumentNullException(nameof(outputStream));
+
             try
             {
-                using (var sw = new StreamWriter(outputStream, Encoding.UTF8))
+                using (var sw = new StreamWriter(new NonClosingStream(outputStream), Encoding.UTF8))
                 {
                     sw.WriteLine(tblHeader);
 
@@ -55,7 +63,7 @@ namespace RzR.Core.CodeSource.Services.Export
                         var parent = it.Parent;
                         sw.WriteLine(emptyTab);
                         sw.WriteLine(string.Join(",",
-                            Escape(parent.FullName.IfIsNullThenEmpty()),
+                            EscapeData(parent.FullName),
                             Escape(string.Empty),
                             Escape(string.Empty),
                             Escape(string.Empty),
@@ -69,33 +77,28 @@ namespace RzR.Core.CodeSource.Services.Export
                         ));
 
                         if (parent.History.HasAnyData())
-                        {
                             foreach (var h in parent.History)
-                            {
                                 sw.WriteLine(string.Join(",",
-                                    Escape(h.CodePath.IfIsNullThenEmpty()),
-                                    Escape(h.SourceUrl.IfIsNullThenEmpty()),
-                                    Escape(h.AuthorName.IfIsNullThenEmpty()),
-                                    Escape(h.Copyright.IfIsNullThenEmpty()),
-                                    Escape(h.AppliedOn?.ToString("yyyy-MM-dd")),
-                                    Escape(h.Comment.IfIsNullThenEmpty()),
-                                    Escape(h.Version.IfIsNullThenEmpty()),
-                                    Escape(h.Tags.IfIsNullThenEmpty()),
-                                    Escape(h.RelatedTaskId.IfIsNullThenEmpty()),
+                                    EscapeData(h.CodePath),
+                                    EscapeData(h.SourceUrl),
+                                    EscapeData(h.AuthorName),
+                                    EscapeData(h.Copyright),
+                                    EscapeData(h.AppliedOn?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
+                                    EscapeData(h.Comment),
+                                    EscapeData(h.Version),
+                                    EscapeData(h.Tags),
+                                    EscapeData(h.RelatedTaskId),
                                     Escape("1"),
                                     Escape("1")
                                 ));
-                            }
-                        }
 
                         var children = it.Children ?? new List<CodeSourceObject>();
                         if (children.HasAnyData())
-                        {
                             foreach (var c in children)
                             {
                                 sw.WriteLine(emptyTab);
                                 sw.WriteLine(string.Join(",",
-                                    Escape(c.FullName.IfIsNullThenEmpty()),
+                                    EscapeData(c.FullName),
                                     Escape(string.Empty),
                                     Escape(string.Empty),
                                     Escape(string.Empty),
@@ -109,31 +112,36 @@ namespace RzR.Core.CodeSource.Services.Export
                                 ));
 
                                 if (c.History.HasAnyData())
-                                {
                                     foreach (var h in c.History)
-                                    {
                                         sw.WriteLine(string.Join(",",
-                                            Escape(h.CodePath.IfIsNullThenEmpty()),
-                                            Escape(h.SourceUrl.IfIsNullThenEmpty()),
-                                            Escape(h.AuthorName.IfIsNullThenEmpty()),
-                                            Escape(h.Copyright.IfIsNullThenEmpty()),
-                                            Escape(h.AppliedOn?.ToString("yyyy-MM-dd")),
-                                            Escape(h.Comment.IfIsNullThenEmpty()),
-                                            Escape($"{h.Version:##.0##}"),
-                                            Escape(h.Tags.IfIsNullThenEmpty()),
-                                            Escape(h.RelatedTaskId.IfIsNullThenEmpty()),
+                                            EscapeData(h.CodePath),
+                                            EscapeData(h.SourceUrl),
+                                            EscapeData(h.AuthorName),
+                                            EscapeData(h.Copyright),
+                                            EscapeData(
+                                                h.AppliedOn?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
+                                            EscapeData(h.Comment),
+                                            EscapeData(h.Version),
+                                            EscapeData(h.Tags),
+                                            EscapeData(h.RelatedTaskId),
                                             Escape("0"),
                                             Escape("1")
                                         ));
-                                    }
-                                }
                             }
-
-                        }
 
                         continue;
 
-                        string Escape(string v) => $"\"{v.IfIsNullThenEmpty().Replace("\"", "\"\"")}\"";
+                        // Fixed flag and placeholder cells: quoted only, never formula-neutralised.
+                        string Escape(string v)
+                        {
+                            return v.ToCsvField();
+                        }
+
+                        // Data-derived cells: trimmed, formula-neutralised, then quoted.
+                        string EscapeData(string v)
+                        {
+                            return v.ToCsvDataField();
+                        }
                     }
                 }
             }

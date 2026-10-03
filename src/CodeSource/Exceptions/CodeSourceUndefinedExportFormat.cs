@@ -1,20 +1,21 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-23 23:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-23 23:15
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="CodeSourceUndefinedExportFormat.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 
@@ -22,37 +23,30 @@ using System;
 
 namespace RzR.Core.CodeSource.Exceptions
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     A code source undefined export format.
     /// </summary>
     /// <seealso cref="T:Exception" />
-    /// =================================================================================================
     public class CodeSourceUndefinedExportFormat : Exception
     {
-        /// -------------------------------------------------------------------------------------------------
-        /// <summary>
-        ///     Gets the format to use.
-        /// </summary>
-        /// <value>
-        ///     The format.
-        /// </value>
-        /// =================================================================================================
-        public string Format { get; }
-
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Initializes a new instance of the <see cref="CodeSourceUndefinedExportFormat" /> class.
         /// </summary>
         /// <param name="format">Describes the format to use.</param>
-        /// =================================================================================================
         public CodeSourceUndefinedExportFormat(string format)
             : base(FormatMessage(format))
         {
             Format = format;
         }
 
-        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets the format to use.
+        /// </summary>
+        /// <value>
+        ///     The format.
+        /// </value>
+        public string Format { get; }
+
         /// <summary>
         ///     Format message.
         /// </summary>
@@ -60,7 +54,9 @@ namespace RzR.Core.CodeSource.Exceptions
         /// <returns>
         ///     The formatted message.
         /// </returns>
-        /// =================================================================================================
-        private static string FormatMessage(string format) => $"Missing exporter for '{format}'";
+        private static string FormatMessage(string format)
+        {
+            return $"Missing exporter for '{format}'";
+        }
     }
 }
