@@ -1,3 +1,13 @@
+### **v6.1.0.5877** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 03-10-2026
+* [856a49e] (RzR) -> Auto commit uncommited files
+* [2a011ea] (RzR) -> [#18] - Document scan error reporting, safe output and the migration from 6.0.
+* [96f2022] (RzR) -> [#18] - Remove comments and regions from sample and legacy test projects.
+* [ebf68dc] (RzR) -> [#18] - Add scanner, exporter safety, stream ownership and concurrency tests.
+* [685e2e3] (RzR) -> [#18] - Refresh shared assembly info.
+* [7238211] (RzR) -> [#18] - Keep caller streams open and escape exporter output.
+* [c4616c0] (RzR) -> [#18] - Report recoverable scan failures through CodeSourceScanOptions.
+* [cf92548] (RzR) -> [#18] - Add CodeSource(sourceUrl) constructor and obsolete positional constructors.
+
 ### **v6.0.0.94** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 23-05-2026
 * [DEV] - (RzR) -> Update package title and assembly metadata to use `RzR.Core.CodeSource`.
 * [DEV] - (RzR) -> Change `ExporterRegistry` default assembly lookup to `RzR.Core.CodeSource`.
