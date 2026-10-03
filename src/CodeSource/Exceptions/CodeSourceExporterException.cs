@@ -1,20 +1,21 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-24 08:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-24 08:17
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="CodeSourceExporterException.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 
@@ -22,50 +23,41 @@ using System;
 
 namespace RzR.Core.CodeSource.Exceptions
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Exception for signalling code source exporter errors.
     /// </summary>
-    /// <seealso cref="T:Exception"/>
-    /// =================================================================================================
+    /// <seealso cref="T:Exception" />
     public class CodeSourceExporterException : Exception
     {
-        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSourceExporterException" /> class.
+        /// </summary>
+        /// <param name="exporterFormat">The exporter format.</param>
+        public CodeSourceExporterException(string exporterFormat)
+            : base(FormatMessage(exporterFormat))
+        {
+            ExporterFormat = exporterFormat;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CodeSourceExporterException" /> class.
+        /// </summary>
+        /// <param name="exporterFormat">The exporter format.</param>
+        /// <param name="innerException">The inner exception.</param>
+        public CodeSourceExporterException(string exporterFormat, Exception innerException)
+            : base(FormatMessage(exporterFormat), innerException)
+        {
+            ExporterFormat = exporterFormat;
+        }
+
         /// <summary>
         ///     Gets the exporter format.
         /// </summary>
         /// <value>
         ///     The exporter format.
         /// </value>
-        /// =================================================================================================
         public string ExporterFormat { get; }
 
-        /// -------------------------------------------------------------------------------------------------
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CodeSourceExporterException"/> class.
-        /// </summary>
-        /// <param name="exporterFormat">The exporter format.</param>
-        /// =================================================================================================
-        public CodeSourceExporterException(string exporterFormat) 
-            : base(FormatMessage(exporterFormat))
-        {
-            ExporterFormat = exporterFormat;
-        }
-
-        /// -------------------------------------------------------------------------------------------------
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CodeSourceExporterException"/> class.
-        /// </summary>
-        /// <param name="exporterFormat">The exporter format.</param>
-        /// <param name="innerException">The inner exception.</param>
-        /// =================================================================================================
-        public CodeSourceExporterException(string exporterFormat, Exception innerException) 
-            : base(FormatMessage(exporterFormat), innerException)
-        {
-            ExporterFormat = exporterFormat;
-        }
-
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Format message.
         /// </summary>
@@ -73,7 +65,6 @@ namespace RzR.Core.CodeSource.Exceptions
         /// <returns>
         ///     The formatted message.
         /// </returns>
-        /// =================================================================================================
         private static string FormatMessage(string exporterFormat)
         {
             return $"Unexpected error occurred while trying to export code history in the format '{exporterFormat}'";

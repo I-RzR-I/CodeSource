@@ -1,23 +1,25 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-19 00:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-19 00:12
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="JsonExporter.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,13 +39,9 @@ namespace RzR.Core.CodeSource.Services.Export
     /// <inheritdoc cref="ICodeSourceExporter" />
     public sealed class JsonExporter : ICodeSourceExporter
     {
-        private bool _isFirst;
-
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     (Immutable) the indent. 1 TAB (4 spaces) value.
         /// </summary>
-        /// =================================================================================================
         private const string Indent = "\t";
 
         /// <inheritdoc />
@@ -52,17 +50,20 @@ namespace RzR.Core.CodeSource.Services.Export
         /// <inheritdoc />
         public void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream)
         {
+            if (items == null)
+                throw new ArgumentNullException(nameof(items));
+            if (outputStream == null)
+                throw new ArgumentNullException(nameof(outputStream));
+
             try
             {
-                _isFirst = true;
-                using (var sw = new StreamWriter(outputStream, Encoding.UTF8))
+                // Per-call state: the registry shares one exporter instance across threads.
+                var isFirst = true;
+                using (var sw = new StreamWriter(new NonClosingStream(outputStream), Encoding.UTF8))
                 {
-                    sw.WriteJsonOpenArray(Indent.IndentMultiply(-1));// start of array (codeSources) [ 
-                    foreach (var item in items)
-                    {
-                        WriteItem(sw, item);
-                    }
-                    sw.WriteJsonCloseArray(Indent.IndentMultiply(-1), true, false);// end of array (codeSources) ]
+                    sw.WriteJsonOpenArray(Indent.IndentMultiply(-1)); // start of array (codeSources) [ 
+                    foreach (var item in items) WriteItem(sw, item, ref isFirst);
+                    sw.WriteJsonCloseArray(Indent.IndentMultiply(-1), true, false); // end of array (codeSources) ]
                 }
             }
             catch (Exception ex)
@@ -71,25 +72,27 @@ namespace RzR.Core.CodeSource.Services.Export
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Writes an item.
         /// </summary>
         /// <param name="sw">The software.</param>
         /// <param name="item">The item.</param>
-        /// =================================================================================================
-        private void WriteItem(StreamWriter sw, CodeSourceObjectsResult item)
+        /// <param name="isFirst">
+        ///     [in,out] True while no item has been written in the current export; set to false once an
+        ///     item is written.
+        /// </param>
+        private static void WriteItem(StreamWriter sw, CodeSourceObjectsResult item, ref bool isFirst)
         {
             if (item.IsNull())
                 return;
 
-            if (!_isFirst)
+            if (!isFirst)
                 sw.WriteJsonObjDelimiter();
 
-            _isFirst = false;
+            isFirst = false;
 
             sw.WriteJsonIndent(Indent.IndentMultiply())
-                .WriteJsonOpenObject();// start of object (codeSource) {
+                .WriteJsonOpenObject(); // start of object (codeSource) {
 
             // Parent
             var parent = item.Parent;
@@ -106,18 +109,16 @@ namespace RzR.Core.CodeSource.Services.Export
                 .WriteJsonCloseObject(); // end of object (codeSource) }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Writes the parent of this item.
         /// </summary>
         /// <param name="sw">The software.</param>
         /// <param name="parent">The parent.</param>
-        /// =================================================================================================
         private static void WriteJsonParent(StreamWriter sw, CodeSourceObject parent)
         {
             sw.WriteJsonIndent(Indent.IndentMultiply(1))
                 .WriteProp("parent", null, false, false, false)
-                .WriteJsonOpenObject();// start of object (parent) {
+                .WriteJsonOpenObject(); // start of object (parent) {
 
             sw.WriteJsonIndent(Indent.IndentMultiply(2))
                 .WriteProp("name", parent.Name);
@@ -126,7 +127,7 @@ namespace RzR.Core.CodeSource.Services.Export
 
             sw.WriteJsonIndent(Indent.IndentMultiply(2))
                 .WriteProp("codeChanges", null, false, false, false)
-                .WriteJsonOpenArray();// start of object (codeChanges) [
+                .WriteJsonOpenArray(); // start of object (codeChanges) [
 
             if (parent.History.HasAnyData())
             {
@@ -136,7 +137,7 @@ namespace RzR.Core.CodeSource.Services.Export
                     var h = parent.History.ElementAt(i);
 
                     sw.WriteJsonIndent(Indent.IndentMultiply(3))
-                        .WriteJsonOpenObject();// start of object (codeChange) {
+                        .WriteJsonOpenObject(); // start of object (codeChange) {
 
                     WriteJsonHistoryItem(sw, h, Indent.IndentMultiply(4));
 
@@ -156,18 +157,16 @@ namespace RzR.Core.CodeSource.Services.Export
                 .WriteJsonCloseObject(); // end of object (parent) }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Writes the children of this item.
         /// </summary>
         /// <param name="sw">The software.</param>
         /// <param name="children">The children.</param>
-        /// =================================================================================================
         private static void WriteJsonChildren(StreamWriter sw, IEnumerable<CodeSourceObject> children)
         {
             sw.WriteJsonIndent(Indent.IndentMultiply(1))
                 .WriteProp("children", null, false, false, false)
-                .WriteJsonOpenArray();// start of array (children) [
+                .WriteJsonOpenArray(); // start of array (children) [
 
             var childrenCount = children.Count();
             for (var i = 0; i < childrenCount; i++)
@@ -175,7 +174,7 @@ namespace RzR.Core.CodeSource.Services.Export
                 var child = children.ElementAt(i);
 
                 sw.WriteJsonIndent(Indent.IndentMultiply(2))
-                    .WriteJsonOpenObject();// start of object (child) {
+                    .WriteJsonOpenObject(); // start of object (child) {
 
                 sw.WriteJsonIndent(Indent.IndentMultiply(3))
                     .WriteProp("name", child.Name);
@@ -184,7 +183,7 @@ namespace RzR.Core.CodeSource.Services.Export
 
                 sw.WriteJsonIndent(Indent.IndentMultiply(3))
                     .WriteProp("codeChanges", null, false, false, false)
-                    .WriteJsonOpenArray();// start of object (codeChanges) [
+                    .WriteJsonOpenArray(); // start of object (codeChanges) [
                 if (child.History.HasAnyData())
                 {
                     var historyCount = child.History.Count();
@@ -193,7 +192,7 @@ namespace RzR.Core.CodeSource.Services.Export
                         var h = child.History.ElementAt(j);
 
                         sw.WriteJsonIndent(Indent.IndentMultiply(4))
-                            .WriteJsonOpenObject();// start of object (codeChange) {
+                            .WriteJsonOpenObject(); // start of object (codeChange) {
 
                         WriteJsonHistoryItem(sw, h, Indent.IndentMultiply(5));
 
@@ -204,6 +203,7 @@ namespace RzR.Core.CodeSource.Services.Export
                             sw.WriteJsonObjDelimiter();
                     }
                 }
+
                 sw.WriteJsonNewLine()
                     .WriteJsonIndent(Indent.IndentMultiply(3))
                     .WriteJsonCloseArray(null, false); // end of object (codeChanges) ]
@@ -219,14 +219,12 @@ namespace RzR.Core.CodeSource.Services.Export
                 .WriteJsonCloseArray(null, false, false); // end of array (children) ]
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Writes a JSON history item.
         /// </summary>
         /// <param name="sw">The software.</param>
         /// <param name="history">The history.</param>
         /// <param name="indent">(Immutable) the indent. 1 TAB (4 spaces) value.</param>
-        /// =================================================================================================
         private static void WriteJsonHistoryItem(StreamWriter sw, CodeSourceObjectHistory history, string indent)
         {
             sw.WriteJsonIndent(indent)
@@ -242,7 +240,7 @@ namespace RzR.Core.CodeSource.Services.Export
                 .WriteProp("copyright", history.Copyright.IfIsNullThenEmpty());
 
             sw.WriteJsonIndent(indent)
-                .WriteProp("appliedOn", history.AppliedOn?.ToString("yyyy-MM-dd"));
+                .WriteProp("appliedOn", history.AppliedOn?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
 
             sw.WriteJsonIndent(indent)
                 .WriteProp("comment", history.Comment.IfIsNullThenEmpty());

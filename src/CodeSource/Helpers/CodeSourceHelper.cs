@@ -1,20 +1,21 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2022-12-13 02:23
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2022-12-16 22:48
-// ***********************************************************************
-//  <copyright file="CodeSourceHelper.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
+//  <copyright file="CodeSourceHelper.cs" company="RzR SOFT & TECH">
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 using System.Collections.Generic;
@@ -30,289 +31,334 @@ using RzR.Core.CodeSource.Models;
 
 namespace RzR.Core.CodeSource.Helpers
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Code source helper methods.
     /// </summary>
-    /// =================================================================================================
     internal static class CodeSourceHelper
     {
-
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Get assembly code source.
+        ///     Get the code source of the assembly loaded by name, and of its referenced assemblies.
         /// </summary>
-        /// <remarks>
-        ///     Running this method can take some time in case when you have a big project.
-        /// </remarks>
-        /// <param name="assembly">(Optional) Optional. The default value is null.</param>
+        /// <param name="assemblyName">The assembly display name.</param>
+        /// <param name="options">
+        ///     The scan options, or null to skip recoverable failures silently.
+        /// </param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the code source assemblies in
-        ///     this collection.
+        ///     The annotated types.
         /// </returns>
-        /// =================================================================================================
-        //[Obsolete("This method is deprecated. Use available from CodeSource.Services.CodeSourceScanner.FindAnnotations")]
-        internal static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(string assembly = null)
+        internal static List<CodeSourceObjectsResult> GetCodeSourceAssembly(string assemblyName,
+            CodeSourceScanOptions options)
         {
-            var assemblies = GetListOfEntryAssemblyWithReferences(assembly);
+            var mainAssembly = Assembly.Load(new AssemblyName(assemblyName));
 
-            return GetCodeSourceAssembly(assemblies);
+            return GetCodeSourceAssembly(WithReferences(mainAssembly, options), options);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Get assembly code source.
+        ///     Get the code source of the given assembly, and of its referenced assemblies.
         /// </summary>
-        /// <remarks>
-        ///     Running this method can take some time in case when you have a big project.
-        /// </remarks>
-        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="options">
+        ///     The scan options, or null to skip recoverable failures silently.
+        /// </param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the code source assemblies in
-        ///     this collection.
+        ///     The annotated types.
         /// </returns>
-        /// =================================================================================================
-        internal static IEnumerable<CodeSourceObjectsResult> GetCodeSourceAssembly(IEnumerable<Assembly> assemblies)
+        internal static List<CodeSourceObjectsResult> GetCodeSourceAssembly(Assembly assembly,
+            CodeSourceScanOptions options)
+        {
+#if !NETSTANDARD1_0 && !NETSTANDARD1_5
+            if (IsReflectionOnly(assembly))
+                assembly = Assembly.Load(new AssemblyName(assembly.FullName));
+#endif
+
+            return GetCodeSourceAssembly(WithReferences(assembly, options), options);
+        }
+
+#if !NETSTANDARD1_0 && !NETSTANDARD1_5
+
+        /// <summary>
+        ///     Query if the assembly was loaded for reflection only (including metadata-only contexts).
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        ///     True if reflection-only, false if not.
+        /// </returns>
+        private static bool IsReflectionOnly(Assembly assembly)
+        {
+            try
+            {
+                return assembly.ReflectionOnly;
+            }
+            catch (NotImplementedException)
+            {
+                return false;
+            }
+        }
+#endif
+
+        /// <summary>
+        ///     Get the code source of exactly the given assemblies.
+        /// </summary>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <param name="options">
+        ///     The scan options, or null to skip recoverable failures silently.
+        /// </param>
+        /// <returns>
+        ///     The annotated types, in assembly and type order.
+        /// </returns>
+        internal static List<CodeSourceObjectsResult> GetCodeSourceAssembly(IEnumerable<Assembly> assemblies,
+            CodeSourceScanOptions options)
         {
             var codeSource = new List<CodeSourceObjectsResult>();
-            foreach (var localAssembly in assemblies)
+            foreach (var assembly in assemblies)
             {
-#if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
-                foreach (var t in localAssembly.GetExportedTypes())
-#elif NETSTANDARD1_0
-                foreach (var t in localAssembly.ExportedTypes)
-#else
-                foreach (var t in localAssembly.GetExportedTypes())
-#endif
+                if (assembly.IsNull())
+                    continue;
+
+                var assemblyName = assembly.FullName;
+                foreach (var type in GetExportedTypes(assembly, options))
                 {
-                    var obj = new CodeSourceObjectsResult();
-
-                    var typeInfo = t;
-                    GetClassCodeSource(ref typeInfo, ref obj);
-                    GetCtorCodeSource(ref typeInfo, ref obj);
-                    GetMethodCodeSource(ref typeInfo, ref obj, t);
-
-                    if (obj.Parent != null || obj.Children != null && obj.Children.Any())
-                        codeSource.Add(obj);
+                    var result = GetTypeCodeSource(assemblyName, type, options);
+                    if (result.IsNotNull())
+                        codeSource.Add(result);
                 }
             }
 
             return codeSource;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Get entry assembly with references.
+        ///     Gets the root assembly followed by its referenced assemblies, each listed at most once.
         /// </summary>
-        /// <param name="assembly">The Assembly name.</param>
+        /// <param name="root">The root assembly.</param>
+        /// <param name="options">The scan options.</param>
         /// <returns>
-        ///     An enumerator that allows foreach to be used to process the list of entry assembly with
-        ///     references in this collection.
+        ///     The assemblies to scan, root first.
         /// </returns>
-        /// =================================================================================================
-        private static IEnumerable<Assembly> GetListOfEntryAssemblyWithReferences(string assembly)
+        private static List<Assembly> WithReferences(Assembly root, CodeSourceScanOptions options)
         {
-            var listOfAssemblies = new List<Assembly>();
-            var mainAsm = Assembly.Load(new AssemblyName(assembly!));
+            var assemblies = new List<Assembly> { root };
 
-            listOfAssemblies.Add(mainAsm);
+#if !NETSTANDARD1_0
+            var seen = new HashSet<string>(StringComparer.Ordinal) { root.FullName };
+            foreach (var reference in GetReferencedAssemblies(root, options))
+            {
+                if (!seen.Add(reference.FullName))
+                    continue;
 
+                var loaded = LoadReference(reference, options);
+
+                if (loaded.IsNotNull() && (loaded.FullName == reference.FullName || seen.Add(loaded.FullName)))
+                    assemblies.Add(loaded);
+            }
+#endif
+
+            return assemblies;
+        }
+
+        /// <summary>
+        ///     Gets the exported types of an assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The exported types, or an empty array if they could not be enumerated.
+        /// </returns>
+        private static Type[] GetExportedTypes(Assembly assembly, CodeSourceScanOptions options)
+        {
+            try
+            {
 #if NETSTANDARD1_0
-            var assemblies = mainAsm.ExportedTypes.Select(x => x.GetTypeInfo().Assembly);
-            listOfAssemblies.AddRange(assemblies);
+                return assembly.ExportedTypes.ToArray();
 #else
-            listOfAssemblies.AddRange(mainAsm.GetReferencedAssemblies().Select(Assembly.Load));
+                return assembly.GetExportedTypes();
 #endif
+            }
+            catch (Exception ex) when (ScanExceptionFilter.IsRecoverable(ex, CodeSourceScanStage.TypeEnumeration))
+            {
+                ReportError(options, CodeSourceScanStage.TypeEnumeration, assembly.FullName, null, null, ex);
 
-            return listOfAssemblies;
+                return new Type[0];
+            }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Get Classes code source details.
+        ///     Gets the code source of a type: its own annotations, then those of its constructors and
+        ///     methods.
         /// </summary>
-        /// <param name="typeInfo">[in,out] Type info.</param>
-        /// <param name="dataObject">[in,out] Current result object data.</param>
-        /// =================================================================================================
-        private static void GetClassCodeSource(ref Type typeInfo, ref CodeSourceObjectsResult dataObject)
+        /// <param name="assemblyName">The name of the assembly that declares the type.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The type's code source, or null if neither the type nor any of its members is annotated.
+        /// </returns>
+        private static CodeSourceObjectsResult GetTypeCodeSource(string assemblyName, Type type,
+            CodeSourceScanOptions options)
+        {
+#if NET40
+            var typeMember = (MemberInfo)type;
+#else
+            var typeMember = (MemberInfo)type.GetTypeInfo();
+#endif
+            var parentHistory = new List<CodeSourceObjectHistory>();
+            var typeAttributes = ReadAttributes(typeMember, assemblyName, type.FullName, null, options);
+            if (typeAttributes.IsNotNull())
+                parentHistory.AddRange(typeAttributes.Select(atr =>
+                    SetHistoryItemData(atr, type.FullName, string.Empty, assemblyName, null, options)));
+
+            var children = new List<CodeSourceObject>();
+            foreach (var ctor in GetConstructors(type, assemblyName, options))
+                AddChild(children, ctor, type.FullName, assemblyName, options);
+
+            foreach (var method in GetMethods(type, assemblyName, options))
+                AddChild(children, method, type.FullName, assemblyName, options);
+
+            if (parentHistory.Count == 0 && children.Count == 0)
+                return null;
+
+            return new CodeSourceObjectsResult
+            {
+                Parent = new CodeSourceObject
+                {
+                    FullName = type.FullName,
+                    Name = type.Name,
+                    History = parentHistory
+                },
+                Children = children
+            };
+        }
+
+        /// <summary>
+        ///     Gets the constructors of a type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The constructors, or an empty array if they could not be enumerated.
+        /// </returns>
+        private static ConstructorInfo[] GetConstructors(Type type, string assemblyName,
+            CodeSourceScanOptions options)
         {
             try
             {
-                var parent = new CodeSourceObject()
-                {
-                    FullName = typeInfo.FullName,
-                    Name = typeInfo.Name,
-                    History = new List<CodeSourceObjectHistory>()
-                };
-
-                //var classAttributes = typeInfo.GetCustomAttributes(typeof(CodeSourceAttribute)).ToList();
-                var classAttributes =
-#if NET45_OR_GREATER || NET
-                        typeInfo.GetCustomAttributes(typeof(CodeSourceAttribute)).ToList();
-#elif NETSTANDARD1_0
-                    typeInfo.GetTypeInfo().GetCustomAttributes(typeof(CodeSourceAttribute), true).ToList();
-#elif NETSTANDARD1_5_OR_GREATER
-                    typeInfo.GetTypeInfo().GetCustomAttributes(typeof(CodeSourceAttribute)).ToList();
+#if NET40
+                return type.GetConstructors();
 #else
-                    typeInfo.GetCustomAttributes(typeof(CodeSourceAttribute), true).ToList();
+                return type.GetTypeInfo().DeclaredConstructors.ToArray();
 #endif
-
-                if (classAttributes.IsNullOrEmpty()) return; // Check if the current item doesn't have the attribute, then ignore
-
-                var changeHistory = new List<CodeSourceObjectHistory>();
-                foreach (var atr in classAttributes)
-                {
-                    changeHistory.Add(SetHistoryItemData((CodeSourceAttribute)atr, typeInfo.FullName, string.Empty));
-                }
-
-                parent.History = changeHistory;
-                dataObject.Parent = parent;
             }
-            catch
+            catch (Exception ex) when (ScanExceptionFilter.IsRecoverable(ex, CodeSourceScanStage.MemberEnumeration))
             {
-                /*ignored*/
+                ReportError(options, CodeSourceScanStage.MemberEnumeration, assemblyName, type.FullName, null, ex);
+
+                return new ConstructorInfo[0];
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Get CTOR code source details.
+        ///     Gets the methods of a type.
         /// </summary>
-        /// <param name="typeInfo">[in,out] Type info.</param>
-        /// <param name="dataObject">[in,out] Current result object data.</param>
-        /// =================================================================================================
-        private static void GetCtorCodeSource(ref Type typeInfo, ref CodeSourceObjectsResult dataObject)
+        /// <param name="type">The type.</param>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The methods, or an empty array if they could not be enumerated.
+        /// </returns>
+        private static MethodInfo[] GetMethods(Type type, string assemblyName, CodeSourceScanOptions options)
         {
             try
             {
-                var children = new List<CodeSourceObject>();
-                ConstructorInfo[] constructorInfos = new ConstructorInfo[] {};
-#if NET45_OR_GREATER || NET || NETSTANDARD2_0_OR_GREATER
-                constructorInfos = typeInfo.GetTypeInfo().DeclaredConstructors.ToArray();
-#elif NETSTANDARD1_5 || NETSTANDARD1_0
-                constructorInfos = typeInfo.GetTypeInfo().DeclaredConstructors.ToArray();
+#if NET40
+                return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 #else
-                constructorInfos = typeInfo.GetConstructors();
+                return type.GetRuntimeMethods().ToArray();
 #endif
-                foreach (var ctor in constructorInfos)
-                {
-                    var ctorAttributes =
-#if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
-                        ctor.GetCustomAttributes(typeof(CodeSourceAttribute)).ToList();
-#else
-                        ((Attribute[])ctor.GetCustomAttributes(typeof(CodeSourceAttribute), true)).ToList();
-#endif
-                    if (ctorAttributes.Any() && dataObject.Parent == null)
-                        dataObject.Parent = new CodeSourceObject
-                        {
-                            FullName = typeInfo.FullName,
-                            Name = typeInfo.Name
-                        };
-
-                    SetChildHistoryData(ref children, ctorAttributes, typeInfo.FullName, ctor.Name);
-                }
-
-                dataObject.Children = dataObject.Children.IsNullOrEmpty()
-                    ? children
-                    : dataObject.Children.Concat(children).ToList();
             }
-            catch
+            catch (Exception ex) when (ScanExceptionFilter.IsRecoverable(ex, CodeSourceScanStage.MemberEnumeration))
             {
-                /*ignored*/
+                ReportError(options, CodeSourceScanStage.MemberEnumeration, assemblyName, type.FullName, null, ex);
+
+                return new MethodInfo[0];
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Get methods code source details.
+        ///     Adds a child entry for an annotated constructor or method.
         /// </summary>
-        /// <param name="typeInfo">[in,out] Type info.</param>
-        /// <param name="dataObject">[in,out] Current result object data.</param>
-        /// <param name="exportedTypes">Exported assembly type.</param>
-        /// =================================================================================================
-        private static void GetMethodCodeSource(ref Type typeInfo, ref CodeSourceObjectsResult dataObject,
-            Type exportedTypes)
+        /// <param name="children">The children collected so far.</param>
+        /// <param name="member">The constructor or method.</param>
+        /// <param name="fullName">The full name of the declaring type.</param>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="options">The scan options.</param>
+        private static void AddChild(List<CodeSourceObject> children, MethodBase member, string fullName,
+            string assemblyName, CodeSourceScanOptions options)
+        {
+            var attributes = ReadAttributes(member, assemblyName, fullName, member.Name, options);
+            if (attributes.IsNullOrEmpty())
+                return; // Check if the current item doesn't have the attribute, then ignore
+
+            children.Add(new CodeSourceObject
+            {
+                Name = member.Name,
+                FullName = StringExtensions.SetFullName(fullName, member.Name),
+                History = attributes
+                    .Select(atr => SetHistoryItemData(atr, fullName, member.Name, assemblyName, member.Name, options))
+                    .ToList()
+            });
+        }
+
+        /// <summary>
+        ///     Reads the <see cref="CodeSourceAttribute" /> instances applied to a type or member.
+        /// </summary>
+        /// <param name="member">The type (as a member) or the member.</param>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="typeName">The full name of the type.</param>
+        /// <param name="memberName">The member name, or null for the type itself.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The attributes, or null if they could not be read.
+        /// </returns>
+        private static List<CodeSourceAttribute> ReadAttributes(MemberInfo member, string assemblyName,
+            string typeName, string memberName, CodeSourceScanOptions options)
         {
             try
             {
-                var children = new List<CodeSourceObject>();
-                var classMethods =
 #if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
-                exportedTypes.GetRuntimeMethods();
-#elif NETSTANDARD1_0
-                exportedTypes.GetRuntimeMethods();
+                var attributes = member.GetCustomAttributes(typeof(CodeSourceAttribute));
 #else
-                exportedTypes.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                var attributes = member.GetCustomAttributes(typeof(CodeSourceAttribute), true);
 #endif
-
-                foreach (var m in classMethods)
-                {
-                    var classMethodAttributes =
-#if NET45_OR_GREATER || NET || NETSTANDARD1_5_OR_GREATER
-                        m.GetCustomAttributes(typeof(CodeSourceAttribute)).ToList();
-#else
-                        ((Attribute[])m.GetCustomAttributes(typeof(CodeSourceAttribute), true)).ToList();
-#endif
-                    if (classMethodAttributes.Any() && dataObject.Parent == null)
-                        dataObject.Parent = new CodeSourceObject
-                        {
-                            FullName = typeInfo.FullName,
-                            Name = typeInfo.Name
-                        };
-
-                    SetChildHistoryData(ref children, classMethodAttributes, typeInfo.FullName, m.Name);
-                }
-
-                dataObject.Children = dataObject.Children.IsNullOrEmpty() 
-                    ? children 
-                    : dataObject.Children.Concat(children).ToList();
+                return attributes.Cast<CodeSourceAttribute>().ToList();
             }
-            catch
+            catch (Exception ex) when (ScanExceptionFilter.IsRecoverable(ex, CodeSourceScanStage.AttributeRead))
             {
-                /*ignored*/
+                ReportError(options, CodeSourceScanStage.AttributeRead, assemblyName, typeName, memberName, ex);
+
+                return null;
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
-        /// <summary>
-        ///     Sets child history data.
-        /// </summary>
-        /// <param name="children">[in,out] The children.</param>
-        /// <param name="historyAttributes">The history attributes.</param>
-        /// <param name="fullName">Name of the full.</param>
-        /// <param name="currentItemName">The current item name.</param>
-        /// =================================================================================================
-        private static void SetChildHistoryData(ref List<CodeSourceObject> children, IEnumerable<Attribute> historyAttributes,
-            string fullName, string currentItemName)
-        {
-            if (!historyAttributes.Any()) return; // Check if the current item doesn't have the attribute, then ignore
-
-            var child = new CodeSourceObject();
-            child.Name = currentItemName;
-            child.FullName = StringExtensions.SetFullName(fullName, currentItemName);
-
-            var changeHistory = new List<CodeSourceObjectHistory>();
-            changeHistory.AddRange(historyAttributes.Select(
-                atr => SetHistoryItemData((CodeSourceAttribute)atr, fullName, currentItemName)));
-
-            child.History = changeHistory;
-
-            children.Add(child);
-        }
-
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Sets history item data.
         /// </summary>
+        /// <remarks>
+        ///     An <c>AppliedOn</c> value that is present but not a valid date is reported as
+        ///     <see cref="CodeSourceScanStage.AttributeValue" />, and the history item keeps a null date. 
+        /// </remarks>
         /// <param name="historyAttribute">The history attribute.</param>
         /// <param name="fullName">Name of the full.</param>
         /// <param name="currentItemName">The current item name.</param>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="memberName">The member name, or null for the type itself.</param>
+        /// <param name="options">The scan options.</param>
         /// <returns>
         ///     A CodeSourceObjectHistory.
         /// </returns>
-        /// =================================================================================================
         private static CodeSourceObjectHistory SetHistoryItemData(CodeSourceAttribute historyAttribute,
-            string fullName, string currentItemName)
+            string fullName, string currentItemName, string assemblyName, string memberName,
+            CodeSourceScanOptions options)
         {
             var history = new CodeSourceObjectHistory();
 
@@ -326,7 +372,82 @@ namespace RzR.Core.CodeSource.Helpers
             history.Tags = historyAttribute.Tags;
             history.RelatedTaskId = historyAttribute.RelatedTaskId;
 
+            if (history.AppliedOn == null && historyAttribute.AppliedOn.IsPresent())
+                ReportError(options, CodeSourceScanStage.AttributeValue, assemblyName, fullName, memberName, null,
+                    "AppliedOn is not a valid 'yyyy-MM-dd' date, so it was ignored.");
+
             return history;
         }
+
+        /// <summary>
+        ///     Reports a recoverable failure to the caller's callback, if there is one.
+        /// </summary>
+        /// <remarks>
+        ///     An exception thrown by the callback is deliberately not caught: it aborts the scan.
+        /// </remarks>
+        /// <param name="options">The scan options.</param>
+        /// <param name="stage">The scan stage.</param>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="typeName">The full name of the type.</param>
+        /// <param name="memberName">The member name.</param>
+        /// <param name="exception">The exception, or null.</param>
+        /// <param name="description">(Optional) The description used when there is no exception.</param>
+        private static void ReportError(CodeSourceScanOptions options, CodeSourceScanStage stage,
+            string assemblyName, string typeName, string memberName, Exception exception,
+            string description = null)
+        {
+            var onError = options?.OnError;
+            if (onError == null)
+                return;
+
+            onError(new CodeSourceScanError(stage, assemblyName, typeName, memberName, exception, description));
+        }
+
+#if !NETSTANDARD1_0
+
+        /// <summary>
+        ///     Gets the names of the assemblies referenced by the root assembly.
+        /// </summary>
+        /// <param name="root">The root assembly.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The referenced assembly names, or an empty array if they could not be listed.
+        /// </returns>
+        private static AssemblyName[] GetReferencedAssemblies(Assembly root, CodeSourceScanOptions options)
+        {
+            try
+            {
+                return root.GetReferencedAssemblies();
+            }
+            catch (Exception ex) when (ScanExceptionFilter.IsRecoverable(ex, CodeSourceScanStage.AssemblyLoad))
+            {
+                ReportError(options, CodeSourceScanStage.AssemblyLoad, root.FullName, null, null, ex);
+
+                return new AssemblyName[0];
+            }
+        }
+
+        /// <summary>
+        ///     Loads a referenced assembly by name.
+        /// </summary>
+        /// <param name="reference">The referenced assembly name.</param>
+        /// <param name="options">The scan options.</param>
+        /// <returns>
+        ///     The loaded assembly, or null if it could not be loaded.
+        /// </returns>
+        private static Assembly LoadReference(AssemblyName reference, CodeSourceScanOptions options)
+        {
+            try
+            {
+                return Assembly.Load(reference);
+            }
+            catch (Exception ex) when (ScanExceptionFilter.IsRecoverable(ex, CodeSourceScanStage.AssemblyLoad))
+            {
+                ReportError(options, CodeSourceScanStage.AssemblyLoad, reference.FullName, null, null, ex);
+
+                return null;
+            }
+        }
+#endif
     }
 }

@@ -6,7 +6,7 @@
 //  Last Modified By : RzR
 //  Last Modified On : 2026-10-01 21:21
 //  ***********************************************************************
-//  <copyright file="ICodeSourceExporter.cs" company="RzR SOFT & TECH">
+//  <copyright file="CodeSourceScanOptions.cs" company="RzR SOFT & TECH">
 //      Copyright (c) RzR. All rights reserved.
 //  </copyright>
 //  <contact>
@@ -17,32 +17,23 @@
 
 #region U S I N G
 
-using System.Collections.Generic;
-using System.IO;
-using RzR.Core.CodeSource.Models;
+using System;
 
 #endregion
 
-namespace RzR.Core.CodeSource.Abstractions
+namespace RzR.Core.CodeSource.Models
 {
     /// <summary>
-    ///     Interface for code source exporter.
+    ///     Options for an annotation scan.
     /// </summary>
-    public interface ICodeSourceExporter
+    public sealed class CodeSourceScanOptions
     {
         /// <summary>
-        ///     Gets the format to use.
+        ///     Gets or sets the callback invoked for every recoverable failure met during the scan.
         /// </summary>
         /// <value>
-        ///     The format.
+        ///     The error callback, or null to skip failures silently.
         /// </value>
-        string Format { get; }
-
-        /// <summary>
-        ///     Exports.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        /// <param name="outputStream">The output stream.</param>
-        void Export(IEnumerable<CodeSourceObjectsResult> items, Stream outputStream);
+        public Action<CodeSourceScanError> OnError { get; set; }
     }
 }

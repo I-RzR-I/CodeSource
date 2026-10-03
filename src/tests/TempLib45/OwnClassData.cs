@@ -1,9 +1,5 @@
-﻿#region U S A G E S
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using RzR.Core.CodeSource;
-
-#endregion
 
 namespace TempLib45
 {

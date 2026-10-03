@@ -1,22 +1,4 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.Tests
-//  Author           : RzR
-//  Created On       : 2025-11-17 23:11
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2025-11-17 23:19
-// ***********************************************************************
-//  <copyright file="ExportTests.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
-
-#region U S A G E S
-
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using System;
 using System.IO;
@@ -25,8 +7,6 @@ using System.Reflection;
 using RzR.Core.CodeSource;
 using RzR.Core.CodeSource.Services;
 using RzR.Core.CodeSource.Services.Export;
-
-#endregion
 
 namespace Tests
 {

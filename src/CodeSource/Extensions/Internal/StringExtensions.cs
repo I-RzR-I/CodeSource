@@ -1,20 +1,21 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-14 20:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-14 23:37
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="StringExtensions.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System;
 using System.Globalization;
@@ -23,14 +24,11 @@ using System.Globalization;
 
 namespace RzR.Core.CodeSource.Extensions.Internal
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     A string extensions.
     /// </summary>
-    /// =================================================================================================
     internal static class StringExtensions
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that query if 'source' is missing.
         /// </summary>
@@ -38,13 +36,11 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         /// <returns>
         ///     True if missing, false if not.
         /// </returns>
-        /// =================================================================================================
         internal static bool IsMissing(this string source)
         {
             return string.IsNullOrWhiteSpace(source);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that query if 'source' is present.
         /// </summary>
@@ -52,66 +48,59 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         /// <returns>
         ///     True if present, false if not.
         /// </returns>
-        /// =================================================================================================
         internal static bool IsPresent(this string source)
         {
             return !source.IsMissing();
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that if is null then empty.
         /// </summary>
         /// <param name="source">The source to act on.</param>
         /// <returns>
-        ///     A string.
+        ///     An empty string when <paramref name="source" /> is null; otherwise the trimmed value.
         /// </returns>
-        /// =================================================================================================
         internal static string IfIsNullThenEmpty(this string source)
         {
             return (source ?? string.Empty).Trim();
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that sets copy right.
         /// </summary>
         /// <param name="sourceValue">The sourceValue to act on.</param>
         /// <returns>
-        ///     A string.
+        ///     The value prefixed with ©, or null when the value is null, empty or white space.
         /// </returns>
-        /// =================================================================================================
         internal static string SetCopyRight(this string sourceValue)
         {
-            return $"{(sourceValue.IfIsNullThenEmpty().IsPresent() ? $"© {sourceValue}" : null)}";
+            if (sourceValue.IsMissing())
+                return null;
+
+            return sourceValue.TrimStart().StartsWith("©", StringComparison.Ordinal)
+                ? sourceValue
+                : $"© {sourceValue}";
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that sets applied date.
         /// </summary>
-        /// <param name="sourceDateValue">The sourceDateValue to act on.</param>
+        /// <param name="sourceDateValue">The sourceDateValue to act on. FORMAT: 'yyyy-MM-dd'.</param>
         /// <returns>
-        ///     A DateTime?
+        ///     The parsed date, or null when the value is null, empty, white space or not a valid 'yyyy-
+        ///     MM-dd' date. Leading and trailing white space is ignored.
         /// </returns>
-        /// =================================================================================================
         internal static DateTime? SetAppliedDate(this string sourceDateValue)
         {
-            try
-            {
-                var date = sourceDateValue.IfIsNullThenEmpty().IsMissing()
-                    ? (DateTime?)null
-                    : DateTime.ParseExact(sourceDateValue, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-                return date;
-            }
-            catch
-            {
+            if (sourceDateValue.IsMissing())
                 return null;
-            }
+
+            return DateTime.TryParseExact(sourceDateValue.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var date)
+                ? date
+                : null;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that validates the source URL described by sourceUrl.
         /// </summary>
@@ -119,14 +108,12 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         ///     Thrown when one or more arguments have unsupported or illegal values.
         /// </exception>
         /// <param name="sourceUrl">The sourceUrl to act on.</param>
-        /// =================================================================================================
         internal static void ValidateSourceUrl(this string sourceUrl)
         {
             if (sourceUrl.IsPresent() && !Uri.IsWellFormedUriString(sourceUrl, UriKind.Absolute))
                 throw new ArgumentException("SourceUrl must be an absolute URI", nameof(sourceUrl));
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Sets code path.
         /// </summary>
@@ -135,13 +122,13 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         /// <returns>
         ///     A string.
         /// </returns>
-        /// =================================================================================================
         internal static string SetCodePath(string fullName, string currentItemName)
-        => currentItemName.IsPresent()
-            ? $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}"
-            : $"{fullName}{currentItemName}";
+        {
+            return currentItemName.IsPresent()
+                ? $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : $".{currentItemName}")}"
+                : $"{fullName}{currentItemName}";
+        }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Sets full name.
         /// </summary>
@@ -150,11 +137,11 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         /// <returns>
         ///     A string.
         /// </returns>
-        /// =================================================================================================
         internal static string SetFullName(string fullName, string currentItemName)
-        => $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : ($".{currentItemName}"))}";
+        {
+            return $"{fullName}{(currentItemName.StartsWith(".") ? currentItemName : $".{currentItemName}")}";
+        }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that indent multiply.
         /// </summary>
@@ -163,20 +150,18 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         /// <returns>
         ///     A string.
         /// </returns>
-        /// =================================================================================================
         internal static string IndentMultiply(this string source, int multiplex = 0)
         {
             if (multiplex == -1) return string.Empty;
             if (multiplex == 0) return source;
 
             var indentResult = source;
-            for (var i = 0; i < multiplex; i++) 
+            for (var i = 0; i < multiplex; i++)
                 indentResult += source;
 
             return indentResult;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A string extension method that if not missing.
         /// </summary>
@@ -185,8 +170,9 @@ namespace RzR.Core.CodeSource.Extensions.Internal
         /// <returns>
         ///     A string.
         /// </returns>
-        /// =================================================================================================
         internal static string IfNotMissing(this string source, string newValue)
-            => source.IsNull() ? null : newValue;
+        {
+            return source.IsNull() ? null : newValue;
+        }
     }
 }

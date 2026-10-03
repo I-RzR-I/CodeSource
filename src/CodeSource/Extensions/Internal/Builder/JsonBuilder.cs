@@ -1,20 +1,21 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Core.CodeSource
-//  Author           : RzR
-//  Created On       : 2025-11-19 20:11
+//  Assembly          : RzR.Shared.Attributes.CodeSource
+//  Author            : RzR
+//  Created On        : 2026-10-01 20:09
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2025-11-20 19:17
-// ***********************************************************************
+//  Last Modified On : 2026-10-01 21:21
+//  ***********************************************************************
 //  <copyright file="JsonBuilder.cs" company="RzR SOFT & TECH">
-//   Copyright © RzR. All rights reserved.
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
 using System.IO;
 using System.Text;
@@ -23,14 +24,11 @@ using System.Text;
 
 namespace RzR.Core.CodeSource.Extensions.Internal.Builder
 {
-    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     A JSON builder.
     /// </summary>
-    /// =================================================================================================
     internal static class JsonBuilder
     {
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON indent.
         /// </summary>
@@ -39,7 +37,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonIndent(this StreamWriter sw, string indent = null)
         {
             if (indent.IsNotNull())
@@ -48,7 +45,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON new line.
         /// </summary>
@@ -56,7 +52,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonNewLine(this StreamWriter sw)
         {
             sw.Write("\n");
@@ -64,7 +59,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON open array.
         /// </summary>
@@ -73,7 +67,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonOpenArray(this StreamWriter sw, string indentBefore = null)
         {
             if (indentBefore.IsNotNull())
@@ -85,7 +78,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON close array.
         /// </summary>
@@ -96,7 +88,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonCloseArray(this StreamWriter sw, string indentBefore = null,
             bool newLineBefore = true, bool newLineAfter = true)
         {
@@ -114,7 +105,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON object delimiter.
         /// </summary>
@@ -123,7 +113,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonObjDelimiter(this StreamWriter sw, bool newLine = true)
         {
             sw.Write("," + (newLine ? "\n" : ""));
@@ -131,7 +120,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON open object.
         /// </summary>
@@ -140,7 +128,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonOpenObject(this StreamWriter sw, string indentBefore = null)
         {
             if (!indentBefore.IsNotNull())
@@ -152,7 +139,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a JSON close object.
         /// </summary>
@@ -161,7 +147,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteJsonCloseObject(this StreamWriter sw, string indentBefore = null)
         {
             if (indentBefore.IsNotNull())
@@ -172,7 +157,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     A StreamWriter extension method that writes a property.
         /// </summary>
@@ -185,7 +169,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A StreamWriter.
         /// </returns>
-        /// =================================================================================================
         internal static StreamWriter WriteProp(this StreamWriter sw, string name, string value, bool comma = true,
             bool writeValue = true, bool newLine = true)
         {
@@ -193,10 +176,7 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             sw.Write(Escape(name));
             sw.Write("\" : ");
 
-            if (writeValue)
-            {
-                sw.Write(value.IsNull() ? "null" : EscapeAndQuote(value));
-            }
+            if (writeValue) sw.Write(value.IsNull() ? "null" : EscapeAndQuote(value));
 
             if (comma && writeValue)
                 sw.Write(",");
@@ -207,7 +187,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
             return sw;
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Escape and quote.
         /// </summary>
@@ -215,13 +194,11 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A string.
         /// </returns>
-        /// =================================================================================================
         private static string EscapeAndQuote(string value)
         {
             return "\"" + Escape(value) + "\"";
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Escapes.
         /// </summary>
@@ -229,7 +206,6 @@ namespace RzR.Core.CodeSource.Extensions.Internal.Builder
         /// <returns>
         ///     A string.
         /// </returns>
-        /// =================================================================================================
         private static string Escape(string source)
         {
             if (source.IsMissing())

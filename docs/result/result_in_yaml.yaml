@@ -1,6 +1,6 @@
 ﻿codeSources:
-  - fullName: TempLib.OwnClassData
-    name: OwnClassData
+  - fullName: "TempLib.OwnClassData"
+    name: "OwnClassData"
     history: 
       - codePath: "TempLib.OwnClassData"
         sourceUrl: ""
@@ -8,7 +8,7 @@
         copyright: "© Company INC"
         appliedOn: ""
         comment: ""
-        version: "1.0"
+        version: "1"
         tags: ""
         relatedTaskId: ""
       - codePath: "TempLib.OwnClassData"
@@ -21,8 +21,8 @@
         tags: ""
         relatedTaskId: ""
 
-  - fullName: TempLib.OwnClassData.RunTask
-    name: RunTask
+  - fullName: "TempLib.OwnClassData.RunTask"
+    name: "RunTask"
     history: 
       - codePath: "TempLib.OwnClassData.RunTask"
         sourceUrl: ""
@@ -33,8 +33,8 @@
         version: "1.0"
         tags: ""
         relatedTaskId: "#784"
-  - fullName: TempLib.OwnClassData.RunAsync
-    name: RunAsync
+  - fullName: "TempLib.OwnClassData.RunAsync"
+    name: "RunAsync"
     history: 
       - codePath: "TempLib.OwnClassData.RunAsync"
         sourceUrl: "http://local.host/use-async"
@@ -54,8 +54,8 @@
         version: "1.1"
         tags: ""
         relatedTaskId: ""
-  - fullName: TempLib.TempClassData
-    name: TempClassData
+  - fullName: "TempLib.TempClassData"
+    name: "TempClassData"
     history: 
       - codePath: "TempLib.TempClassData"
         sourceUrl: "http://local.host"
@@ -63,12 +63,12 @@
         copyright: "© Company INC"
         appliedOn: ""
         comment: ""
-        version: "1.0"
+        version: "1"
         tags: ""
         relatedTaskId: ""
 
-  - fullName: TempLib.TempClassData.ctor
-    name: .ctor
+  - fullName: "TempLib.TempClassData.ctor"
+    name: ".ctor"
     history: 
       - codePath: "TempLib.TempClassData.ctor"
         sourceUrl: "http://local.host"
@@ -79,8 +79,8 @@
         version: "1.0"
         tags: ""
         relatedTaskId: ""
-  - fullName: TempLib.TempClassData.Run
-    name: Run
+  - fullName: "TempLib.TempClassData.Run"
+    name: "Run"
     history: 
       - codePath: "TempLib.TempClassData.Run"
         sourceUrl: "http://local.host/source1"

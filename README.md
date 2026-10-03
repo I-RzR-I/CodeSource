@@ -36,7 +36,36 @@ If you are upgrading from older releases published as `CodeSource`, update the p
 >
 > `dotnet add package RzR.Core.CodeSource --version x.x.x.x`
 
+## Quick start
+
+Pass the source URL as the only constructor argument and set everything else with named properties:
+
+```csharp
+using RzR.Core.CodeSource;
+
+[CodeSource("https://learn.microsoft.com/dotnet/standard/garbage-collection/implementing-dispose",
+    AuthorName = "Jane Doe",
+    Version = "1.0")]
+public class DisposableResource
+{
+}
+```
+
+Avoid extra positional arguments: `[CodeSource("https://example.com", "Jane Doe")]` sets `Version` to `"Jane Doe"`. Since 6.1 that form raises warning `CS0618`.
+
+Scan an assembly and export what it finds:
+
+```csharp
+using System.Linq;
+using RzR.Core.CodeSource;
+using RzR.Core.CodeSource.Services;
+
+var history = CodeSourceScanner.Instance.FindAnnotations(typeof(DisposableResource).Assembly).ToList();
+ExporterRegistry.Export(ExportFormats.Markdown, history, "code-sources.md");
+```
+
 ## Content
 1. [USING](docs/usage.md)
-2. [CHANGELOG](docs/CHANGELOG.md)
-3. [BRANCH-GUIDE](docs/branch-guide.md)
+2. [MIGRATION GUIDE](docs/migration-guide.md)
+3. [CHANGELOG](docs/CHANGELOG.md)
+4. [BRANCH-GUIDE](docs/branch-guide.md)
