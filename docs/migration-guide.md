@@ -1,14 +1,117 @@
-# Migrating from 6.0 to 6.1
+# Migration guide
+
+- [6.x to 7.0](#migrating-from-6x-to-70): the `CODESOURCE` symbol.
+- [6.0 to 6.1](#migrating-from-60-to-61): obsolete constructors, scanner and exporter behaviour, output formats.
+- [CodeSource to RzR.Core.CodeSource (5.0)](#migrating-from-codesource-to-rzrcorecodesource-50): package and namespace rename.
+
+## Migrating from 6.x to 7.0
+
+This section is for projects that use `RzR.Core.CodeSource` 6.x (last release: 6.1.0.5877) and move to 7.0. 7.0 is a major release because of one change: recompiling against it can silently remove `[CodeSource]` data from your assemblies. Existing public APIs do not change.
+
+### What changed
+
+> **Breaking change in 7.0:** `[CodeSource]` is now a conditional attribute (`[Conditional("CODESOURCE")]`). The compiler still checks every `[CodeSource(...)]`, but it writes it into your assembly **only if the project that applies it defines the compilation symbol `CODESOURCE`**. If you recompile against 7.0 without defining it, your assembly contains no `[CodeSource]` data. `CodeSourceScanner.FindAnnotations` and reflection (`GetCustomAttributes`) then return nothing for it, and you get no error or warning. To keep the 6.x behaviour, add `<DefineConstants>$(DefineConstants);CODESOURCE</DefineConstants>` to every project that applies `[CodeSource]`. Assemblies already compiled against 6.x are not affected. The change is binary-compatible.
+
+That line is the C# and F# form. For VB, old-style csproj files, multi-project solutions and the rule that the symbol must apply to every configuration and target framework, see [Setting up CODESOURCE](../README.md#setting-up-codesource).
+
+If you publish a NuGet package, do not add the `DefineConstants` line; use the `EmitCodeSource` block instead (step 3b below).
+
+Without the symbol, the assembly reference to `RzR.Core.CodeSource` (the entry in your dll's metadata that makes the runtime load it) is also dropped from your assembly, unless other code in the project uses CodeSource types (for example `typeof(CodeSourceAttribute)` or scanner calls). Usages are still type-checked, so the project still needs its package reference.
+
+### Who is affected
+
+- Anyone who recompiles, against 7.0, a project that applies `[CodeSource]` and relies on the scanner, the exporters or reflection to read the data.
+- Projects that receive 7.0 as a transitive dependency. Your project is recompiled against 7.0 even though you did not upgrade it yourself; see [Transitive upgrades](#transitive-upgrades).
+- Authors of NuGet packages that apply `[CodeSource]`. See [Publishing a library that uses CodeSource](emitcodesource.md).
+- Teams that use exported reports as licence or attribution evidence. After the upgrade, a report from a project without the symbol is empty or incomplete, and you get no error.
+
+### Who is not affected
+
+- Assemblies compiled against 6.x. They keep their `[CodeSource]` data, and 7.0 reads it as before.
+- Projects whose `[CodeSource]` data nobody reads. They lose the data after the upgrade, but nothing depends on it. They still need the package to compile.
+
+### Steps
+
+Follow the steps in order. Step 3 has two branches; each project takes exactly one.
+
+1. Before you change anything, record the result count on 6.x for each assembly you scan, for example `CodeSourceScanner.Instance.FindAnnotations(new[] { assembly }).Count()`. Step 6 compares against these numbers.
+2. Find every project that applies `[CodeSource]` (search the source for `[CodeSource`, and `<CodeSource` in VB).
+3. Add the symbol:
+   - **3a. Apps, test projects and libraries you do not publish as NuGet packages:** add `<DefineConstants>$(DefineConstants);CODESOURCE</DefineConstants>` (VB: `$(DefineConstants),CODESOURCE=True`) in a group with no condition, so that every configuration and target framework gets it. You can do this before you upgrade; on 6.x the symbol has no effect.
+   - **3b. Libraries you publish as NuGet packages:** do not do 3a. Replace the plain `PackageReference` with the [`EmitCodeSource` block](emitcodesource.md#the-emitcodesource-block), **in the same change as step 4, never before it**. On 6.x the block makes the package reference private while the attribute is still emitted, so consumers get `FileNotFoundException`. Give the block the exact 4-part package version; `7.0.0` causes warning `NU1603` on every restore.
+4. Upgrade to 7.0 and rebuild, in Debug and in Release.
+5. Run `dotnet list package --include-transitive` to see which CodeSource version each project resolves.
+6. Check that `FindAnnotations` returns the counts you recorded in step 1.
+7. Library authors: add the [CI gate](emitcodesource.md#recommended-ci-gate) to the library's CI, so that a `typeof(...)` or scanner call, or a split restore and build, cannot ship a dll that references `RzR.Core.CodeSource` without the dependency in your nuspec.
+8. Add a lasting guard: see [Keep a guard against empty scans](#keep-a-guard-against-empty-scans).
+
+### Transitive upgrades
+
+You can get 7.0 without asking for it, when another package you use moves to 7.0.
+
+- Add `CODESOURCE` to your apps, test projects and libraries you do not publish (step 3a) before that happens. It is a no-op on 6.x. Libraries you publish add the `EmitCodeSource` block only together with their own upgrade to 7.0 (step 3b).
+- Check which version you actually resolve ([step 5](#steps)).
+- Libraries compiled against 6.x keep working with 7.0. The assembly is not strong-named, so no binding redirects are needed.
+- Scanning a third-party library returns data only if that library was compiled against a version before 7.0, or opted in (compiled with `CODESOURCE`). Defining the symbol in your own project does not change a library you reference.
+
+### Keep a guard against empty scans
+
+A project that loses the symbol builds without errors and scans to an empty result. Add a unit test ([Add a guard test](../README.md#add-a-guard-test)) or a startup check that fails when an assembly you expect to carry annotations returns nothing:
+
+```csharp
+using System;
+using System.Linq;
+using System.Reflection;
+using RzR.Core.CodeSource.Models;
+using RzR.Core.CodeSource.Services;
+
+public static class CodeSourceGuard
+{
+    public static void EnsureAnnotated(Assembly assembly)
+    {
+        // Fail on load and reflection errors, so that a skipped assembly or type is never
+        // mistaken for a missing symbol. AttributeValue errors (such as an invalid AppliedOn)
+        // are data problems, not load failures, so they are ignored, as in the README guard test.
+        var options = new CodeSourceScanOptions
+        {
+            OnError = e =>
+            {
+                if (e.Stage != CodeSourceScanStage.AttributeValue)
+                    throw new InvalidOperationException(e.Message, e.Exception);
+            }
+        };
+
+        // Scan exactly this assembly, not its references.
+        var count = CodeSourceScanner.Instance.FindAnnotations(new[] { assembly }, options).Count();
+
+        if (count == 0)
+            throw new InvalidOperationException(
+                $"No [CodeSource] data in {assembly.GetName().Name}. Is CODESOURCE defined in its project?");
+    }
+}
+```
+
+Make sure each guarded assembly has at least one `[CodeSource]` on a public type, or on a constructor or method of one; see [What the scanner reports](usage.md#what-the-scanner-reports).
+
+### Binary compatibility in 7.0
+
+- No existing public API changes. 7.0 adds one constant, `CodeSourceAttribute.ConditionalSymbol` (`"CODESOURCE"`).
+- `[Conditional]` affects only the compiler. The runtime ignores it, so attribute data that is already in an assembly is read exactly as before, and the scanner and exporters behave as in 6.1.
+- Assemblies compiled against 6.x run against 7.0 without recompiling and without binding redirects.
+
+---
+
+## Migrating from 6.0 to 6.1
 
 This guide is for projects that use `RzR.Core.CodeSource` 6.0.x (last release: 6.0.0.94) and move to 6.1. Section 1 lists every change that can break a build or change what your code sees at run time. The later sections explain each change and how to adapt.
 
 ---
 
-## 1. Breaking and behaviour changes
+### 1. Breaking and behaviour changes
 
 Read this section before you upgrade.
 
-### 1.1 Unloadable referenced assemblies are skipped silently
+#### 1.1 Unloadable referenced assemblies are skipped silently
 
 **Before (6.0):** when `FindAnnotations(Assembly)` or `FindAnnotations(string)` could not load a referenced assembly, the exception escaped from `FindAnnotations` and you got no results.
 
@@ -20,26 +123,35 @@ If your build or report depends on a complete scan, pass a callback and decide w
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RzR.Core.CodeSource.Models;
 using RzR.Core.CodeSource.Services;
 
-var errors = new List<CodeSourceScanError>();
-var options = new CodeSourceScanOptions
+public static class CompleteScan
 {
-    OnError = error => errors.Add(error)
-};
+    public static List<CodeSourceObjectsResult> Scan(Assembly assembly)
+    {
+        var errors = new List<CodeSourceScanError>();
+        var options = new CodeSourceScanOptions
+        {
+            OnError = error => errors.Add(error)
+        };
 
-var results = CodeSourceScanner.Instance.FindAnnotations(assembly, options).ToList();
+        var results = CodeSourceScanner.Instance.FindAnnotations(assembly, options).ToList();
 
-if (errors.Count > 0)
-{
-    // Log, fail the build, or ignore: your choice.
-    foreach (var error in errors)
-        Console.WriteLine(error.Message);
+        if (errors.Count > 0)
+        {
+            // Log, fail the build, or ignore: your choice.
+            foreach (var error in errors)
+                Console.WriteLine(error.Message);
+        }
+
+        return results;
+    }
 }
 ```
 
-To get the 6.0 "stop on the first failure" behaviour, throw from the callback. An exception thrown by `OnError` ends the scan and propagates to the caller:
+To get the 6.0 "stop on the first failure" behaviour, throw from the callback. An exception thrown by `OnError` ends the scan and propagates to the caller. This fragment replaces the `options` assignment in `CompleteScan` above:
 
 ```csharp
 var options = new CodeSourceScanOptions
@@ -52,7 +164,7 @@ var options = new CodeSourceScanOptions
 
 The options overloads exist on the `CodeSourceScanner` class only. `ICodeSourceScanner` is unchanged, so if you depend on the interface you cannot pass options through it.
 
-### 1.2 Changes that can break the build
+#### 1.2 Changes that can break the build
 
 | Change | Effect | Details |
 |---|---|---|
@@ -60,7 +172,7 @@ The options overloads exist on the `CodeSourceScanner` class only. `ICodeSourceS
 | `(sourceUrl, version)` and `(sourceUrl, authorName, version)` constructors are obsolete | Warning `CS0618`; an error if you treat warnings as errors | [2.1](#21-what-changed), [2.8](#28-builds-with-treatwarningsaserrors) |
 | `CS0618` also fires on calls that bind correctly, such as `("url", version: "1.5")` and `("url", authorName: "a", version: "2.0")` | Same as above | [2.3](#23-correct-calls-that-now-warn) |
 
-### 1.3 Changes in run-time behaviour
+#### 1.3 Changes in run-time behaviour
 
 These apply as soon as the 6.1 library is loaded, including by assemblies compiled against 6.0.
 
@@ -75,11 +187,11 @@ These apply as soon as the 6.1 library is loaded, including by assemblies compil
 | Exported types of the scanned assembly itself cannot be listed (for example a dynamic assembly, or one exported type derives from a type in a missing dependency) | exception out of `FindAnnotations` | the whole assembly is skipped; reported through `OnError`, silent without it | [3.4](#34-which-failures-are-recoverable) |
 | Attributes of a class cannot be read, but one of its members is annotated | the failure was silently ignored | the class appears as `Parent` with an empty history; reported through `OnError`, silent without it | [3.4](#34-which-failures-are-recoverable) |
 | `null` arguments to `FindAnnotations` | `NullReferenceException`, or a loader exception for a name | `ArgumentNullException` for a `null` assembly, list or name; `ArgumentException` for an empty or blank name; `null` elements in a list are skipped | [3.2](#32-argument-checks) |
-| `Parent.History` for a type annotated only on its members | `null` | empty list (export unchanged) | [3.6](#36-parenthistory-for-member-only-annotations) |
+| `Parent.History` for a type annotated only on its members | `null` | empty list (export unchanged) | [3.5](#35-parenthistory-for-member-only-annotations) |
 | Duplicate results | netstandard1.0 returned each result many times; a reference that resolved to an assembly already in the list was scanned again | each assembly is scanned once | [3.3](#33-what-each-overload-scans) |
 | `Copyright` that already starts with `©`, passed to the constructor | `"© © MS"` | `"© MS"`, in the property and in exports | [2.7](#27-attribute-value-changes) |
 | Public `AppliedOn` after the full (8-parameter) constructor | `null` | the value you passed | [2.7](#27-attribute-value-changes) |
-| Exceptions during a scan that are not loader or reflection failures | often swallowed | propagate | [3.5](#35-unexpected-exceptions-propagate) |
+| Exceptions during a scan that are not loader or reflection failures | often swallowed | propagate | [3.4](#34-which-failures-are-recoverable) |
 | Stream passed to an exporter | closed by the exporter | left open; you dispose it | [4.1](#41-exporters-leave-your-stream-open) |
 | Invalid call to `Export(format, items, savePath)` | `null` `items` truncated an existing file, then failed | all arguments checked first; the file is not touched | [4.5](#45-the-savepath-overload-checks-its-arguments-before-opening-the-file) |
 | `ExporterRegistry` start-up | loaded its own assembly by name to find the built-in exporters | registers them directly, so it keeps working if the assembly is renamed or merged (for example with ILMerge) | [4.3](#43-registry) |
@@ -88,9 +200,9 @@ These apply as soon as the 6.1 library is loaded, including by assemblies compil
 
 ---
 
-## 2. Attribute constructors and warning CS0618
+### 2. Attribute constructors and warning CS0618
 
-### 2.1 What changed
+#### 2.1 What changed
 
 | Constructor | 6.0 | 6.1 |
 |---|---|---|
@@ -109,7 +221,7 @@ The warning text is:
 
 The obsolete constructors still work. The warning exists because they are easy to misuse (next section).
 
-### 2.2 Positional arguments bind by position
+#### 2.2 Positional arguments bind by position
 
 C# binds positional attribute arguments by position, not by what the value looks like. These calls compile, but the values land in the wrong property. **Do not write them.**
 
@@ -133,7 +245,7 @@ The same trap exists with four or more positional arguments, without a warning. 
 
 Use named properties to avoid both problems.
 
-### 2.3 Correct calls that now warn
+#### 2.3 Correct calls that now warn
 
 Some calls with named arguments bind correctly but still resolve to an obsolete constructor, so they raise `CS0618`. The values are right; only the style is flagged.
 
@@ -143,7 +255,7 @@ Some calls with named arguments bind correctly but still resolve to an obsolete 
 | `[CodeSource("https://example.com", authorName: "John", version: "2.0")]` | `AuthorName = "John"`, `Version = "2.0"` | `[CodeSource("https://example.com", AuthorName = "John", Version = "2.0")]` |
 | `[CodeSource("https://example.com", "John", version: "2.0")]` | `AuthorName = "John"`, `Version = "2.0"` | `[CodeSource("https://example.com", AuthorName = "John", Version = "2.0")]` |
 
-### 2.4 Named argument to named property
+#### 2.4 Named argument to named property
 
 To fix a warning, move each named constructor argument to the matching property. Keep `sourceUrl` as the only constructor argument.
 
@@ -170,7 +282,7 @@ public class Foo
 }
 ```
 
-### 2.5 Calls that do not change
+#### 2.5 Calls that do not change
 
 A call that supplies `copyright:`, `appliedOn:`, `comment:`, `workItemId:` or `tags:` as a named argument resolves to a non-obsolete constructor and raises no warning. You do not need to change it:
 
@@ -186,7 +298,7 @@ public class Foo
 
 If you move such a call to the named-property style anyway, remember the `©` difference in the table above.
 
-### 2.6 Calls that did not compile in 6.0 now compile
+#### 2.6 Calls that did not compile in 6.0 now compile
 
 In 6.0 these calls failed with `CS0121` (ambiguous call). In 6.1 they compile, raise no warning, and use the full constructor:
 
@@ -206,7 +318,7 @@ public class Bar
 }
 ```
 
-### 2.7 Attribute value changes
+#### 2.7 Attribute value changes
 
 These do not raise warnings. Most matter only if you read attribute properties directly; the `©` change also shows in exports.
 
@@ -220,7 +332,7 @@ These do not raise warnings. Most matter only if you read attribute properties d
 
 `AppliedOn` is parsed with the invariant culture and the exact format `yyyy-MM-dd`.
 
-### 2.8 Builds with TreatWarningsAsErrors
+#### 2.8 Builds with TreatWarningsAsErrors
 
 If your project sets `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` (or lists `CS0618` in `<WarningsAsErrors>`), the new warnings **fail the build**. Options, best first:
 
@@ -230,15 +342,15 @@ If your project sets `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` (or l
 
 ---
 
-## 3. Scanner changes
+### 3. Scanner changes
 
-### 3.1 `CodeSourceScanner.Instance` is readonly
+#### 3.1 `CodeSourceScanner.Instance` is readonly
 
 `Instance` is now `public static readonly`. Reading it works as before. Code that assigns it no longer compiles (`CS0198`), and an assembly compiled against 6.0 that assigns it may fail at run time with `FieldAccessException`; remove the assignment and recompile.
 
 The scanner holds no state, so there is no reason to replace it. Create your own `new CodeSourceScanner()` if you need a separate instance.
 
-### 3.2 Argument checks
+#### 3.2 Argument checks
 
 | Call | 6.0 | 6.1 |
 |---|---|---|
@@ -252,7 +364,7 @@ To handle every argument error from `FindAnnotations`, catch `ArgumentException`
 
 `FindAnnotations(string)` expects an assembly display name such as `"MyApp.Core"`, not a file path.
 
-### 3.3 What each overload scans
+#### 3.3 What each overload scans
 
 - `FindAnnotations(Assembly)` scans the `Assembly` object you pass. It no longer reloads it by name, so assemblies loaded from bytes, from a path or from a plugin load context now return results. Direct references are scanned, each once.
   - Assemblies loaded for reflection only (`ReflectionOnlyLoad` or a `MetadataLoadContext`) are still loaded again by their full name, as in 6.0. There is no fallback to a file path.
@@ -263,7 +375,9 @@ To handle every argument error from `FindAnnotations`, catch `ArgumentException`
 - **Duplicates:** a reference that resolves to an assembly already in the scan list is not scanned again.
 - **netstandard1.0:** only the given assembly is scanned. On this target 6.0 added the given assembly to the scan list once more for each of its exported types, so every result came back many times. 6.1 returns each result once.
 
-### 3.4 Which failures are recoverable
+#### 3.4 Which failures are recoverable
+
+Current behaviour, including the full error-stage table: [Reporting scan errors](usage.md#reporting-scan-errors).
 
 A recoverable failure is reported to `OnError` (if set) and the scan continues. Without `OnError`, it is skipped silently.
 
@@ -284,57 +398,66 @@ Two consequences to know about:
 - If the exported types of the assembly you pass cannot be listed, for example because one exported type derives from a type in a dependency that is missing at run time, the **whole assembly** is skipped, not just that type.
 - If the attributes of a class cannot be read but one of its members is annotated, the class still appears as a `Parent`, with an empty history. Without `OnError`, you cannot tell this apart from a class that has no `[CodeSource]` of its own.
 
-`CodeSourceScanError.Message` has the form `<Stage>: <exception type>: <exception message> [assembly: ...] [type: ...] [member: ...]`. It never contains a stack trace. The `<exception message>` part is the runtime's own text, which on .NET Core can include a file path the loader probed. Log it, but do not show it verbatim to end users.
+Message format: see [Reporting scan errors](usage.md#reporting-scan-errors).
 
-### 3.5 `Parent.History` for member-only annotations
+#### 3.5 `Parent.History` for member-only annotations
 
 For a type that has `[CodeSource]` only on its members, `Parent.History` is now an empty list instead of `null`. Exported output is unchanged. Code that checked `History == null` should check `History.Count == 0`.
 
 ---
 
-## 4. Exporter changes
+### 4. Exporter changes
 
-### 4.1 Exporters leave your stream open
+#### 4.1 Exporters leave your stream open
 
 **Before (6.0):** `ExporterRegistry.Export(format, items, stream)` and `ICodeSourceExporter.Export(items, stream)` closed the stream when they finished.
 
 **After (6.1):** the exporter writes, flushes and leaves the stream open. You own it.
 
 ```csharp
+using System.Collections.Generic;
 using System.IO;
 using RzR.Core.CodeSource;
+using RzR.Core.CodeSource.Models;
 using RzR.Core.CodeSource.Services;
 
-// 6.0: the stream was closed after Export, so it could not be read back.
-// 6.1: dispose the stream yourself.
-using (var stream = new MemoryStream())
+public static class CsvExport
 {
-    ExporterRegistry.Export(ExportFormats.Csv, items, stream);
-    stream.Position = 0; // works in 6.1
+    public static byte[] ToBytes(IEnumerable<CodeSourceObjectsResult> items)
+    {
+        // 6.0: the stream was closed after Export, so it could not be read back.
+        // 6.1: dispose the stream yourself.
+        using (var stream = new MemoryStream())
+        {
+            ExporterRegistry.Export(ExportFormats.Csv, items, stream);
+            stream.Position = 0; // works in 6.1
+            return stream.ToArray();
+        }
+    }
 }
 ```
 
 If you passed a stream without disposing it because the exporter closed it, add a `using` block. The `savePath` overload still creates the file, writes it and closes it; it now checks its arguments first (section 4.5).
 
-### 4.2 `null` arguments throw `ArgumentNullException`
+#### 4.2 `null` arguments throw `ArgumentNullException`
 
 **Before (6.0):** a `null` `items` or stream failed inside the exporter, and the error surfaced wrapped in `CodeSourceExporterException`.
 
 **After (6.1):** the exporter throws `ArgumentNullException` (`ParamName` `items` or `outputStream`) before it writes anything. `ArgumentNullException` does not derive from `CodeSourceExporterException`, so a `catch (CodeSourceExporterException)` no longer catches this case.
 
-### 4.3 Registry
+#### 4.3 Registry
 
 - The six built-in exporters are registered directly when the registry starts. It no longer loads its own assembly by name to find them, so it keeps working if the assembly is renamed or merged into another one.
 - Format names are case-insensitive (unchanged).
 - `Register` replaces an exporter already registered for the same format, including a built-in one. The last registration wins (unchanged, now documented).
 
-### 4.4 JSON export is thread-safe
+#### 4.4 JSON export is thread-safe
 
 6.0 could write malformed JSON when several threads exported at the same time. 6.1 fixes this. If you added your own locking around JSON export, you can remove it.
 
 The registry shares one exporter instance per format across all threads. A custom `ICodeSourceExporter` must not keep per-export state in fields.
 
-### 4.5 The `savePath` overload checks its arguments before opening the file
+#### 4.5 The `savePath` overload checks its arguments before opening the file
 
 **Before (6.0):** `Export(format, items, savePath)` opened the file with `FileMode.Create` before the exporter checked `items`. A call with `null` `items` truncated an existing file and then failed.
 
@@ -352,7 +475,7 @@ The stream overload `Export(format, items, stream)` also checks for a `null` for
 
 ---
 
-## 5. Output format changes
+### 5. Output format changes
 
 These changes protect tools that open the exported files (spreadsheets, Markdown renderers, YAML and XML parsers). They can change the bytes of the output, so review them if you parse, diff or snapshot-test exported files.
 
@@ -361,7 +484,7 @@ These changes protect tools that open the exported files (spreadsheets, Markdown
 - Values are trimmed before they are escaped, so leading and trailing tabs, carriage returns and line feeds are removed.
 - `AppliedOn` is written with the invariant culture, so it stays a Gregorian `yyyy-MM-dd` date under cultures such as `th-TH`. Output changes only if your process ran under a non-Gregorian culture.
 - A copyright set through the constructor no longer gets a second `©` (section 2.7).
-- The byte order mark (BOM) is unchanged: CSV, HTML, JSON, Markdown and YAML write one to an empty stream, XML does not, and no format writes one to a stream that already holds data.
+- The byte order mark (BOM) is unchanged: CSV, HTML, JSON, Markdown and YAML write one, XML does not. They skip it only when the stream is seekable and already positioned after data (`Position` greater than 0); a non-seekable stream always gets one. See [Export generated code source history](usage.md#export-generated-code-source-history).
 
 | Format | 6.1 behaviour | Example |
 |---|---|---|
@@ -373,7 +496,7 @@ These changes protect tools that open the exported files (spreadsheets, Markdown
 | HTML | Unchanged. | |
 | JSON | Unchanged for single-threaded use; valid under concurrent use (section 4.4). | |
 
-### 5.1 CSV formula protection
+#### 5.1 CSV formula protection
 
 Spreadsheets run a cell as a formula when it starts with `=`, `+`, `-` or `@`. Some, such as Excel with a `;` list separator, also split a value at `;` or `,` and treat each part as a cell. To block formula injection, the CSV exporter inserts a `'` at every position where a cell could start, if a trigger follows.
 
@@ -407,7 +530,7 @@ Every data field is wrapped in double quotes, and quotes inside it are doubled, 
 
 ---
 
-## 6. Binary compatibility
+### 6. Binary compatibility
 
 Assemblies compiled against 6.0.x run against 6.1 without recompiling:
 
@@ -422,7 +545,7 @@ Two exceptions:
 
 ---
 
-## 7. Checklist
+### 7. Checklist
 
 1. Search for `FindAnnotations(` calls whose results must be complete, and pass `CodeSourceScanOptions` with `OnError`.
 2. Remove any assignment to `CodeSourceScanner.Instance`.
@@ -430,3 +553,54 @@ Two exceptions:
 4. Find code that passes a stream to `Export` without disposing it, and add a `using` block.
 5. Replace `catch (CodeSourceExporterException)` blocks that were meant to catch `null` arguments, and `NullReferenceException` handlers around `FindAnnotations`.
 6. Re-run any snapshot or parsing tests over exported CSV, Markdown, YAML or XML files.
+
+---
+
+## Migrating from CodeSource to RzR.Core.CodeSource (5.0)
+
+This section is for projects that use the old `CodeSource` package (v3.x / v4.x) and move to 5.0 or later.
+
+### Package ID rename
+The NuGet package ID changed from `CodeSource` to `RzR.Core.CodeSource`.
+
+| Old | New |
+|---|---|
+| `Install-Package CodeSource` | `Install-Package RzR.Core.CodeSource` |
+| `<PackageReference Include="CodeSource" Version="x.x.x" />` | `<PackageReference Include="RzR.Core.CodeSource" Version="7.0.0.x" />` (use the exact 4-part version) |
+
+### Namespace rename
+All namespaces changed from `CodeSource.*` to `RzR.Core.CodeSource.*`.
+
+| Old | New |
+|---|---|
+| `using CodeSource;` | `using RzR.Core.CodeSource;` |
+| `using CodeSource.Models;` | `using RzR.Core.CodeSource.Models;` |
+| `using CodeSource.Services;` | `using RzR.Core.CodeSource.Services;` |
+| `using CodeSource.Abstractions;` | `using RzR.Core.CodeSource.Abstractions;` |
+| `using CodeSource.Exceptions;` | `using RzR.Core.CodeSource.Exceptions;` |
+
+Assembly name changed from `CodeSource.dll` to `RzR.Core.CodeSource.dll`.
+
+### Version type: `double` -> `string`
+The `Version` property on `CodeSourceAttribute`, `ICodeSourceAttribute`, and `CodeSourceObjectHistory` changed from `double` to `string`.
+
+```csharp
+using RzR.Core.CodeSource;
+
+// Before (v4.x): Version was a double. This no longer compiles.
+// [CodeSource("https://example.com", version: 1.5)]
+
+// After (5.0+): Version is a string. Set it as a named property.
+[CodeSource("https://example.com", Version = "1.5")]
+public class Foo
+{
+}
+```
+
+### Collection property types
+`CodeSourceObject.History` and `CodeSourceObjectsResult.Children` changed from `IEnumerable<T>` to `IReadOnlyList<T>` (net45+ / netstandard / net). On net40 they are `IList<T>`.
+
+Code that only reads/enumerates these properties is unaffected. Code that assigns them must provide a `List<T>` or another `IReadOnlyList<T>` implementation.
+
+### Export magic strings → constants
+Replace raw format strings with `ExportFormats` constants. For example, the call `ExporterRegistry.Export("json", items, stream)` becomes `ExporterRegistry.Export(ExportFormats.Json, items, stream)`.

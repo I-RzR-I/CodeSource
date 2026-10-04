@@ -1,3 +1,8 @@
+### **v7.0.0.8329** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 04-10-2026
+* [06fbcec] (RzR) -> Auto commit uncommited files
+* [db8433b] (RzR) -> [#20] - Update the documentation and add migration details.
+* [6d0f841] (RzR) -> [#20] - Make [CodeSource] opt-in via the CODESOURCE symbol.
+
 ### **v6.1.0.5877** [[RzR](mailto:108324929+I-RzR-I@users.noreply.github.com)] 03-10-2026
 * [856a49e] (RzR) -> Auto commit uncommited files
 * [2a011ea] (RzR) -> [#18] - Document scan error reporting, safe output and the migration from 6.0.
