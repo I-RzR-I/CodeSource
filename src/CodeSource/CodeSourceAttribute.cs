@@ -18,6 +18,7 @@
 #region U S I N G
 
 using System;
+using System.Diagnostics;
 using RzR.Core.CodeSource.Abstractions;
 using RzR.Core.CodeSource.Extensions.Internal;
 
@@ -33,9 +34,17 @@ namespace RzR.Core.CodeSource
     /// <seealso cref="T:Attribute"/>
     /// <seealso cref="T:RzR.Core.CodeSource.Abstractions.ICodeSourceAttribute"/>
     /// <seealso cref="T:CodeSource.Abstractions.ICodeSourceAttribute" />
+    [Conditional(ConditionalSymbol)]
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public sealed class CodeSourceAttribute : Attribute, ICodeSourceAttribute
     {
+        /// <summary>
+        ///     (Immutable)
+        ///     The compilation symbol that a project applying <see cref="CodeSourceAttribute" /> must
+        ///     define for its applications to be emitted: "CODESOURCE".
+        /// </summary>
+        public const string ConditionalSymbol = "CODESOURCE";
+
         /// <summary>
         ///     (Immutable)
         ///     The <see cref="ObsoleteAttribute" /> message shared by the positional constructors that

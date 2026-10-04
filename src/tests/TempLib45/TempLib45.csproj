@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
+    <DefineConstants>$(DefineConstants);CODESOURCE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

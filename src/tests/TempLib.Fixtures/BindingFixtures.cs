@@ -65,6 +65,21 @@ namespace TempLib.Fixtures
         [CodeSource("http://fixture.local/e-copyright-padded", copyright: "  \u00A9 ACME")]
         public sealed class LeadingWhitespacePrefixedCopyright { }
 
+        [CodeSource("http://fixture.local/d-mixed", "Alice", "ACME", version: "4.3")]
+        public sealed class ThreePositionalNamedVersion { }
+
+        [CodeSource("http://fixture.local/d-props", "Alice", "ACME", "4.4", Tags = "t")]
+        public sealed class FourPositionalWithProperty { }
+
+        [CodeSource("http://fixture.local/e-comment", comment: "m")]
+        public sealed class NamedCommentOnly { }
+
+        [CodeSource("http://fixture.local/e-workitem", workItemId: "#9")]
+        public sealed class NamedWorkItemIdOnly { }
+
+        [CodeSource("http://fixture.local/e-tags", tags: "t")]
+        public sealed class NamedTagsOnly { }
+
         public sealed class InvalidAppliedOnOnMethod
         {
             [CodeSource("http://fixture.local/e-member-invalid-date", appliedOn: "not-a-date")]
